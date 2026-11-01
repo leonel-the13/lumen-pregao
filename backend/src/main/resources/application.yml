@@ -38,7 +38,8 @@ spring:
       write-dates-as-timestamps: false
   mvc:
     problemdetails:
-      enabled: true
+      # desligado: o GlobalExceptionHandler gera problem+json com `code` e erros por campo
+      enabled: false
 
 server:
   # o Render define PORT; localmente fica 8080

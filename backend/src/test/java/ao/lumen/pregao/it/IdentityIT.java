@@ -29,6 +29,16 @@ class IdentityIT extends IntegrationTest {
     }
 
     @Test
+    void validationErrorsHaveCodeAndFields() {
+        var body = new java.util.HashMap<>(registration("curta@exemplo.ao"));
+        body.put("password", "curta");
+        var r = api().post("/auth/register", body);
+        assertThat(r.status()).isEqualTo(400);
+        assertThat(r.code()).isEqualTo("VALIDATION_FAILED");
+        assertThat(r.body().path("fields").has("password")).isTrue();
+    }
+
+    @Test
     void registerVerifyAndEnter() {
         Api a = api();
         assertThat(a.post("/auth/register", registration("novo.estudante@exemplo.ao")).status()).isEqualTo(202);
