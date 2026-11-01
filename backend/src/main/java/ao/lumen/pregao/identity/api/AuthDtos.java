@@ -14,11 +14,11 @@ public final class AuthDtos {
     private AuthDtos() {}
 
     public record RegisterRequest(
-            @NotBlank(message = "Indica o teu nome completo.") @Size(min = 2, max = 120) String name,
-            @NotBlank(message = "Indica o teu email institucional.") @Email(message = "Email inválido.") @Size(max = 254) String email,
+            @NotBlank(message = "Indica o teu nome completo.") @Size(min = 2, max = 120, message = "O nome tem de ter entre 2 e 120 caracteres.") String name,
+            @NotBlank(message = "Indica o teu email institucional.") @Email(message = "Email inválido.") @Size(max = 254, message = "O email é demasiado longo.") String email,
             @NotNull(message = "Escolhe o curso.") UUID courseId,
-            @NotNull(message = "Escolhe o ano.") @Min(1) @Max(5) Integer year,
-            @NotBlank @Size(min = 12, max = 128, message = "A palavra-passe tem de ter entre 12 e 128 caracteres.") String password,
+            @NotNull(message = "Escolhe o ano.") @Min(value = 1, message = "Ano inválido.") @Max(value = 5, message = "Ano inválido.") Integer year,
+            @NotBlank(message = "Indica uma palavra-passe.") @Size(min = 12, max = 128, message = "A palavra-passe tem de ter entre 12 e 128 caracteres.") String password,
             @AssertTrue(message = "Tens de aceitar a política de privacidade.") boolean consent) {}
 
     public record VerifyRequest(@NotBlank @Size(max = 128) String token) {}
