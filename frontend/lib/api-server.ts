@@ -1,6 +1,7 @@
 import "server-only";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { clientIp } from "./client-ip";
 import { ApiError } from "./errors";
 
 const BACKEND = process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8080";
@@ -10,7 +11,7 @@ export async function serverFetch<T>(path: string, init?: RequestInit): Promise<
   const jar = await cookies();
   const cookie = jar.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
   const incoming = await headers();
-  const ip = incoming.get("cf-connecting-ip");
+  const ip = clientIp(incoming);
   const proxy: Record<string, string> = ip && process.env.PROXY_SECRET ? { "X-Client-IP": ip, "X-Proxy-Secret": process.env.PROXY_SECRET } : {};
   const res = await fetch(`${BACKEND}/api/v1${path}`, {
     ...init,

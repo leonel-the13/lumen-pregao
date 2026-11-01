@@ -181,3 +181,17 @@ Consequências:
 - [Cloudflare — guia OpenNext](https://developers.cloudflare.com/workers/framework-guides/web-apps/opennext/index.md)
 - [OpenNext Cloudflare — get started (`nodejs_compat`, data de compatibilidade)](https://opennext.js.org/cloudflare/0.3/get-started)
 - [Next.js — rewrites para URLs externos](https://github.com/vercel/next.js/blob/f2336f81f99f139c712f53d1048b723bb263a18e/docs/api-reference/next.config.js/rewrites.md)
+
+## 9. Estado do deploy (01/11/2026)
+
+| Peça | Onde | Estado |
+|---|---|---|
+| PostgreSQL | Neon · projecto `lumen-pregao` (`weathered-bird-66785654`), `aws-eu-central-1`, PG 16, base `lumen`, role `lumen` | ✅ criado; migrações V1 e V2 aplicadas e validadas com o perfil `prod` |
+| Backend + Redis | Render (Blueprint `render.yaml`) | a fazer pelo responsável do projecto |
+| Frontend | **Vercel** · projecto `lumen-pregao` (em vez do Cloudflare: sem sessão no wrangler e menos incerteza no SSE) | projecto criado, `PROXY_SECRET` definido; deploy depois de existir o URL do backend |
+
+- Credenciais e segredos de produção: ficheiro local `~/.lumen-pregao-secrets` (permissões 600) no computador de quem fez o deploy;
+  nunca no repositório.
+- Na Vercel, o IP real chega em `x-real-ip`/`x-forwarded-for` (`frontend/lib/client-ip.ts`).
+- Variáveis da Vercel ainda por definir: `BACKEND_INTERNAL_URL` (URL do Render) e `NEXT_PUBLIC_API_BASE=/api/v1`.
+  As duas são lidas no build: mudar o URL do backend obriga a novo deploy do frontend.

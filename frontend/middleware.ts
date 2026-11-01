@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { clientIp } from "@/lib/client-ip";
 
 const PROTECTED = ["/inicio", "/trilhas", "/salas", "/simulacoes", "/exames", "/competicoes", "/rankings", "/portefolio",
   "/definicoes", "/autoria", "/juri", "/admin"];
@@ -14,10 +15,10 @@ export function middleware(req: NextRequest) {
   }
   const headers = new Headers(req.headers);
   headers.set("x-pathname", pathname + search);
-  // IP real (Cloudflare) para rate limiting e auditoria; o backend só confia com o segredo partilhado.
+  // IP real (Cloudflare ou Vercel) para rate limiting e auditoria; o backend só confia com o segredo partilhado.
   headers.delete("x-client-ip");
   headers.delete("x-proxy-secret");
-  const ip = req.headers.get("cf-connecting-ip");
+  const ip = clientIp(req.headers);
   if (ip && process.env.PROXY_SECRET) {
     headers.set("x-client-ip", ip);
     headers.set("x-proxy-secret", process.env.PROXY_SECRET);

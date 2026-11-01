@@ -34,3 +34,4 @@ lumen-pregao-docs.zip
 frontend/.open-next/
 frontend/.wrangler/
 frontend/.dev.vars
+frontend/.vercel/
