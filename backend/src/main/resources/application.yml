@@ -70,6 +70,12 @@ management:
     health:
       probes:
         enabled: true
+      # estado por componente (db, redis…) sem detalhes internos, para diagnóstico
+      show-components: always
+  health:
+    # em produção o email segue pela API do Resend; o SMTP local não existe
+    mail:
+      enabled: false
 
 springdoc:
   api-docs:
