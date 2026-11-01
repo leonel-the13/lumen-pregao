@@ -56,7 +56,7 @@ public class IdentityMailer {
             try {
                 mail.send(to, subject, body);
             } catch (RuntimeException ex) {
-                log.warn("Falha ao enviar email: {}", ex.getClass().getSimpleName());
+                log.warn("Falha ao enviar email «{}»: {}", subject, ex.getMessage());
             }
         });
     }

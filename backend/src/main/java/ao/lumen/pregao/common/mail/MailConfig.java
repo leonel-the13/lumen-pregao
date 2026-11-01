@@ -20,11 +20,16 @@ import org.springframework.mail.javamail.JavaMailSender;
  */
 @Configuration
 public class MailConfig {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MailConfig.class);
 
     @Bean
     EmailSender emailSender(AppProperties props, JavaMailSender smtp, ObjectMapper json) {
         String key = props.resendApiKey();
-        if (key != null && !key.isBlank()) return new ResendEmailSender(key, props.mailFrom(), json);
+        if (key != null && !key.isBlank()) {
+            log.info("Email: API do Resend (remetente {})", props.mailFrom());
+            return new ResendEmailSender(key, props.mailFrom(), json);
+        }
+        log.info("Email: SMTP (RESEND_API_KEY não definida)");
         return (to, subject, body) -> {
             SimpleMailMessage m = new SimpleMailMessage();
             m.setFrom(props.mailFrom());
@@ -55,12 +60,18 @@ public class MailConfig {
                 HttpResponse<String> r = http.send(HttpRequest.newBuilder(ENDPOINT).timeout(Duration.ofSeconds(15))
                         .header("Authorization", "Bearer " + key).header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(payload)).build(), HttpResponse.BodyHandlers.ofString());
-                if (r.statusCode() >= 300) throw new IllegalStateException("Resend respondeu " + r.statusCode());
+                if (r.statusCode() >= 300) {
+                    // O corpo do erro do Resend diz o motivo (ex.: remetente não verificado); não contém segredos.
+                    String reason = r.body() == null ? "" : r.body().substring(0, Math.min(300, r.body().length()));
+                    throw new IllegalStateException("Resend respondeu " + r.statusCode() + ": " + reason);
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException(e);
+            } catch (IllegalStateException e) {
+                throw e;
             } catch (Exception e) {
-                throw new IllegalStateException("Falha ao enviar email pelo Resend", e);
+                throw new IllegalStateException("Falha ao contactar o Resend: " + e.getMessage(), e);
             }
         }
     }
