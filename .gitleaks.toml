@@ -1,0 +1,11 @@
+title = "Lúmen Pregão"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Chaves fictícias usadas só nos testes automáticos e senha de desenvolvimento local"
+paths = [
+  '''backend/src/test/resources/application-test\.yml''',
+  '''infra/docker-compose\.yml''',
+]

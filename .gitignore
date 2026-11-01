@@ -1,0 +1,36 @@
+# segredos
+.env
+.env.*
+!.env.example
+
+# SO / editores
+.DS_Store
+.idea/
+.vscode/
+*.iml
+
+# backend
+backend/target/
+backend/uploads/
+
+# frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/test-results/
+frontend/playwright-report/
+frontend/next-env.d.ts
+frontend/tsconfig.tsbuildinfo
+
+# graphify (cache local)
+graphify-out/cache/
+
+# artefactos locais de design/documentação
+lumen-pregao-docs/
+lumen-pregao-docs.zip
+*.zip
+
+# OpenNext / wrangler
+frontend/.open-next/
+frontend/.wrangler/
+frontend/.dev.vars

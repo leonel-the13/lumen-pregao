@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/lumen}
+    username: ${DB_USER:lumen}
+    password: ${DB_PASSWORD:lumen_dev_only}
+
+server:
+  servlet:
+    session:
+      cookie:
+        secure: ${SESSION_COOKIE_SECURE:false}
+
+app:
+  identity:
+    allowed-email-domain: ${ALLOWED_EMAIL_DOMAIN:exemplo.ao}
+  dev-seed:
+    enabled: true
+
+logging:
+  level:
+    ao.lumen.pregao: DEBUG

@@ -1,0 +1,20 @@
+# Termos bloqueados em pseudónimos e nomes de equipa (lista inicial, a rever pela AE).
+# Um termo por linha; a comparação ignora acentos, maiúsculas e substituições simples (0→o, 1→i…).
+merda
+caralho
+puta
+foda
+cona
+porra
+cabrao
+paneleiro
+viado
+otario
+idiota
+estupido
+imbecil
+racista
+nazi
+admin
+moderador
+isptec

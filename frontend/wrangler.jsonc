@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lumen-pregao",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "observability": { "enabled": true },
+  // Variáveis públicas (não secretas). PROXY_SECRET é secret: `wrangler secret put PROXY_SECRET`.
+  // BACKEND_INTERNAL_URL também tem de existir no build (os rewrites do next.config.ts são fixados no build).
+  "vars": {
+    "BACKEND_INTERNAL_URL": "https://lumen-pregao-api.onrender.com",
+    "NEXT_PUBLIC_API_BASE": "/api/v1"
+  }
+}

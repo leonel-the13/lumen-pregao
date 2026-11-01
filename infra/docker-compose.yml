@@ -1,0 +1,58 @@
+name: lumen-pregao
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-lumen}
+      POSTGRES_USER: ${POSTGRES_USER:-lumen}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lumen_dev_only}
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports: ["1025:1025", "8025:8025"]
+
+  backend:
+    build: ../backend
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-lumen}
+      DB_USER: ${POSTGRES_USER:-lumen}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-lumen_dev_only}
+      REDIS_URL: redis://redis:6379
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      SESSION_SECRET: ${SESSION_SECRET}
+      MFA_ENC_KEY: ${MFA_ENC_KEY}
+      ALLOWED_EMAIL_DOMAIN: ${ALLOWED_EMAIL_DOMAIN}
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:3000}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-false}
+    ports: ["8080:8080"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+  frontend:
+    build: ../frontend
+    environment:
+      BACKEND_INTERNAL_URL: http://backend:8080
+      NEXT_PUBLIC_API_BASE: /api/v1
+    ports: ["3000:3000"]
+    depends_on: [backend]
+
+volumes:
+  pgdata:

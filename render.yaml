@@ -1,0 +1,52 @@
+# Blueprint do Render: backend (Docker) e Redis (Key Value). A base de dados está na Neon.
+# Os valores marcados sync: false são definidos à mão no painel/API (segredos).
+services:
+  - type: web
+    name: lumen-pregao-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    region: frankfurt
+    plan: starter
+    branch: main
+    healthCheckPath: /actuator/health
+    numInstances: 1
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: PORT
+        value: "8080"
+      - key: SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE
+        value: "10"
+      - key: SESSION_COOKIE_SECURE
+        value: "true"
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: lumen-pregao-redis
+          property: connectionString
+      - key: DB_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: MFA_ENC_KEY
+        sync: false
+      - key: PROXY_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      - key: ALLOWED_EMAIL_DOMAIN
+        sync: false
+      - key: APP_BASE_URL
+        sync: false
+
+  - type: keyvalue
+    name: lumen-pregao-redis
+    region: frankfurt
+    plan: free
+    maxmemoryPolicy: noeviction
+    ipAllowList: []

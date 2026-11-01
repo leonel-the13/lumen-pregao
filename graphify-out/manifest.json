@@ -1,0 +1,1970 @@
+{
+  "CLAUDE.md": {
+    "mtime": 1793493559.9428513,
+    "seen": 1793493612.588275,
+    "ast_hash": "43f04ab9b37f986c0a06bdb969df1956",
+    "semantic_hash": ""
+  },
+  "L\u00famen Preg\u00e3o \u2014 Design.html": {
+    "mtime": 1793488304.5461617,
+    "seen": 1793488554.916137,
+    "ast_hash": "37b280f110fafaec2db7db2933a0466b",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1793494315.1926396,
+    "seen": 1793495392.658688,
+    "ast_hash": "37846352b05a47e2e96c01605cda24f1",
+    "semantic_hash": ""
+  },
+  ".github/workflows/ci.yml": {
+    "mtime": 1793493272.0370677,
+    "seen": 1793493612.587787,
+    "ast_hash": "6336b3c5b73402fabe1f52f830b518ed",
+    "semantic_hash": ""
+  },
+  "backend/mvnw": {
+    "mtime": 1757334068.0,
+    "seen": 1793493612.5877938,
+    "ast_hash": "ab50dd89da7da2346b28003352eeeeeb",
+    "semantic_hash": ""
+  },
+  "backend/pom.xml": {
+    "mtime": 1793491158.0158813,
+    "seen": 1793493612.587797,
+    "ast_hash": "44be984914e3a9c1f00d81f54373f3be",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/PregaoApplication.java": {
+    "mtime": 1793489017.796823,
+    "seen": 1793493612.587799,
+    "ast_hash": "e427e46f3aa560a019d9139bd1b1dc5b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/api/AuthoringController.java": {
+    "mtime": 1793489702.5724053,
+    "seen": 1793493612.587801,
+    "ast_hash": "d6fb45c268bc4697acb9cc2132a0e09f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/api/AuthoringDtos.java": {
+    "mtime": 1793489671.7361996,
+    "seen": 1793493612.587803,
+    "ast_hash": "ec96edd21d32006481c95fe90bf6b674",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/api/LegalSourceController.java": {
+    "mtime": 1793489702.5771723,
+    "seen": 1793493612.5878038,
+    "ast_hash": "eb1ea81d31a7764f39a942cc2d287c31",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/app/AuthoringService.java": {
+    "mtime": 1793489671.740529,
+    "seen": 1793493612.587805,
+    "ast_hash": "16b8d962ce9962513d85d05a9f37670a",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/app/ExerciseCatalog.java": {
+    "mtime": 1793489612.8844383,
+    "seen": 1793493612.587807,
+    "ast_hash": "4f6d3ad242fe1ac5b8f9a4fc9b76f4e9",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/app/LegalSourceService.java": {
+    "mtime": 1793489702.5680363,
+    "seen": 1793493612.587808,
+    "ast_hash": "92f452691d2368354ccf3ba9a3445bdc",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/domain/Company.java": {
+    "mtime": 1793489559.464752,
+    "seen": 1793493612.587809,
+    "ast_hash": "8a45a91dc240b7c21bc8828430bddbb3",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/domain/EditorialStatus.java": {
+    "mtime": 1793489559.4736888,
+    "seen": 1793493612.587811,
+    "ast_hash": "06875e420eb2001a05e1a2c965dc01d1",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/domain/Exercise.java": {
+    "mtime": 1793489559.4690619,
+    "seen": 1793493612.5878122,
+    "ast_hash": "40011c48246b43326572e2efc964b34a",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/domain/ExerciseReference.java": {
+    "mtime": 1793489559.486778,
+    "seen": 1793493612.5878131,
+    "ast_hash": "2fb96392b94e49c3eecf1eb0321c6263",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/domain/ExerciseVersion.java": {
+    "mtime": 1793489559.4782047,
+    "seen": 1793493612.5878148,
+    "ast_hash": "7d0c08c78cf5d2eb240df1d4ab31ccd4",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/domain/LegalSource.java": {
+    "mtime": 1793489559.4601932,
+    "seen": 1793493612.587816,
+    "ast_hash": "3c9107818e002e3e7f63ad67022b01e2",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/domain/ReviewWorkflow.java": {
+    "mtime": 1793489559.482364,
+    "seen": 1793493612.587817,
+    "ast_hash": "344beb941c2e0914825991d3699d2cca",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/infra/CompanyRepository.java": {
+    "mtime": 1793489579.63996,
+    "seen": 1793493612.587818,
+    "ast_hash": "3b72f2943f36831e8ebf09a2dea500da",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/infra/ExerciseReferenceRepository.java": {
+    "mtime": 1793489579.656898,
+    "seen": 1793493612.58782,
+    "ast_hash": "8d129633f742763316040f72c7c1a4eb",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/infra/ExerciseRepository.java": {
+    "mtime": 1793489579.6443765,
+    "seen": 1793493612.587821,
+    "ast_hash": "24f7407f818198eab38f5b4113729d6e",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/infra/ExerciseVersionRepository.java": {
+    "mtime": 1793489579.6484716,
+    "seen": 1793493612.5878232,
+    "ast_hash": "4d5362d86f381ae4ac4a4c0bc5693f17",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/infra/LegalSourceRepository.java": {
+    "mtime": 1793489579.6356044,
+    "seen": 1793493612.587824,
+    "ast_hash": "20d3cc2075baf00cbd48042f4b038b4a",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/authoring/infra/ReviewWorkflowRepository.java": {
+    "mtime": 1793489579.6524913,
+    "seen": 1793493612.587826,
+    "ast_hash": "d05f1f20a21e9af38a79c62dc3936f04",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/audit/AuditController.java": {
+    "mtime": 1793489343.9018018,
+    "seen": 1793493612.587827,
+    "ast_hash": "2fb37fc48576001bf3a808579cf91ef8",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/audit/AuditLog.java": {
+    "mtime": 1793489081.19212,
+    "seen": 1793493612.587828,
+    "ast_hash": "f5c845376d0766e8259773c023454192",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/audit/AuditLogRepository.java": {
+    "mtime": 1793489081.1964097,
+    "seen": 1793493612.5878289,
+    "ast_hash": "2598de7300d2da8ca6c75e008150dd54",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/audit/AuditService.java": {
+    "mtime": 1793489081.2007709,
+    "seen": 1793493612.587831,
+    "ast_hash": "d5087c776dd5252d600c14e2b45ac869",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/config/AppProperties.java": {
+    "mtime": 1793494928.532823,
+    "seen": 1793495392.483839,
+    "ast_hash": "f3f8f8b483a4dedce4eb28da08172a7c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/config/CoreConfig.java": {
+    "mtime": 1793489055.0595276,
+    "seen": 1793493612.5878332,
+    "ast_hash": "0354b1f47b7cbc394a81892d55da5488",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/domain/BaseEntity.java": {
+    "mtime": 1793489017.8060348,
+    "seen": 1793493612.5878341,
+    "ast_hash": "f0e34c3374c8baddf71f4f3dddb59648",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/domain/UuidV7.java": {
+    "mtime": 1793489017.8017163,
+    "seen": 1793493612.5878358,
+    "ast_hash": "ad8850931c995b571b6d25b6c681bc2c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/error/DomainException.java": {
+    "mtime": 1793489017.8105628,
+    "seen": 1793493612.587837,
+    "ast_hash": "cec434c080f0c7f31d0db08c3c791241",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/error/GlobalExceptionHandler.java": {
+    "mtime": 1793489017.8148456,
+    "seen": 1793493612.587838,
+    "ast_hash": "a02c4c462aa7544767363dd3844b5566",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/privacy/PersonalDataContributor.java": {
+    "mtime": 1793489153.0671263,
+    "seen": 1793493612.58784,
+    "ast_hash": "3c3c9237faf0f0ee48c2334a4d6efc23",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/security/RateLimiter.java": {
+    "mtime": 1793489081.2135103,
+    "seen": 1793493612.587841,
+    "ast_hash": "cbff5241e401bbb7d2935e79a28ddb60",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/security/Roles.java": {
+    "mtime": 1793489081.2093754,
+    "seen": 1793493612.5878432,
+    "ast_hash": "9428e707732d635a451f6c705e6e7d86",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/security/SecurityConfig.java": {
+    "mtime": 1793490572.7870474,
+    "seen": 1793493612.5878441,
+    "ast_hash": "321e6ef3a682e5df9430a3f202b2c05d",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/security/SessionRevocation.java": {
+    "mtime": 1793489081.2173917,
+    "seen": 1793493612.587845,
+    "ast_hash": "e0bbbbe62eb7ea7d5af9f11698490c66",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/security/SessionUser.java": {
+    "mtime": 1793489081.204922,
+    "seen": 1793493612.5878458,
+    "ast_hash": "6f9b64063b2579b0b75525f9f0b6b949",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/text/Formats.java": {
+    "mtime": 1793490254.5435264,
+    "seen": 1793493612.587848,
+    "ast_hash": "298d5913acf8ae508bd6c173a393b2fb",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/text/MarkdownSanitizer.java": {
+    "mtime": 1793489055.0835311,
+    "seen": 1793493612.58785,
+    "ast_hash": "e74c178a82af7adc5510302b71bd984f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/text/OffensiveFilter.java": {
+    "mtime": 1793489055.0877242,
+    "seen": 1793493612.587851,
+    "ast_hash": "0e836e5b8b49fca5e83336e7e8923d7a",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/web/ClientIp.java": {
+    "mtime": 1793489055.0793421,
+    "seen": 1793493612.587852,
+    "ast_hash": "fde080b89b6f66266b01ba1b4ecce10b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/web/CursorPage.java": {
+    "mtime": 1793489055.0747793,
+    "seen": 1793493612.587853,
+    "ast_hash": "0cf9bf40e1f73e4e9a0342ec3dd4ca5f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/web/TraceIdFilter.java": {
+    "mtime": 1793489055.0701406,
+    "seen": 1793493612.5878541,
+    "ast_hash": "7a6e58647aa1dc9c47e08fe97739de72",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/api/ContestAdminController.java": {
+    "mtime": 1793490536.5086908,
+    "seen": 1793493612.5878558,
+    "ast_hash": "04e6523ce68f12457238ec70001e3911",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/api/ContestController.java": {
+    "mtime": 1793490536.5040796,
+    "seen": 1793493612.587857,
+    "ast_hash": "0df1b1dad62d3b37c832edc395c185b0",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/api/ContestDtos.java": {
+    "mtime": 1793490428.0169463,
+    "seen": 1793493612.587858,
+    "ast_hash": "68f705202899755a87876fc2a1dc539d",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/app/ContestAdminService.java": {
+    "mtime": 1793490536.487173,
+    "seen": 1793493612.5878599,
+    "ast_hash": "25e95e3df603c1ef6e0748456b9071c7",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/app/ContestEventHub.java": {
+    "mtime": 1793490351.7953146,
+    "seen": 1793493612.587861,
+    "ast_hash": "d6f6b2f7ab140340d19fb62f049adf17",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/app/ContestEvents.java": {
+    "mtime": 1793490351.7905717,
+    "seen": 1793493612.587862,
+    "ast_hash": "0e93dbaeeddb106360680d5113d098ec",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/app/ContestIntegrations.java": {
+    "mtime": 1793490536.4981954,
+    "seen": 1793493612.587863,
+    "ast_hash": "a1a12c6e912d6bec133fcbdce20d06af",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/app/ContestLifecycle.java": {
+    "mtime": 1793490478.7925,
+    "seen": 1793493612.5878642,
+    "ast_hash": "df740bb87918eaeddea20e119199cd8c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/app/ContestScoringImpl.java": {
+    "mtime": 1793490478.785214,
+    "seen": 1793493612.587866,
+    "ast_hash": "f912fdee813728fc4f4cd2e5be2f1a5d",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/app/ContestService.java": {
+    "mtime": 1793490614.9794781,
+    "seen": 1793493612.5878668,
+    "ast_hash": "57bfb001641ce404482e3d0b39110252",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/domain/Contest.java": {
+    "mtime": 1793490334.6235273,
+    "seen": 1793493612.587868,
+    "ast_hash": "61207b9b5f5f9171f0a796dc4b93086f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/domain/ContestProblem.java": {
+    "mtime": 1793490334.6276824,
+    "seen": 1793493612.58787,
+    "ast_hash": "4cfa95b96ad3a4f7eecca384309e25b5",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/domain/ContestState.java": {
+    "mtime": 1793490334.618605,
+    "seen": 1793493612.587871,
+    "ast_hash": "d8386d1f2db89f08938cbc14b09ffd0f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/domain/Scoreboard.java": {
+    "mtime": 1793490334.6489904,
+    "seen": 1793493612.587872,
+    "ast_hash": "1f27b71d4d213463b440141dc93fc10d",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/domain/Team.java": {
+    "mtime": 1793490334.6325428,
+    "seen": 1793493612.587873,
+    "ast_hash": "f309c007408842d8c913d0bac8a8ec64",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/domain/TeamInvite.java": {
+    "mtime": 1793490334.6416311,
+    "seen": 1793493612.587874,
+    "ast_hash": "f6998609361bc0b0c7d83d65cf6d73f3",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/domain/TeamMember.java": {
+    "mtime": 1793490334.637453,
+    "seen": 1793493612.587876,
+    "ast_hash": "51baa79d68a245764c6810fde9d80691",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/infra/ContestProblemRepository.java": {
+    "mtime": 1793490334.6624212,
+    "seen": 1793493612.587877,
+    "ast_hash": "5666926bf5965196846fa80440425bde",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/infra/ContestRepository.java": {
+    "mtime": 1793490334.6579268,
+    "seen": 1793493612.587878,
+    "ast_hash": "2febfd042cc8bf0946389cfe9a60e3f1",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/infra/ScoreboardRepository.java": {
+    "mtime": 1793490334.6901693,
+    "seen": 1793493612.58788,
+    "ast_hash": "b09022d953a469c0e01a161bbee581ad",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/infra/TeamInviteRepository.java": {
+    "mtime": 1793490334.683485,
+    "seen": 1793493612.5878808,
+    "ast_hash": "6544f5321db124ad733e38f16c317035",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/infra/TeamMemberRepository.java": {
+    "mtime": 1793490334.6765006,
+    "seen": 1793493612.587882,
+    "ast_hash": "16777c070c44ffcac12ecdf2bf18236f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/contest/infra/TeamRepository.java": {
+    "mtime": 1793490441.6964846,
+    "seen": 1793493612.587883,
+    "ast_hash": "6d0acc5d41ebe513f3a82400374ea6b3",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/devseed/DevSeeder.java": {
+    "mtime": 1793490757.0776384,
+    "seen": 1793493612.587884,
+    "ast_hash": "7138af9cdaf2548c36feddf1b81fc16b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/api/ExamController.java": {
+    "mtime": 1793490236.2553794,
+    "seen": 1793493612.587886,
+    "ast_hash": "f74b1b321465d7de0261124cf93cdcef",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/api/ExamDtos.java": {
+    "mtime": 1793490236.2359502,
+    "seen": 1793493612.587887,
+    "ast_hash": "8abc45f778c5b901b95b5b933999d1db",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/app/ExamScheduler.java": {
+    "mtime": 1793490236.249914,
+    "seen": 1793493612.5878882,
+    "ast_hash": "b0e5908696ed1e0ea7325f9a91313220",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/app/ExamService.java": {
+    "mtime": 1793490614.9800646,
+    "seen": 1793493612.587889,
+    "ast_hash": "af75b14fbc6f2f21d3ba9dc102aeee6e",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/domain/Exam.java": {
+    "mtime": 1793490175.47546,
+    "seen": 1793493612.58789,
+    "ast_hash": "d80182c437f4cd007065823da9511479",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/domain/ExamSession.java": {
+    "mtime": 1793490175.4854243,
+    "seen": 1793493612.587892,
+    "ast_hash": "84bdb62a58953803657917b64547a6dd",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/domain/ExamSessionStatus.java": {
+    "mtime": 1793490175.4807844,
+    "seen": 1793493612.587893,
+    "ast_hash": "89cbca92b08f1f3c61b993a7440a82b7",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/infra/ExamRepository.java": {
+    "mtime": 1793490175.4896894,
+    "seen": 1793493612.587894,
+    "ast_hash": "70f9557cca836d611f26425f1558d547",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/exam/infra/ExamSessionRepository.java": {
+    "mtime": 1793490175.4938262,
+    "seen": 1793493612.5878952,
+    "ast_hash": "ca8b062048dc164e4eb2b77a49d9fbab",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/api/PgcController.java": {
+    "mtime": 1793489502.4210863,
+    "seen": 1793493612.587897,
+    "ast_hash": "c2b86f3c5187f09e522a20fb5dc075a1",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/AnswerFormatException.java": {
+    "mtime": 1793489437.160461,
+    "seen": 1793493612.587898,
+    "ast_hash": "134acd850b50d0843b2c684c06f78471",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/Answers.java": {
+    "mtime": 1793489437.1694756,
+    "seen": 1793493612.587899,
+    "ast_hash": "9a167e0942e2363c8bdcda32e4991bff",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/ChoiceGrader.java": {
+    "mtime": 1793489502.387298,
+    "seen": 1793493612.5879009,
+    "ast_hash": "e1e68f45bf39c5b694a28043bd4eb879",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/ExerciseDefinition.java": {
+    "mtime": 1793489423.609206,
+    "seen": 1793493612.587902,
+    "ast_hash": "89c868373fe2c165e1a19f0ed51624d6",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/GradeResult.java": {
+    "mtime": 1793489437.1554072,
+    "seen": 1793493612.587904,
+    "ast_hash": "541d1fa654c91c1a9b53ea9e9faf97b6",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/Grader.java": {
+    "mtime": 1793489437.1737032,
+    "seen": 1793493612.587905,
+    "ast_hash": "d8411f7a8b86bab2b29c3c4239be34cc",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/GradingService.java": {
+    "mtime": 1793489502.4163582,
+    "seen": 1793493612.587907,
+    "ast_hash": "f1320a2cdd4e9cb03b70dc79474542c6",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/JournalGrader.java": {
+    "mtime": 1793489502.3961709,
+    "seen": 1793493612.587908,
+    "ast_hash": "9f8d8424da89972f16fc056f8cd1eb2c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/NumericGrader.java": {
+    "mtime": 1793489502.3918073,
+    "seen": 1793493612.5879092,
+    "ast_hash": "96436f0ab555d0ec0b8bc78e3e442dce",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/ParamGenerator.java": {
+    "mtime": 1793489423.613829,
+    "seen": 1793493612.587911,
+    "ast_hash": "8db09b09bb4d8c0ce4ec9bf0842176f9",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/PgcAccountService.java": {
+    "mtime": 1793489502.4124103,
+    "seen": 1793493612.5879118,
+    "ast_hash": "7496346ab3cb844d5abc25bd392c1069",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/RatioGrader.java": {
+    "mtime": 1793489502.4085913,
+    "seen": 1793493612.587913,
+    "ast_hash": "6a0476f0c8542277f143457266b0f488",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/SolutionPreviewer.java": {
+    "mtime": 1793489612.880008,
+    "seen": 1793493612.587914,
+    "ast_hash": "c950a7183ceced7b7cb03cfec339aec6",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/StatementGrader.java": {
+    "mtime": 1793489502.4002013,
+    "seen": 1793493612.5879161,
+    "ast_hash": "6cf5d7a8b6a9c15c88ccd4a2047b2933",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/StatementRenderer.java": {
+    "mtime": 1793489423.6183498,
+    "seen": 1793493612.587917,
+    "ast_hash": "c30e7080196e099c4dc3a34c4d4440fa",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/TaxStepGrader.java": {
+    "mtime": 1793489502.4045584,
+    "seen": 1793493612.587918,
+    "ast_hash": "a5cd5e7e49fb1225e4e24c99d899e934",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/app/Tolerance.java": {
+    "mtime": 1793489437.1651833,
+    "seen": 1793493612.587919,
+    "ast_hash": "5f872209b12e9fbaba4cb188844e4486",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/domain/Expr.java": {
+    "mtime": 1793489394.3996613,
+    "seen": 1793493612.587921,
+    "ast_hash": "27827a6fde7d7c03465746cdb770ab40",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/domain/PgcAccount.java": {
+    "mtime": 1793489394.4042609,
+    "seen": 1793493612.5879219,
+    "ast_hash": "ac9e3a31eb540801261c051bb499aafb",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/grading/infra/PgcAccountRepository.java": {
+    "mtime": 1793489394.4098756,
+    "seen": 1793493612.587923,
+    "ast_hash": "5d92a35eef5242c35a54bf40356fafa8",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/api/AdminUserController.java": {
+    "mtime": 1793489343.8966124,
+    "seen": 1793493612.587925,
+    "ast_hash": "a9c343d725487fc234ce6e238a6b457f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/api/AdminUserDtos.java": {
+    "mtime": 1793489343.8846207,
+    "seen": 1793493612.587926,
+    "ast_hash": "154811dc9d2b8ba43e6b178dd216face",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/api/AuthController.java": {
+    "mtime": 1793489274.8342907,
+    "seen": 1793493612.587927,
+    "ast_hash": "2d5cd66dc63e6362f7aadfccecf7c0ba",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/api/AuthDtos.java": {
+    "mtime": 1793489205.2654257,
+    "seen": 1793493612.587928,
+    "ast_hash": "88f178f50d8687c10e445b40ed306fb0",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/api/MeController.java": {
+    "mtime": 1793489301.4872153,
+    "seen": 1793493612.587929,
+    "ast_hash": "ba54c9184ba7b06c0d0f0a4acabfab40",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/api/MeDtos.java": {
+    "mtime": 1793489301.4773386,
+    "seen": 1793493612.587931,
+    "ast_hash": "c67295af947ab167f69acacdb5328007",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/AdminUserService.java": {
+    "mtime": 1793489343.8901942,
+    "seen": 1793493612.5879319,
+    "ast_hash": "150051b445d783144565ef2b2901b7cf",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/AuthEvents.java": {
+    "mtime": 1793489205.2720633,
+    "seen": 1793493612.5879328,
+    "ast_hash": "7f58bf6cb88dc64ce6ea7e24b2423e3e",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/AuthService.java": {
+    "mtime": 1793489274.825145,
+    "seen": 1793493612.587934,
+    "ast_hash": "c1d4d61c93917c9e66712a8902dcccc7",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/IdentityMailer.java": {
+    "mtime": 1793494928.5317037,
+    "seen": 1793495392.492295,
+    "ast_hash": "e113a7128795d188de45ee6da39d789b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/MeService.java": {
+    "mtime": 1793489301.4823806,
+    "seen": 1793493612.587937,
+    "ast_hash": "53f817f57e72b6635940ff0107101b54",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/PasswordPolicy.java": {
+    "mtime": 1793489255.7294729,
+    "seen": 1793493612.587939,
+    "ast_hash": "45e347618e24f0313d9f59b9df75237c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/SecretCipher.java": {
+    "mtime": 1793489181.832976,
+    "seen": 1793493612.58794,
+    "ast_hash": "9980a3e69f4663e3fb87be4ccf5ec5c5",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/SessionManager.java": {
+    "mtime": 1793489255.7197802,
+    "seen": 1793493612.5879412,
+    "ast_hash": "34756467bc3cfed7ba3093e1b96ca053",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/Totp.java": {
+    "mtime": 1793489181.8378904,
+    "seen": 1793493612.587942,
+    "ast_hash": "96465a6d90e570c98bdc0666a66832a6",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/app/UserDirectory.java": {
+    "mtime": 1793489343.8791177,
+    "seen": 1793493612.5879428,
+    "ast_hash": "dc8bcc6ef8772abe180af15637d13068",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/domain/Course.java": {
+    "mtime": 1793489153.0728757,
+    "seen": 1793493612.587945,
+    "ast_hash": "69ea27e51b328912fbb1290ca000dfcb",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/domain/DisplayNames.java": {
+    "mtime": 1793489153.103041,
+    "seen": 1793493612.587946,
+    "ast_hash": "9cac08f899f89c34527a61be121ac513",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/domain/EmailVerificationToken.java": {
+    "mtime": 1793489153.0989885,
+    "seen": 1793493612.587947,
+    "ast_hash": "b2cd322a4c0d63a7f56fb71e2f0f4a79",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/domain/RankingVisibility.java": {
+    "mtime": 1793489153.0866435,
+    "seen": 1793493612.587949,
+    "ast_hash": "1424c83f1ba21b1d2d448b309c80d78e",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/domain/Role.java": {
+    "mtime": 1793489153.0776474,
+    "seen": 1793493612.58795,
+    "ast_hash": "9ea7755f3be39fa797b8690f0bb68385",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/domain/Theme.java": {
+    "mtime": 1793489153.0907726,
+    "seen": 1793493612.5879512,
+    "ast_hash": "a86e6391d943d5f8d454c6f1f6af200c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/domain/User.java": {
+    "mtime": 1793489153.0949929,
+    "seen": 1793493612.5879521,
+    "ast_hash": "926c50dd4fac91ab822f056b0227ebdf",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/domain/UserStatus.java": {
+    "mtime": 1793489153.0821764,
+    "seen": 1793493612.587958,
+    "ast_hash": "5fc61130065049c853eaf9d017cf0e2e",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/infra/CourseRepository.java": {
+    "mtime": 1793489181.8247893,
+    "seen": 1793493612.58796,
+    "ast_hash": "1a83d8ea6a1bf165b98251f6c68b7308",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/infra/EmailVerificationTokenRepository.java": {
+    "mtime": 1793489181.8290408,
+    "seen": 1793493612.5879612,
+    "ast_hash": "aa2173c4375ef6a8937d9fcc3fbaecc3",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/infra/RoleRepository.java": {
+    "mtime": 1793489181.8202078,
+    "seen": 1793493612.5879622,
+    "ast_hash": "e87239880cffef99a328a1d6d6883990",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/identity/infra/UserRepository.java": {
+    "mtime": 1793489181.8156343,
+    "seen": 1793493612.5879638,
+    "ast_hash": "14fe0ec79ba9ebe1d54b7a34017b9d98",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/api/LearningController.java": {
+    "mtime": 1793490136.2391577,
+    "seen": 1793493612.587965,
+    "ast_hash": "8e1ee44ab60e219f6e98c55a8084216c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/api/LearningDtos.java": {
+    "mtime": 1793490009.7852678,
+    "seen": 1793493612.587966,
+    "ast_hash": "8b537ba94621b4c33894dacf3a63b956",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/app/ActivityService.java": {
+    "mtime": 1793490572.798305,
+    "seen": 1793493612.587967,
+    "ast_hash": "79f9921114efcb7176b40a821d429688",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/app/AttemptService.java": {
+    "mtime": 1793490042.157851,
+    "seen": 1793493612.587968,
+    "ast_hash": "7ab37baeccdcaa2da1d0181793e87c5e",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/app/CatalogService.java": {
+    "mtime": 1793490236.2259762,
+    "seen": 1793493612.587989,
+    "ast_hash": "a85d49c925cc76d1f6d00aef46a975e3",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/app/ContestScoring.java": {
+    "mtime": 1793490042.1493335,
+    "seen": 1793493612.587991,
+    "ast_hash": "4b350a9a202a9694af40e284f6f1c55b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/app/GradingWorker.java": {
+    "mtime": 1793490136.2332249,
+    "seen": 1793493612.587992,
+    "ast_hash": "bae0928b34d19b015ba634a711896cb3",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/app/LearningEvents.java": {
+    "mtime": 1793490042.1531994,
+    "seen": 1793493612.587994,
+    "ast_hash": "16fac5a0e1709e15c01b5fbc20b2b86d",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/app/ProgressService.java": {
+    "mtime": 1793489969.8021502,
+    "seen": 1793493612.5879948,
+    "ast_hash": "f746e6863a3349f22617974e39c2501c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/app/SubmissionService.java": {
+    "mtime": 1793490085.609319,
+    "seen": 1793493612.587996,
+    "ast_hash": "45ef1bfd84a046589ad5afc2ba1629db",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/Attempt.java": {
+    "mtime": 1793489944.1865036,
+    "seen": 1793493612.587998,
+    "ast_hash": "db060cab2f68ba9e7899437c0b74efa4",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/AttemptStatus.java": {
+    "mtime": 1793489944.178112,
+    "seen": 1793493612.588018,
+    "ast_hash": "dd5ea80992945668837ef4d5ab0d2a3c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/ContentStatus.java": {
+    "mtime": 1793489903.1551073,
+    "seen": 1793493612.58802,
+    "ast_hash": "a2b747633c1035971c0421183409f72b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/Room.java": {
+    "mtime": 1793489903.169851,
+    "seen": 1793493612.588021,
+    "ast_hash": "91485ce69d4a1c4189852acb6f39bc7f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/Submission.java": {
+    "mtime": 1793489944.1903598,
+    "seen": 1793493612.588022,
+    "ast_hash": "fcaa05df16d71208a95295d3f5359182",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/SubmissionStatus.java": {
+    "mtime": 1793489944.182072,
+    "seen": 1793493612.5880241,
+    "ast_hash": "ef0bf1c966c7c39bde73f9b96e0933de",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/Task.java": {
+    "mtime": 1793489903.1744406,
+    "seen": 1793493612.588025,
+    "ast_hash": "dc24443f5d594f0ff7b32fb92b5a98bc",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/Track.java": {
+    "mtime": 1793489903.1608305,
+    "seen": 1793493612.588026,
+    "ast_hash": "7d21ee5545dd4403d904d9a93999c542",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/domain/TrackModule.java": {
+    "mtime": 1793489903.1655912,
+    "seen": 1793493612.588028,
+    "ast_hash": "467aa236cf6dd9f51b59cb7eaef30757",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/infra/AttemptRepository.java": {
+    "mtime": 1793489944.2052462,
+    "seen": 1793493612.588029,
+    "ast_hash": "629440b49e8afe51597e500bdd4ad8b4",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/infra/RoomRepository.java": {
+    "mtime": 1793489944.1978855,
+    "seen": 1793493612.5880299,
+    "ast_hash": "99fac0075b80e3ff610fa39923fada77",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/infra/SubmissionRepository.java": {
+    "mtime": 1793490085.6100724,
+    "seen": 1793493612.588032,
+    "ast_hash": "ba8e3906326ace0cb4e57b21260e5335",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/infra/TaskRepository.java": {
+    "mtime": 1793489944.2015831,
+    "seen": 1793493612.588033,
+    "ast_hash": "061143865c69d39c9e4678a5f7b85cf1",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/learning/infra/TrackRepository.java": {
+    "mtime": 1793489944.194029,
+    "seen": 1793493612.5880342,
+    "ast_hash": "8cdc3aa9df1975c06709812723e79467",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/portfolio/api/PortfolioController.java": {
+    "mtime": 1793491709.557491,
+    "seen": 1793493612.588035,
+    "ast_hash": "17a6649e1f53987ad3a97876912ce4fa",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/portfolio/app/PortfolioService.java": {
+    "mtime": 1793491709.5558546,
+    "seen": 1793493612.588037,
+    "ast_hash": "0a585345557b14c4622dcc85c56c6291",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/api/RankingController.java": {
+    "mtime": 1793489838.555601,
+    "seen": 1793493612.588038,
+    "ast_hash": "d1ea7e9ef1ac61e63a94045efab7f002",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/app/BadgeService.java": {
+    "mtime": 1793489803.7711973,
+    "seen": 1793493612.588039,
+    "ast_hash": "8361132357f51015db062c5504a5032b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/app/PointService.java": {
+    "mtime": 1793489781.2490463,
+    "seen": 1793493612.5880399,
+    "ast_hash": "15bf0f7a42908b688aba4b4f32a1bc57",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/app/RankingKeys.java": {
+    "mtime": 1793489781.2537756,
+    "seen": 1793493612.588042,
+    "ast_hash": "0f3330bcd7f63ede9410ad57fbddc3ba",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/app/RankingPersonalData.java": {
+    "mtime": 1793489838.5601017,
+    "seen": 1793493612.588044,
+    "ast_hash": "67d65443c65152f949060fa7848c4f6c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/app/RankingProjection.java": {
+    "mtime": 1793491227.9071927,
+    "seen": 1793493612.5880451,
+    "ast_hash": "48bdc719a6109886a3fc784db54b282d",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/app/RankingService.java": {
+    "mtime": 1793489838.551303,
+    "seen": 1793493612.588046,
+    "ast_hash": "433728df8327308fc0a90c53eb80d3c5",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/app/StreakService.java": {
+    "mtime": 1793489803.7667572,
+    "seen": 1793493612.588048,
+    "ast_hash": "546d8f31fbe95e2d28213dd97a3b3e3a",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/app/TeamDirectory.java": {
+    "mtime": 1793489803.762753,
+    "seen": 1793493612.588049,
+    "ast_hash": "7f94a48b9d75a4fa260a0e896db0150b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/domain/Badge.java": {
+    "mtime": 1793489756.1603563,
+    "seen": 1793493612.58805,
+    "ast_hash": "f4421b0a40c10568ea6c498927a99297",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/domain/PointEvent.java": {
+    "mtime": 1793489756.1512952,
+    "seen": 1793493612.588052,
+    "ast_hash": "2c0d209f29cddda434aef938328792d8",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/domain/PointSource.java": {
+    "mtime": 1793489756.1472824,
+    "seen": 1793493612.588053,
+    "ast_hash": "82fb3fafbf89661044503e5ac2ecf9a4",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/domain/Season.java": {
+    "mtime": 1793489756.1556747,
+    "seen": 1793493612.588054,
+    "ast_hash": "8589ae3efed7d4168fb06029ce0c3eb8",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/domain/UserBadge.java": {
+    "mtime": 1793489756.164886,
+    "seen": 1793493612.588056,
+    "ast_hash": "211215f4f49d0f28958e80fae097f701",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/infra/BadgeRepository.java": {
+    "mtime": 1793489756.1766646,
+    "seen": 1793493612.588057,
+    "ast_hash": "6c08ffe58f82e586386493b31a958243",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/infra/PointEventRepository.java": {
+    "mtime": 1793489756.1688843,
+    "seen": 1793493612.588074,
+    "ast_hash": "f6248667a4383bf0a49b5dbe1256a966",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/infra/PracticeDayRepository.java": {
+    "mtime": 1793489756.1850228,
+    "seen": 1793493612.588075,
+    "ast_hash": "57d8af886bbd07c77a437119d8598747",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/infra/SeasonRepository.java": {
+    "mtime": 1793489756.1727145,
+    "seen": 1793493612.588077,
+    "ast_hash": "5762f49e77935d5705bb27d28c3be724",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/ranking/infra/UserBadgeRepository.java": {
+    "mtime": 1793489756.1809053,
+    "seen": 1793493612.588078,
+    "ast_hash": "8d908698b7ae9f7ecf3b5f7b65a63010",
+    "semantic_hash": ""
+  },
+  "backend/src/main/resources/application-dev.yml": {
+    "mtime": 1793488988.4908006,
+    "seen": 1793493612.5880792,
+    "ast_hash": "06c48ad3563b7fc941d4ab3b3c9a13d7",
+    "semantic_hash": ""
+  },
+  "backend/src/main/resources/application-prod.yml": {
+    "mtime": 1793488977.8932333,
+    "seen": 1793493612.588081,
+    "ast_hash": "de08132c10df357521f1a9f87248e394",
+    "semantic_hash": ""
+  },
+  "backend/src/main/resources/application.yml": {
+    "mtime": 1793494928.5337448,
+    "seen": 1793495392.499278,
+    "ast_hash": "88468bbc5961f8c925ffe161f3610ff4",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/authoring/WorkflowAndDatesTest.java": {
+    "mtime": 1793490988.0219052,
+    "seen": 1793493612.5881002,
+    "ast_hash": "4bb90a61df8a60cd4b1757ae46a4e9e8",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/grading/ExprTest.java": {
+    "mtime": 1793490964.5573552,
+    "seen": 1793493612.5881011,
+    "ast_hash": "1d26ba8278da81ff8e1c374864c212aa",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/grading/GraderFixtures.java": {
+    "mtime": 1793490964.5622714,
+    "seen": 1793493612.5881019,
+    "ast_hash": "8b857735044f502dea489eb278f1b309",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/grading/GradersTest.java": {
+    "mtime": 1793490964.5747325,
+    "seen": 1793493612.5881028,
+    "ast_hash": "663d8e8c888ce875acb39a85c350096c",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/grading/ParamGeneratorTest.java": {
+    "mtime": 1793490988.0075119,
+    "seen": 1793493612.588105,
+    "ast_hash": "2ae7b84959795b9b69ec8393422a05ce",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/identity/TotpAndPolicyTest.java": {
+    "mtime": 1793490988.0130491,
+    "seen": 1793493612.588106,
+    "ast_hash": "d13511f65050e0321c2168cc6b9b8c27",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/it/AuthoringIT.java": {
+    "mtime": 1793491138.824053,
+    "seen": 1793493612.588107,
+    "ast_hash": "7157207c047bbd14190ca0276f45a3b4",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/it/ContestIT.java": {
+    "mtime": 1793491138.819895,
+    "seen": 1793493612.588109,
+    "ast_hash": "d46b69e800410239f9af7bbc6e47a0ba",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/it/ExamIT.java": {
+    "mtime": 1793491138.8152826,
+    "seen": 1793493612.58811,
+    "ast_hash": "bd336e5ef70477bca3d778abfc024d8f",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/it/IdentityIT.java": {
+    "mtime": 1793491227.90858,
+    "seen": 1793493612.5881112,
+    "ast_hash": "ac1f4f6188335348373444254f7c0afe",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/it/LearningIT.java": {
+    "mtime": 1793491138.8085787,
+    "seen": 1793493612.5881119,
+    "ast_hash": "f561ef20102c06d84a9a24c065a2c8a2",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/it/OpenApiContractIT.java": {
+    "mtime": 1793493287.6726947,
+    "seen": 1793493612.588114,
+    "ast_hash": "7200ce5ba0d8de649c03f8c0dd12cc10",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/ranking/StreakTest.java": {
+    "mtime": 1793490988.0175712,
+    "seen": 1793493612.588115,
+    "ast_hash": "75f89f349e391d7739a6f86751e75462",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/support/Api.java": {
+    "mtime": 1793491059.3651805,
+    "seen": 1793493612.588116,
+    "ast_hash": "ca208e134fdbc50e01c5b066eec51d54",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/support/IntegrationTest.java": {
+    "mtime": 1793491276.4538896,
+    "seen": 1793493612.588117,
+    "ast_hash": "0f4b7792fb27d54aed47cf4a4949989c",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/support/MutableClock.java": {
+    "mtime": 1793491059.2261415,
+    "seen": 1793493612.588119,
+    "ast_hash": "520ffb257fbf8c127b86d3d9e6aec1d1",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/support/TestInfra.java": {
+    "mtime": 1793491059.3564584,
+    "seen": 1793493612.58812,
+    "ast_hash": "2755945bfee368161a87cd73f4161dd6",
+    "semantic_hash": ""
+  },
+  "backend/src/test/resources/application-test.yml": {
+    "mtime": 1793488988.4910204,
+    "seen": 1793493612.5881212,
+    "ast_hash": "36f4332a00c94766811e522e709e1fc7",
+    "semantic_hash": ""
+  },
+  "docs/openapi.json": {
+    "mtime": 1793493336.9268353,
+    "seen": 1793493612.5881228,
+    "ast_hash": "3fe0594d6e8f072404e58707d5c16378",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/competicoes/[id]/page.tsx": {
+    "mtime": 1793492207.5521994,
+    "seen": 1793493612.5881238,
+    "ast_hash": "a835adbb25a8c0152ef4d2916bbed827",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/competicoes/page.tsx": {
+    "mtime": 1793492207.557196,
+    "seen": 1793493612.588125,
+    "ast_hash": "936719167c715f5c739a5c8abdc4fd3d",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/definicoes/page.tsx": {
+    "mtime": 1793492257.2328777,
+    "seen": 1793493612.588126,
+    "ast_hash": "48443d645e8e456442d238070ce4ec6d",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/error.tsx": {
+    "mtime": 1793491815.1101594,
+    "seen": 1793493612.588128,
+    "ast_hash": "4e46d23155dc0aa082323f063c017024",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/exames/page.tsx": {
+    "mtime": 1793492096.3254764,
+    "seen": 1793493612.588129,
+    "ast_hash": "38ea4ef19f6c285ba7c9d639a764cc68",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/inicio/page.tsx": {
+    "mtime": 1793491856.7688813,
+    "seen": 1793493612.58813,
+    "ast_hash": "4f9458a30b8d8c7fa778fd9416421dd4",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/layout.tsx": {
+    "mtime": 1793491743.6930249,
+    "seen": 1793493612.5881312,
+    "ast_hash": "41940e4cf60d8f52b2a8113fa1b8ad31",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/loading.tsx": {
+    "mtime": 1793491815.1231022,
+    "seen": 1793493612.588133,
+    "ast_hash": "a83fa62e71032bd2a7502e5fdc821242",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/portefolio/page.tsx": {
+    "mtime": 1793492257.2239697,
+    "seen": 1793493612.5881338,
+    "ast_hash": "fa9ef2bf4be303c0757e15950624cf7c",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/rankings/page.tsx": {
+    "mtime": 1793492257.2101836,
+    "seen": 1793493612.588135,
+    "ast_hash": "b0d3be01c17a0d1f3909edcc0249ab41",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/salas/[id]/page.tsx": {
+    "mtime": 1793492070.4183319,
+    "seen": 1793493612.588137,
+    "ast_hash": "0741f5775aface494c4150cffc013c9a",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/salas/page.tsx": {
+    "mtime": 1793491890.7588992,
+    "seen": 1793493612.5881379,
+    "ast_hash": "c30e0a55debd7417fe81babc0fce1c0d",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/simulacoes/page.tsx": {
+    "mtime": 1793491890.7630296,
+    "seen": 1793493612.588139,
+    "ast_hash": "518e88f40033f411d727e8e65e7e79cb",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/trilhas/[slug]/page.tsx": {
+    "mtime": 1793491890.7548761,
+    "seen": 1793493612.58814,
+    "ast_hash": "ee3013d41f4cbcbbfa46b7a50e7e468b",
+    "semantic_hash": ""
+  },
+  "frontend/app/(app)/trilhas/page.tsx": {
+    "mtime": 1793491890.7503982,
+    "seen": 1793493612.5881422,
+    "ast_hash": "5f30d81e34691ca54503b8623fde67ef",
+    "semantic_hash": ""
+  },
+  "frontend/app/(foco)/exames/sessao/[id]/page.tsx": {
+    "mtime": 1793492131.9073021,
+    "seen": 1793493612.588143,
+    "ast_hash": "c99eb7f857ddbc660a3009047dc748b3",
+    "semantic_hash": ""
+  },
+  "frontend/app/(foco)/layout.tsx": {
+    "mtime": 1793491716.925282,
+    "seen": 1793493612.588144,
+    "ast_hash": "2667e91b03cf88781c84306d5c7ee818",
+    "semantic_hash": ""
+  },
+  "frontend/app/(gestao)/admin/page.tsx": {
+    "mtime": 1793492450.512522,
+    "seen": 1793493612.588146,
+    "ast_hash": "2e0f894c87db651700c37b685b9f6898",
+    "semantic_hash": ""
+  },
+  "frontend/app/(gestao)/autoria/[id]/page.tsx": {
+    "mtime": 1793492384.4633315,
+    "seen": 1793493612.588147,
+    "ast_hash": "754d915e4bd4e0894cdbdde76780e045",
+    "semantic_hash": ""
+  },
+  "frontend/app/(gestao)/autoria/novo/page.tsx": {
+    "mtime": 1793492384.45863,
+    "seen": 1793493612.5881479,
+    "ast_hash": "5f864c7890df86989cf81884df64c754",
+    "semantic_hash": ""
+  },
+  "frontend/app/(gestao)/autoria/page.tsx": {
+    "mtime": 1793492304.4459662,
+    "seen": 1793493612.588149,
+    "ast_hash": "be5bf625e4c559133f3ef57b3c7b2df1",
+    "semantic_hash": ""
+  },
+  "frontend/app/(gestao)/error.tsx": {
+    "mtime": 1793491815.118748,
+    "seen": 1793493612.588151,
+    "ast_hash": "4e46d23155dc0aa082323f063c017024",
+    "semantic_hash": ""
+  },
+  "frontend/app/(gestao)/juri/page.tsx": {
+    "mtime": 1793492384.4676094,
+    "seen": 1793493612.5881522,
+    "ast_hash": "c0672ae97b2adb859182acc5cca1b4ba",
+    "semantic_hash": ""
+  },
+  "frontend/app/(gestao)/layout.tsx": {
+    "mtime": 1793491743.6933613,
+    "seen": 1793493612.5881531,
+    "ast_hash": "9896167137d79eb2deef9aa376636af2",
+    "semantic_hash": ""
+  },
+  "frontend/app/(gestao)/loading.tsx": {
+    "mtime": 1793491815.1270385,
+    "seen": 1793493612.588154,
+    "ast_hash": "a83fa62e71032bd2a7502e5fdc821242",
+    "semantic_hash": ""
+  },
+  "frontend/app/(public)/entrar/page.tsx": {
+    "mtime": 1793491788.7852423,
+    "seen": 1793493612.5881548,
+    "ast_hash": "b54f0be937a1c9ee008937a08ec520dd",
+    "semantic_hash": ""
+  },
+  "frontend/app/(public)/layout.tsx": {
+    "mtime": 1793491716.9210646,
+    "seen": 1793493612.588157,
+    "ast_hash": "e5b224595cdbeabc55bbcd7bc7bc0346",
+    "semantic_hash": ""
+  },
+  "frontend/app/(public)/p/[handle]/page.tsx": {
+    "mtime": 1793491815.0968387,
+    "seen": 1793493612.588158,
+    "ast_hash": "12d0e710a25cf010fcf412126d6755ad",
+    "semantic_hash": ""
+  },
+  "frontend/app/(public)/page.tsx": {
+    "mtime": 1793491743.7022023,
+    "seen": 1793493612.588159,
+    "ast_hash": "2b3305c711a6e0ad62d19f2326c22da8",
+    "semantic_hash": ""
+  },
+  "frontend/app/(public)/privacidade/page.tsx": {
+    "mtime": 1793491788.806715,
+    "seen": 1793493612.588161,
+    "ast_hash": "a565796e6d463b55a596635c1d164998",
+    "semantic_hash": ""
+  },
+  "frontend/app/(public)/registo/page.tsx": {
+    "mtime": 1793491788.7941506,
+    "seen": 1793493612.588162,
+    "ast_hash": "855b37a22884d7e818aa18dd2950d939",
+    "semantic_hash": ""
+  },
+  "frontend/app/(public)/regras/page.tsx": {
+    "mtime": 1793491815.086243,
+    "seen": 1793493612.5881631,
+    "ast_hash": "7effcd2eba0e7e325b709921394b9529",
+    "semantic_hash": ""
+  },
+  "frontend/app/(public)/verificar/page.tsx": {
+    "mtime": 1793491788.802197,
+    "seen": 1793493612.588165,
+    "ast_hash": "de9e2e962742f4d14552b36bacab9c39",
+    "semantic_hash": ""
+  },
+  "frontend/app/global-error.tsx": {
+    "mtime": 1793491815.1053977,
+    "seen": 1793493612.588166,
+    "ast_hash": "cec7a646d0d97ae514f1c090d5982c40",
+    "semantic_hash": ""
+  },
+  "frontend/app/layout.tsx": {
+    "mtime": 1793491716.893708,
+    "seen": 1793493612.588167,
+    "ast_hash": "76a8c10b224c66ad352ba3eea07d5e79",
+    "semantic_hash": ""
+  },
+  "frontend/app/not-found.tsx": {
+    "mtime": 1793492560.7324605,
+    "seen": 1793493612.588168,
+    "ast_hash": "b18ba35f0a8b1ac580e35430c143b1ee",
+    "semantic_hash": ""
+  },
+  "frontend/components/admin/ContestsAdmin.tsx": {
+    "mtime": 1793492450.5071182,
+    "seen": 1793493612.58817,
+    "ast_hash": "fbefd66264ef7b5e084b351d27dba689",
+    "semantic_hash": ""
+  },
+  "frontend/components/admin/UsersTable.tsx": {
+    "mtime": 1793492450.5017755,
+    "seen": 1793493612.588171,
+    "ast_hash": "a1c43a7f808d43e224f787170ba7caeb",
+    "semantic_hash": ""
+  },
+  "frontend/components/auth/AuthCard.tsx": {
+    "mtime": 1793491788.7756486,
+    "seen": 1793493612.588172,
+    "ast_hash": "b11d0d910064e1b73c1952ff8cd6bc20",
+    "semantic_hash": ""
+  },
+  "frontend/components/auth/LoginForm.tsx": {
+    "mtime": 1793491788.7805681,
+    "seen": 1793493612.588174,
+    "ast_hash": "d4ceef5a3a515059c2a17f10da471dc6",
+    "semantic_hash": ""
+  },
+  "frontend/components/auth/RegisterForm.tsx": {
+    "mtime": 1793491788.7896717,
+    "seen": 1793493612.588175,
+    "ast_hash": "733a2d302d7515a21bb480737ea4c964",
+    "semantic_hash": ""
+  },
+  "frontend/components/auth/VerifyEmail.tsx": {
+    "mtime": 1793491788.7982266,
+    "seen": 1793493612.5881758,
+    "ast_hash": "8652860140ca84de3ccaeda4ac5c627f",
+    "semantic_hash": ""
+  },
+  "frontend/components/authoring/ExerciseEditor.tsx": {
+    "mtime": 1793492384.4523597,
+    "seen": 1793493612.588177,
+    "ast_hash": "b7d40cee59da2cd384faf301b40efb9b",
+    "semantic_hash": ""
+  },
+  "frontend/components/authoring/LegalSourcesPanel.tsx": {
+    "mtime": 1793492304.45169,
+    "seen": 1793493612.588178,
+    "ast_hash": "4952fa82128a23efda576c4707bdfc8e",
+    "semantic_hash": ""
+  },
+  "frontend/components/charts/EChart.tsx": {
+    "mtime": 1793492096.3145652,
+    "seen": 1793493612.58818,
+    "ast_hash": "2f1effe5a9c8d9377bc1433a8fa31595",
+    "semantic_hash": ""
+  },
+  "frontend/components/contest/ContestView.tsx": {
+    "mtime": 1793493128.0433416,
+    "seen": 1793493612.588181,
+    "ast_hash": "66d077fc41c9f6e0b04c000f353f48a3",
+    "semantic_hash": ""
+  },
+  "frontend/components/contest/Countdown.tsx": {
+    "mtime": 1793493228.0598152,
+    "seen": 1793493612.588182,
+    "ast_hash": "39890fdaf25518004936a2f9b54311d2",
+    "semantic_hash": ""
+  },
+  "frontend/components/contest/LiveScoreboard.tsx": {
+    "mtime": 1793492167.185335,
+    "seen": 1793493612.588184,
+    "ast_hash": "732d650875e63b19303e5651d7b64b95",
+    "semantic_hash": ""
+  },
+  "frontend/components/contest/SubmissionStatus.tsx": {
+    "mtime": 1793491922.2382536,
+    "seen": 1793493612.588185,
+    "ast_hash": "a56cb378e51063cc2c4792f7750d8864",
+    "semantic_hash": ""
+  },
+  "frontend/components/contest/TeamPanel.tsx": {
+    "mtime": 1793492167.1896174,
+    "seen": 1793493612.588186,
+    "ast_hash": "06305b3839f6428361860abe5648e4e6",
+    "semantic_hash": ""
+  },
+  "frontend/components/exam/ExamReportView.tsx": {
+    "mtime": 1793492131.8949692,
+    "seen": 1793493612.588188,
+    "ast_hash": "06be9f8bc44cfbad6b104228876f76aa",
+    "semantic_hash": ""
+  },
+  "frontend/components/exam/ExamRunner.tsx": {
+    "mtime": 1793493128.0438313,
+    "seen": 1793493612.588189,
+    "ast_hash": "fe30cd204dec899010d06e59d3287d35",
+    "semantic_hash": ""
+  },
+  "frontend/components/exam/StartExamButton.tsx": {
+    "mtime": 1793492096.3207293,
+    "seen": 1793493612.5881898,
+    "ast_hash": "0131821dec4f09588eececfb9beb1656",
+    "semantic_hash": ""
+  },
+  "frontend/components/finance/AccountSearch.tsx": {
+    "mtime": 1793491922.2434392,
+    "seen": 1793493612.588192,
+    "ast_hash": "c65bc5f2ec969d5c5cedd784749970a5",
+    "semantic_hash": ""
+  },
+  "frontend/components/finance/JournalEditor.tsx": {
+    "mtime": 1793491966.7105424,
+    "seen": 1793493612.588193,
+    "ast_hash": "82d59b2acaa84761fce8b12a3aa9d6d6",
+    "semantic_hash": ""
+  },
+  "frontend/components/finance/LedgerTable.tsx": {
+    "mtime": 1793491966.7162745,
+    "seen": 1793493612.5881941,
+    "ast_hash": "91f989954b782027a74bd7ed9ee45603",
+    "semantic_hash": ""
+  },
+  "frontend/components/finance/StatementEditor.tsx": {
+    "mtime": 1793491966.721258,
+    "seen": 1793493612.588196,
+    "ast_hash": "d884ba10d360cfc8f3fd3ee06d37131f",
+    "semantic_hash": ""
+  },
+  "frontend/components/finance/TaxStepper.tsx": {
+    "mtime": 1793491966.7261422,
+    "seen": 1793493612.5881972,
+    "ast_hash": "b23ec2eecbbb070dd19a8874d2a42609",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/AppShell.tsx": {
+    "mtime": 1793491675.7146618,
+    "seen": 1793493612.588198,
+    "ast_hash": "3000bbc10d323f9cd1e019ca01defc52",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/Brand.tsx": {
+    "mtime": 1793491659.103336,
+    "seen": 1793493612.588199,
+    "ast_hash": "1ef82b50e5c0a273ba7df4f6a2a8dfe3",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/CrumbsContext.tsx": {
+    "mtime": 1793491675.5914397,
+    "seen": 1793493612.588201,
+    "ast_hash": "83330c510894517cf3332bd71ac99348",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/Footer.tsx": {
+    "mtime": 1793491659.0991833,
+    "seen": 1793493612.588202,
+    "ast_hash": "7f3d8df0ecb5565916291d067da80fb9",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/GlobalWatchers.tsx": {
+    "mtime": 1793491659.1239686,
+    "seen": 1793493612.588203,
+    "ast_hash": "5f1bceec08ad17bc3fe4c127f965517b",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/SideNav.tsx": {
+    "mtime": 1793491659.111865,
+    "seen": 1793493612.5882041,
+    "ast_hash": "0580611c6955f13ff9a33275d910111e",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/ThemeSync.tsx": {
+    "mtime": 1793491716.904489,
+    "seen": 1793493612.588206,
+    "ast_hash": "3f257a48573db774bfd9c922fb698461",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/ThemeToggle.tsx": {
+    "mtime": 1793491659.115826,
+    "seen": 1793493612.588207,
+    "ast_hash": "b5f4ba47b131b41b06fc7722a2b1b335",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/Topbar.tsx": {
+    "mtime": 1793493055.8383653,
+    "seen": 1793493612.5882082,
+    "ast_hash": "89471445876a6ffde10406e7887a797d",
+    "semantic_hash": ""
+  },
+  "frontend/components/layout/nav.ts": {
+    "mtime": 1793491659.1075377,
+    "seen": 1793493612.588209,
+    "ast_hash": "b22882614ba6a1f15f87e877b3f6c1c4",
+    "semantic_hash": ""
+  },
+  "frontend/components/learning/RoomLink.tsx": {
+    "mtime": 1793491856.7603228,
+    "seen": 1793493612.588211,
+    "ast_hash": "62c734fb22f98af5373a745a98486a88",
+    "semantic_hash": ""
+  },
+  "frontend/components/learning/TrackCardView.tsx": {
+    "mtime": 1793491856.7647145,
+    "seen": 1793493612.588212,
+    "ast_hash": "8054a9beca2eb881d85fcb580b855090",
+    "semantic_hash": ""
+  },
+  "frontend/components/portfolio/PortfolioView.tsx": {
+    "mtime": 1793491815.092418,
+    "seen": 1793493612.588213,
+    "ast_hash": "5a538bb4eb165ec8f7bb767ec4b3944e",
+    "semantic_hash": ""
+  },
+  "frontend/components/settings/AccountSettings.tsx": {
+    "mtime": 1793492257.2285182,
+    "seen": 1793493612.588214,
+    "ast_hash": "ea716d37efe0e2542e9d8e657fc14ad5",
+    "semantic_hash": ""
+  },
+  "frontend/components/settings/PortfolioActions.tsx": {
+    "mtime": 1793492257.219723,
+    "seen": 1793493612.588216,
+    "ast_hash": "3881e72fbc149773dd593b981a5689c7",
+    "semantic_hash": ""
+  },
+  "frontend/components/settings/PrivacyCard.tsx": {
+    "mtime": 1793492257.2152193,
+    "seen": 1793493612.588217,
+    "ast_hash": "0a72c3a314daae31cf9834ba5c564679",
+    "semantic_hash": ""
+  },
+  "frontend/components/task/AnswerEditor.tsx": {
+    "mtime": 1793491996.8320065,
+    "seen": 1793493612.5882182,
+    "ast_hash": "301348f5a310e8bf51c8ab54528cafe8",
+    "semantic_hash": ""
+  },
+  "frontend/components/task/RoomWorkspace.tsx": {
+    "mtime": 1793492049.7427168,
+    "seen": 1793493612.588219,
+    "ast_hash": "acb96afcff30ef7f076d1dfb0e32f74a",
+    "semantic_hash": ""
+  },
+  "frontend/components/task/StatementText.tsx": {
+    "mtime": 1793491996.8267667,
+    "seen": 1793493612.5882208,
+    "ast_hash": "b6f3651e40b24d08673e36fae8aa40bf",
+    "semantic_hash": ""
+  },
+  "frontend/components/task/SubmissionPanel.tsx": {
+    "mtime": 1793492049.7377596,
+    "seen": 1793493612.588222,
+    "ast_hash": "86231a2c29f07725c7b77ef62c5c79a1",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Alert.tsx": {
+    "mtime": 1793491613.82269,
+    "seen": 1793493612.588223,
+    "ast_hash": "f0a6b85db9795f5d865e4e7efd36c788",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Avatar.tsx": {
+    "mtime": 1793491613.8355927,
+    "seen": 1793493612.588224,
+    "ast_hash": "4d27ba21b73609bd2b24bdde94e6e4c0",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Badge.tsx": {
+    "mtime": 1793491573.4165251,
+    "seen": 1793493612.588226,
+    "ast_hash": "4a2f43c1cd12ab872f095b099ae1f5b4",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Button.tsx": {
+    "mtime": 1793491573.404451,
+    "seen": 1793493612.588227,
+    "ast_hash": "072271e7bab91cbf095c025ab76217cf",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Card.tsx": {
+    "mtime": 1793491573.4203715,
+    "seen": 1793493612.588228,
+    "ast_hash": "39a55dbc8598b9e79a6cbac69f987d19",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Field.tsx": {
+    "mtime": 1793491613.7877865,
+    "seen": 1793493612.5882292,
+    "ast_hash": "be9f44590bee70b64cdcccf2fb09f64f",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Icon.tsx": {
+    "mtime": 1793491573.4000611,
+    "seen": 1793493612.5882308,
+    "ast_hash": "f26ea0db94b1739d436ac50c33e20df0",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Markdown.tsx": {
+    "mtime": 1793491613.831011,
+    "seen": 1793493612.588232,
+    "ast_hash": "5e798bf87088463af3af465c9c5a23c1",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Modal.tsx": {
+    "mtime": 1793491613.8009136,
+    "seen": 1793493612.588233,
+    "ast_hash": "b5dfe8545bf9bd79407802594ec6d99f",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/MoneyInput.tsx": {
+    "mtime": 1793491573.412546,
+    "seen": 1793493612.588234,
+    "ast_hash": "5d0f03de81befdfa29aa285be944f05d",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Pagination.tsx": {
+    "mtime": 1793491613.8091843,
+    "seen": 1793493612.588235,
+    "ast_hash": "12d312ec19ca04b5f489e91685cc6457",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Progress.tsx": {
+    "mtime": 1793491613.8132358,
+    "seen": 1793493612.588237,
+    "ast_hash": "5c34b4b6a2584b4537bef41b743ea31f",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/States.tsx": {
+    "mtime": 1793491613.8267899,
+    "seen": 1793493612.588238,
+    "ast_hash": "2e0cc5db48206b82e45d14b4cf3528bf",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Tabs.tsx": {
+    "mtime": 1793491573.4241395,
+    "seen": 1793493612.5882392,
+    "ast_hash": "97f1a14ffc617cbdfed97158e4dbd6fa",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Timer.tsx": {
+    "mtime": 1793493128.0417366,
+    "seen": 1793493612.58824,
+    "ast_hash": "b64d5f863ce7ace8f5f1e78973de1186",
+    "semantic_hash": ""
+  },
+  "frontend/components/ui/Toast.tsx": {
+    "mtime": 1793491613.805083,
+    "seen": 1793493612.5882409,
+    "ast_hash": "cec50187064b82a91c00781691fff66c",
+    "semantic_hash": ""
+  },
+  "frontend/eslint.config.mjs": {
+    "mtime": 1793495298.4236422,
+    "seen": 1793495392.560867,
+    "ast_hash": "92bb6e3a5d41b8126d5874c00e7a9827",
+    "semantic_hash": ""
+  },
+  "frontend/lib/api-client.ts": {
+    "mtime": 1793491520.6071432,
+    "seen": 1793493612.588244,
+    "ast_hash": "c679e667911217861de3cf225c4cba8b",
+    "semantic_hash": ""
+  },
+  "frontend/lib/api-server.ts": {
+    "mtime": 1793495011.5763397,
+    "seen": 1793495392.560964,
+    "ast_hash": "1f7e9cddb4bee401e5efc820c6f27426",
+    "semantic_hash": ""
+  },
+  "frontend/lib/authoring-types.ts": {
+    "mtime": 1793492304.4391308,
+    "seen": 1793493612.588246,
+    "ast_hash": "4120daf485232a78a508596b8b33d28f",
+    "semantic_hash": ""
+  },
+  "frontend/lib/errors.ts": {
+    "mtime": 1793491520.5944166,
+    "seen": 1793493612.588248,
+    "ast_hash": "8cac5bde977a310420d13d107f38b438",
+    "semantic_hash": ""
+  },
+  "frontend/lib/format.ts": {
+    "mtime": 1793491520.5826964,
+    "seen": 1793493612.5882492,
+    "ast_hash": "37f645f9ddd5a15e07a0efa9e074430f",
+    "semantic_hash": ""
+  },
+  "frontend/lib/server-clock.ts": {
+    "mtime": 1793493127.8942668,
+    "seen": 1793493612.5882502,
+    "ast_hash": "fac2c231495188d602a6ac667e4721cb",
+    "semantic_hash": ""
+  },
+  "frontend/lib/session.ts": {
+    "mtime": 1793491716.9089472,
+    "seen": 1793493612.5882518,
+    "ast_hash": "8f1119b4d3ad6cce7833edf732a4527d",
+    "semantic_hash": ""
+  },
+  "frontend/lib/sse.ts": {
+    "mtime": 1793491520.6192284,
+    "seen": 1793493612.588253,
+    "ast_hash": "bfcf09248ee0e7be3e4df0d78d9e98c8",
+    "semantic_hash": ""
+  },
+  "frontend/lib/theme.ts": {
+    "mtime": 1793491520.6265717,
+    "seen": 1793493612.588254,
+    "ast_hash": "c6c399d3ab78b3636b0a1ab00c218c19",
+    "semantic_hash": ""
+  },
+  "frontend/lib/types.ts": {
+    "mtime": 1793491520.5873141,
+    "seen": 1793493612.588256,
+    "ast_hash": "9f6891f88fd32c180b0f06ffa06b17b3",
+    "semantic_hash": ""
+  },
+  "frontend/lib/use-submission.ts": {
+    "mtime": 1793492049.7334132,
+    "seen": 1793493612.588257,
+    "ast_hash": "29f031efe462f8007acf308b9ee5bb07",
+    "semantic_hash": ""
+  },
+  "frontend/middleware.ts": {
+    "mtime": 1793495011.5756476,
+    "seen": 1793495392.5617878,
+    "ast_hash": "bca75b81e1eeed5838cd9b08c3f526c6",
+    "semantic_hash": ""
+  },
+  "frontend/next.config.ts": {
+    "mtime": 1793491371.8157592,
+    "seen": 1793493612.5882602,
+    "ast_hash": "70e9f5615dc551ff1dc0cbbece3517fa",
+    "semantic_hash": ""
+  },
+  "frontend/package.json": {
+    "mtime": 1793495077.6521118,
+    "seen": 1793495392.561881,
+    "ast_hash": "ea4f0041f759e7162810ad610153b3c4",
+    "semantic_hash": ""
+  },
+  "frontend/playwright.config.ts": {
+    "mtime": 1793492728.2195582,
+    "seen": 1793493612.5882618,
+    "ast_hash": "3bd58c5e2c9a99e48f8b031d445bdc62",
+    "semantic_hash": ""
+  },
+  "frontend/tests/e2e/exam.spec.ts": {
+    "mtime": 1793492635.2975318,
+    "seen": 1793493612.5882628,
+    "ast_hash": "812ddd4ace7b2e53b3e25226595de596",
+    "semantic_hash": ""
+  },
+  "frontend/tests/e2e/helpers.ts": {
+    "mtime": 1793492635.2820048,
+    "seen": 1793493612.588265,
+    "ast_hash": "6a26271519c7847b684a54ab829d4607",
+    "semantic_hash": ""
+  },
+  "frontend/tests/e2e/learning.spec.ts": {
+    "mtime": 1793492933.7060392,
+    "seen": 1793493612.588266,
+    "ast_hash": "ec74eb029674e2aa28a423b87da89b46",
+    "semantic_hash": ""
+  },
+  "frontend/tests/e2e/mobile.spec.ts": {
+    "mtime": 1793492635.3023524,
+    "seen": 1793493612.588267,
+    "ast_hash": "439f0c516019f502bad0afe75eb44329",
+    "semantic_hash": ""
+  },
+  "frontend/tests/e2e/public.spec.ts": {
+    "mtime": 1793492635.287698,
+    "seen": 1793493612.588268,
+    "ast_hash": "6eb95402f724bf0f602420842761a2ab",
+    "semantic_hash": ""
+  },
+  "frontend/tsconfig.json": {
+    "mtime": 1793495298.4323323,
+    "seen": 1793495392.653126,
+    "ast_hash": "e4e11c954e7296884a5c0e060d5d6270",
+    "semantic_hash": ""
+  },
+  "infra/docker-compose.yml": {
+    "mtime": 1793488788.6725128,
+    "seen": 1793493612.5882711,
+    "ast_hash": "db212d73d19a26442bc13b8ba260f7d6",
+    "semantic_hash": ""
+  },
+  "infra/k6/contest-submissions.js": {
+    "mtime": 1793493272.0275514,
+    "seen": 1793493612.588272,
+    "ast_hash": "4f7311901fd2c603c4afc557cdb535dc",
+    "semantic_hash": ""
+  },
+  "backend/src/main/resources/text/offensive-terms.txt": {
+    "mtime": 1793489055.0960484,
+    "seen": 1793493612.588417,
+    "ast_hash": "57c5a255cd66696adf35de7354424186",
+    "semantic_hash": ""
+  },
+  "docs/adr/ADR-0001-sse.md": {
+    "mtime": 1793493559.7752542,
+    "seen": 1793493612.588418,
+    "ast_hash": "2f39b52536907a79928a0a6d0685668e",
+    "semantic_hash": ""
+  },
+  "docs/content/fontes-normativas.md": {
+    "mtime": 1793493559.7818537,
+    "seen": 1793493612.5884202,
+    "ast_hash": "a8e7657a22bb34d265c2f531d2276b72",
+    "semantic_hash": ""
+  },
+  "docs/spec.md": {
+    "mtime": 1793493559.790613,
+    "seen": 1793493612.588421,
+    "ast_hash": "91139e31d7ec3a47b1dac76d7dc186b9",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/mail/EmailSender.java": {
+    "mtime": 1793494928.3926525,
+    "seen": 1793495392.484321,
+    "ast_hash": "dd0fe1b9390ad63e7df2be5e4d480840",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/mail/MailConfig.java": {
+    "mtime": 1793494928.3975337,
+    "seen": 1793495392.4843252,
+    "ast_hash": "f6f026566f59c8454927b34acd01ce41",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/ao/lumen/pregao/common/web/ClientIpFilter.java": {
+    "mtime": 1793494944.4914303,
+    "seen": 1793495392.4852538,
+    "ast_hash": "7d2d7792894f100188d35f9a88e949ed",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/ao/lumen/pregao/it/ClientIpIT.java": {
+    "mtime": 1793494944.4963996,
+    "seen": 1793495392.5001118,
+    "ast_hash": "54d754b93a76bdf1b743cf35c1668c99",
+    "semantic_hash": ""
+  },
+  "frontend/open-next.config.ts": {
+    "mtime": 1793495077.472077,
+    "seen": 1793495392.561876,
+    "ast_hash": "5462f734b2a942055c8e27ecca6a2c5b",
+    "semantic_hash": ""
+  },
+  "render.yaml": {
+    "mtime": 1793495298.44433,
+    "seen": 1793495392.653329,
+    "ast_hash": "f4ad738bb45eedccba0af6ef2098ab6d",
+    "semantic_hash": ""
+  },
+  "docs/deploy.md": {
+    "mtime": 1793495298.5634875,
+    "seen": 1793495392.662893,
+    "ast_hash": "a941aceb14782d39df48d5fa917d0526",
+    "semantic_hash": ""
+  },
+  "docs/pendencias.md": {
+    "mtime": 1793495298.562728,
+    "seen": 1793495392.662899,
+    "ast_hash": "3dc19df7bf2a276ec0b716a1fc3ebf55",
+    "semantic_hash": ""
+  },
+  "frontend/pnpm-lock.yaml": {
+    "mtime": 1793495058.1236897,
+    "seen": 1793495392.669267,
+    "ast_hash": "e3c08af05e9fcbbf129a6f6ce8840524",
+    "semantic_hash": ""
+  }
+}
