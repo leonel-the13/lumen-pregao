@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { SetCrumbs } from "@/components/layout/CrumbsContext";
 import { ContestsAdmin, type AdminContestRow } from "@/components/admin/ContestsAdmin";
+import { ContentAdmin, type ExamAdmin, type TrackAdmin } from "@/components/admin/ContentAdmin";
 import { UsersTable, type AdminUserRow } from "@/components/admin/UsersTable";
+import { InviteUser } from "@/components/admin/InviteUser";
 import { Card } from "@/components/ui/Card";
 import { Tabs } from "@/components/ui/Tabs";
 import { AccessDenied, LaterPhase } from "@/components/ui/States";
@@ -52,14 +54,17 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
       )}
       {tab === "contests" && <Contests />}
       {tab === "auditoria" && admin && <Audit cursor={sp.cursor} />}
-      {tab === "conteudos" && admin && <LaterPhase title="Gestão de trilhas e conteúdos" body="No MVP, as trilhas e salas são carregadas por migração/seed revisto. Os exercícios gerem-se em Autoria." />}
+      {tab === "conteudos" && admin && <Content />}
       {tab === "configuracoes" && admin && <LaterPhase title="Configurações gerais" body="Domínio institucional, limites de rate limiting e valores de pontuação estão em variáveis de ambiente e ficam a confirmar." />}
     </>
   );
 }
 
 async function Users({ q, cursor, me }: { q?: string; cursor?: string; me: string }) {
-  const page = await serverFetch<CursorPage<AdminUserRow>>(`/admin/users?limit=25${q ? `&q=${encodeURIComponent(q)}` : ""}${cursor ? `&cursor=${cursor}` : ""}`);
+  const [page, courses] = await Promise.all([
+    serverFetch<CursorPage<AdminUserRow>>(`/admin/users?limit=25${q ? `&q=${encodeURIComponent(q)}` : ""}${cursor ? `&cursor=${cursor}` : ""}`),
+    serverFetch<{ id: string; name: string }[]>("/courses"),
+  ]);
   return (
     <div className="stack">
       <form className="row" role="search">
@@ -67,6 +72,8 @@ async function Users({ q, cursor, me }: { q?: string; cursor?: string; me: strin
         <label className="sr-only" htmlFor="uq">Pesquisar utilizadores</label>
         <input id="uq" name="q" className="input" style={{ maxWidth: 360 }} placeholder="Nome ou email" defaultValue={q} />
         <button className="btn out" type="submit">Pesquisar</button>
+        <div className="spacer" />
+        <InviteUser courses={courses} />
       </form>
       <UsersTable rows={page.items} me={me} />
       {page.nextCursor && <div className="row"><div className="spacer" /><Link className="btn sm out" href={`/admin?tab=utilizadores&cursor=${page.nextCursor}${q ? `&q=${q}` : ""}`}>Seguinte</Link></div>}
@@ -81,6 +88,16 @@ async function Contests() {
   ]);
   const published = exercises.filter((e) => e.status === "PUBLISHED").map((e) => ({ versionId: e.latestVersionId, label: `${e.code} · ${e.title}` }));
   return <ContestsAdmin rows={rows} exercises={published} />;
+}
+
+async function Content() {
+  const [tracks, exams, exercises] = await Promise.all([
+    serverFetch<TrackAdmin[]>("/admin/content/tracks"),
+    serverFetch<ExamAdmin[]>("/admin/content/exams"),
+    serverFetch<ExerciseSummary[]>("/authoring/exercises"),
+  ]);
+  return <ContentAdmin tracks={tracks} exams={exams} inReview={exercises.filter((e) => e.status === "IN_REVIEW").length}
+    exercises={exercises.map((e) => ({ versionId: e.latestVersionId, label: `${e.code} · ${e.title}`, status: e.status }))} />;
 }
 
 async function Audit({ cursor }: { cursor?: string }) {

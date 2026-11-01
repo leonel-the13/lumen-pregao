@@ -606,3 +606,19 @@ pela equipa; o contrato completo está em `docs/openapi.json` (verificado no CI)
 - **Contest:** equipas com menos de `minTeam` membros confirmados não podem submeter; resultados publicáveis a partir de
   SUBMISSIONS_CLOSED quando não há fase final (júri é posterior).
 - **Sessões:** em memória do servidor (uma instância). Mudança de perfis ou suspensão termina as sessões do utilizador.
+
+### B.4 Contas por convite, recuperação de acesso e gestão de conteúdo (01/11/2026)
+- **Estado `INVITED`:** a administração cria contas por convite (`POST /admin/users/invite`, com perfis). A pessoa recebe um
+  email e só entra depois de definir a palavra-passe pelo link (72 h, uso único). Perfis privilegiados configuram o 2.º factor
+  no primeiro login. Acções: `POST /admin/users/{id}/resend-invite`, `POST /admin/users/{id}/reset-mfa`.
+- **«Esqueci-me»:** `POST /auth/password/forgot` (resposta sempre igual) e `POST /auth/password/reset` (link de 1 h, uso único;
+  termina todas as sessões). Tokens guardados só como hash (`password_tokens`, migração V3).
+- **Gestão de conteúdo (admin):** `GET/POST /admin/content/tracks`, `PATCH /admin/content/tracks/{id}`,
+  `POST /admin/content/tracks/{id}/modules`, `POST /admin/content/modules/{id}/rooms`, `PATCH /admin/content/rooms/{id}`,
+  `POST /admin/content/rooms/{id}/tasks`, `DELETE /admin/content/tasks/{id}` (só sem tentativas), `GET/POST/PATCH /admin/content/exams`.
+- **Pacote de conteúdo v1** (`backend/src/main/resources/content/pack-v1.json`, gerado por `tools/content/gerar_pacote.py`):
+  45 exercícios originais (A–F), 26 salas, 12 módulos, 3 exames. `POST /admin/content/import` é idempotente e cada exercício
+  passa pela auto-verificação da correcção antes de entrar. Os exercícios ficam **em revisão** com autoria da conta técnica
+  «Equipa editorial» (sem acesso); aprovação e publicação por revisor/admin, também em lote (`POST /authoring/versions/bulk-transition`).
+- **Pré-requisitos:** dentro de cada módulo, as salas seguem em sequência; os módulos podem estudar-se em paralelo, excepto
+  as Demonstrações financeiras, que exigem o módulo anterior.

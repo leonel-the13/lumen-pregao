@@ -14,7 +14,7 @@ export function Topbar({ streak, points, theme }: { streak?: number; points?: nu
   const crumbs = useCrumbs();
   const [q, setQ] = useState("");
   return (
-    <header className="topbar">
+    <header className="topbar app-top">
       <Link href="/inicio" className="brand mobile-brand" aria-label="Lúmen Pregão — início"><i className="dot" aria-hidden="true" /><b>LÚMEN</b></Link>
       <Crumbs items={crumbs} />
       <div className="spacer" />

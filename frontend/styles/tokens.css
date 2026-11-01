@@ -271,9 +271,68 @@ dialog.modal-dialog::backdrop{background:rgba(0,0,0,.6)}
 .app-side{position:static;height:auto;align-self:stretch}
 .topbar .crumbs{flex:1 1 auto;min-width:0;flex-wrap:nowrap;overflow:hidden;white-space:nowrap}
 .topbar .crumbs>span{flex:none}.topbar .crumbs>span:last-child{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
-.topbar .spacer{flex:0 0 0}
+.topbar.app-top .spacer{flex:0 0 0}
 .mobile-brand{display:none}
 @media (min-width:720px){.topbar{flex-wrap:nowrap}}
 @media (max-width:719px){.g4{grid-template-columns:1fr 1fr}.mobile-brand{display:flex;padding:0}.topbar .crumbs{display:none}}
 .topbar .row,.topbar .crumbs .row{flex-wrap:nowrap}
 .top-search{flex:0 1 320px;min-width:160px}
+
+/* ───────────── motion (design A5: dur-1 120 · dur-2 200 · dur-3 320 · ease-out) ───────────── */
+@keyframes fade-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes grow-x{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes draw{from{stroke-dashoffset:24}to{stroke-dashoffset:0}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 5px var(--accent-soft),0 0 14px rgba(255,194,14,.45)}50%{box-shadow:0 0 0 7px var(--accent-soft),0 0 26px rgba(255,194,14,.7)}}
+@keyframes ring-fill{from{--p:0}}
+@property --p{syntax:'<number>';inherits:false;initial-value:0}
+/* entrada da página: os blocos do conteúdo aparecem em cascata */
+main.content>*{animation:fade-up var(--dur-3) var(--ease-out) both}
+main.content>*:nth-child(2){animation-delay:40ms}main.content>*:nth-child(3){animation-delay:80ms}
+main.content>*:nth-child(4){animation-delay:120ms}main.content>*:nth-child(5){animation-delay:160ms}
+main.content>*:nth-child(n+6){animation-delay:200ms}
+/* elevação de cartões e botões */
+.card{transition:border-color var(--dur-2) var(--ease-out),transform var(--dur-2) var(--ease-out),box-shadow var(--dur-2) var(--ease-out)}
+a.card:hover,.card.hoverable:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:var(--shadow-2)}
+.btn{transition:background var(--dur-1) var(--ease-out),border-color var(--dur-1) var(--ease-out),transform var(--dur-1) var(--ease-out),box-shadow var(--dur-2) var(--ease-out)}
+.btn:not([disabled]):hover{transform:translateY(-1px)}
+.btn:not([disabled]):active{transform:translateY(0) scale(.98)}
+.btn.pri:not([disabled]):hover{box-shadow:0 6px 20px rgba(255,194,14,.28)}
+.task{transition:background var(--dur-1) var(--ease-out),transform var(--dur-2) var(--ease-out)}
+a.task:hover{transform:translateX(2px)}
+/* progresso: barras e anéis preenchem-se ao aparecer */
+.bar>i{transform-origin:left;animation:grow-x 700ms var(--ease-out) both}
+.ring{animation:ring-fill 900ms var(--ease-out) both}
+/* tarefa concluída: o ✓ desenha-se */
+.task.done .st svg path,.badge.pos svg path{stroke-dasharray:24;animation:draw var(--dur-2) var(--ease-out) both}
+.task.done .st{animation:pop var(--dur-3) var(--ease-out) both}
+/* marca: ponto amarelo com brilho suave */
+.brand .dot{animation:glow 3.2s ease-in-out infinite}
+/* alertas e badges entram com fade */
+.alert{animation:fade-up var(--dur-2) var(--ease-out) both}
+.badge{animation:fade-in var(--dur-2) var(--ease-out) both}
+.modal{animation:fade-up var(--dur-3) var(--ease-out) both}
+dialog.modal-dialog::backdrop{animation:fade-in var(--dur-3) var(--ease-out) both}
+/* revelação ao fazer scroll (landing) */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 600ms var(--ease-out),transform 600ms var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+.reveal.in .stagger>*{animation:fade-up 500ms var(--ease-out) both}
+.reveal.in .stagger>*:nth-child(2){animation-delay:70ms}.reveal.in .stagger>*:nth-child(3){animation-delay:140ms}
+.reveal.in .stagger>*:nth-child(4){animation-delay:210ms}.reveal.in .stagger>*:nth-child(5){animation-delay:280ms}
+.reveal.in .stagger>*:nth-child(6){animation-delay:350ms}
+/* hero: título por linhas e demonstração do lançamento */
+.hero-line{display:block;animation:fade-up 700ms var(--ease-out) both}
+.hero-line:nth-child(2){animation-delay:120ms}
+.hero-sub{animation:fade-up 700ms var(--ease-out) 240ms both}
+.hero-cta{animation:fade-up 700ms var(--ease-out) 360ms both}
+.demo{animation:fade-up 800ms var(--ease-out) 300ms both}
+.demo .tbl tbody tr{animation:fade-up 500ms var(--ease-out) both}
+.demo .tbl tbody tr:nth-child(1){animation-delay:700ms}.demo .tbl tbody tr:nth-child(2){animation-delay:1000ms}
+.demo .tbl tbody tr:nth-child(3){animation-delay:1300ms}
+.demo .alert{animation:fade-up 500ms var(--ease-out) 1750ms both}
+.demo .badge-balance{animation:pop 400ms var(--ease-out) 1600ms both}
+.public-top{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(10px);background:color-mix(in srgb,var(--bg) 82%,transparent)}
+.foot a{color:var(--muted);text-decoration:none}.foot a:hover{color:var(--text)}
+@media (max-width:719px){.public-top .public-nav{display:none}.public-top{gap:8px}}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}

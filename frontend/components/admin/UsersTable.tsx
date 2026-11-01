@@ -5,16 +5,16 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Field, Select } from "@/components/ui/Field";
-import { Modal } from "@/components/ui/Modal";
+import { ConfirmDialog, Modal } from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
-import { patch } from "@/lib/api-client";
+import { patch, post } from "@/lib/api-client";
 import { formatDateTime } from "@/lib/format";
 
 export interface AdminUserRow { id: string; name: string; initials: string; email: string; course?: string; year?: number; roles: string[]; status: string; mfaEnabled: boolean; lastLoginAt?: string }
 
 export const ROLE_LABEL: Record<string, string> = { STUDENT: "Estudante", AUTHOR: "Autor", REVIEWER: "Revisor", JURY: "Júri", CONTEST_ORGANIZER: "Organizador", ADMIN: "Administrador", TEAM_CAPTAIN: "Capitão" };
 const STATUS_LABEL: Record<string, [string, "pos" | "neutral" | "neg" | "info"]> = {
-  ACTIVE: ["Activo", "pos"], PENDING_VERIFICATION: ["Por verificar", "info"], SUSPENDED: ["Suspenso", "neg"], DELETION_REQUESTED: ["Eliminação pedida", "neg"],
+  ACTIVE: ["Activo", "pos"], INVITED: ["Convite pendente", "info"], PENDING_VERIFICATION: ["Por verificar", "info"], SUSPENDED: ["Suspenso", "neg"], DELETION_REQUESTED: ["Eliminação pedida", "neg"],
 };
 const ASSIGNABLE = ["STUDENT", "AUTHOR", "REVIEWER", "JURY", "CONTEST_ORGANIZER", "ADMIN"];
 
@@ -25,6 +25,7 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
   const [roles, setRoles] = useState<string[]>([]);
   const [status, setStatus] = useState("ACTIVE");
   const [err, setErr] = useState<string | null>(null);
+  const [mfaTarget, setMfaTarget] = useState<AdminUserRow | null>(null);
   const open = (u: AdminUserRow) => { setEdit(u); setRoles(u.roles.filter((r) => r !== "TEAM_CAPTAIN")); setStatus(u.status); setErr(null); };
   const save = async () => {
     if (!edit) return;
@@ -52,13 +53,30 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
                   <td><Badge tone={st}>{sl}</Badge></td>
                   <td>{u.mfaEnabled ? "Sim" : "—"}</td>
                   <td className="small mono">{u.lastLoginAt ? formatDateTime(u.lastLoginAt) : "—"}</td>
-                  <td><Button size="sm" variant="ghost" icon="pen" onClick={() => open(u)}>Editar</Button></td>
+                  <td className="row" style={{ gap: 4, flexWrap: "nowrap" }}>
+                    <Button size="sm" variant="ghost" icon="pen" onClick={() => open(u)}>Editar</Button>
+                    {u.status === "INVITED" && <Button size="sm" variant="ghost" icon="refresh" onClick={async () => {
+                      try { await post(`/admin/users/${u.id}/resend-invite`); toast({ tone: "pos", title: "Convite reenviado" }); }
+                      catch (e) { toast({ tone: "neg", title: "Não foi possível reenviar", body: (e as Error).message }); }
+                    }}>Reenviar convite</Button>}
+                    {u.mfaEnabled && u.id !== me && <Button size="sm" variant="ghost" icon="shield" onClick={() => setMfaTarget(u)}>Repor 2.º factor</Button>}
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
+      <ConfirmDialog open={!!mfaTarget} onCancel={() => setMfaTarget(null)} confirmLabel="Repor 2.º factor"
+        title={`Repor o 2.º factor de ${mfaTarget?.name ?? ""}?`}
+        body="As sessões desta pessoa terminam e, no próximo login, terá de configurar de novo a aplicação de autenticação. Fica registado em auditoria."
+        onConfirm={async () => {
+          const u = mfaTarget;
+          setMfaTarget(null);
+          if (!u) return;
+          try { await post(`/admin/users/${u.id}/reset-mfa`); toast({ tone: "pos", title: "2.º factor reposto" }); router.refresh(); }
+          catch (e) { toast({ tone: "neg", title: "Não foi possível repor", body: (e as Error).message }); }
+        }} />
       <Modal open={!!edit} onClose={() => setEdit(null)} title={`Editar ${edit?.name ?? ""}`}
         actions={<><Button variant="out" onClick={() => setEdit(null)}>Cancelar</Button><Button variant="pri" onClick={save}>Guardar</Button></>}>
         <div className="stack" style={{ color: "var(--text)" }}>
@@ -75,7 +93,7 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
           {edit?.id !== me && (
             <Field label="Estado da conta">{({ id }) => (
               <Select id={id} value={status} onChange={(e) => setStatus(e.target.value)}>
-                <option value="ACTIVE">Activo</option><option value="SUSPENDED">Suspenso</option>
+                <option value="ACTIVE">Activo</option><option value="SUSPENDED">Suspenso</option><option value="INVITED">Convite pendente</option>
                 <option value="PENDING_VERIFICATION">Por verificar</option><option value="DELETION_REQUESTED">Eliminação pedida</option>
               </Select>
             )}</Field>

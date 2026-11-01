@@ -195,3 +195,11 @@ Consequências:
 - Na Vercel, o IP real chega em `x-real-ip`/`x-forwarded-for` (`frontend/lib/client-ip.ts`).
 - Variáveis da Vercel ainda por definir: `BACKEND_INTERNAL_URL` (URL do Render) e `NEXT_PUBLIC_API_BASE=/api/v1`.
   As duas são lidas no build: mudar o URL do backend obriga a novo deploy do frontend.
+
+## 10. Carregar o conteúdo em produção
+1. Fazer deploy do backend no Render (aplica a migração V3).
+2. Entrar como administrador → **Administração → Conteúdos → Importar pacote**. Cria 3 trilhas publicadas, 26 salas, 3 exames
+   e 45 exercícios **em revisão** (as tarefas aparecem «Em revisão» até à publicação).
+3. **Autoria → Fila de revisão**: abrir alguns exercícios e usar «Pré-visualizar como estudante»; depois marcar
+   «Validei a versão em vigor das referências», seleccionar todos e **Aprovar e publicar**.
+4. As referências normativas continuam «a confirmar» até um revisor actualizar as fontes em **Autoria → Fontes normativas**.

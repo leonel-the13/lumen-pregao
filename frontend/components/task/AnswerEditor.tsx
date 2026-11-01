@@ -125,6 +125,7 @@ export function AnswerEditor({ type, presentation, state, onChange, result, disa
             )}
           </div>
           <StatementEditor sections={presentation.sections ?? []} values={state.items} disabled={disabled} company={company}
+            kind={presentation.kind as string | undefined}
             onChange={(items) => onChange({ ...state, items })} results={d.items as Record<string, string> | undefined} />
         </div>
       );

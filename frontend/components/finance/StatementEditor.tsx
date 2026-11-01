@@ -27,15 +27,15 @@ export function toStatementPayload(sections: Section[], values: Values) {
   return { items };
 }
 
-export function StatementEditor({ sections, values, onChange, results, disabled, company }:
-  { sections: Section[]; values: Values; onChange: (v: Values) => void; results?: Record<string, string>; disabled?: boolean; company?: string }) {
+export function StatementEditor({ sections, values, onChange, results, disabled, company, kind }:
+  { sections: Section[]; values: Values; onChange: (v: Values) => void; results?: Record<string, string>; disabled?: boolean; company?: string; kind?: string }) {
   const totals = sections.map((s) => sectionTotal(s, values));
   const diff = sections.length === 2 ? Math.abs(totals[0] - totals[1]) : 0;
   const filled = Object.values(values).some((v) => v);
   return (
     <div className="stack">
-      <div className="row"><h3 className="h3">Balanço{company ? ` · ${company}` : ""}</h3><span className="tbc">fictícia</span><div className="spacer" /><span className="label">Kz</span></div>
-      <div className="grid g2" style={{ alignItems: "start" }}>
+      <div className="row"><h3 className="h3">{kind === "income" ? "Demonstração de resultados" : "Balanço"}{company ? ` · ${company}` : ""}</h3><span className="tbc">fictícia</span><div className="spacer" /><span className="label">Kz</span></div>
+      <div className="grid" style={{ alignItems: "start", gridTemplateColumns: `repeat(auto-fit,minmax(min(100%,${sections.length > 2 ? 300 : 360}px),1fr))` }}>
         {sections.map((s, si) => (
           <div key={s.key} className="tbl-wrap">
             <table className="tbl" style={{ minWidth: 0 }}>

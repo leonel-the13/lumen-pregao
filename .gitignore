@@ -39,3 +39,7 @@ frontend/.vercel/
 # variáveis de produção guardadas localmente (nunca no repositório)
 _env
 *.env
+
+# exportações com dados pessoais (auditoria, exportação de conta)
+auditoria*.csv
+lumen-pregao-dados*.json

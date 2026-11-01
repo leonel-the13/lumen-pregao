@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Ring } from "@/components/ui/Progress";
 import { EmptyState } from "@/components/ui/States";
 import { ServerCountdown } from "@/components/contest/Countdown";
+import { CountUp } from "@/components/ui/CountUp";
 import { serverFetchOrLogin } from "@/lib/api-server";
 import { formatLongDate, formatPoints } from "@/lib/format";
 import type { Activity, Dashboard } from "@/lib/types";
@@ -50,7 +51,7 @@ export default async function Inicio() {
       </div>
 
       <div className="grid g4">
-        <Kpi label="Pontuação" value={formatPoints(d.points)} detail={<><span className="move-up">▲ {formatPoints(d.weekPoints)}</span> esta semana</>} />
+        <Kpi label="Pontuação" value={<CountUp value={d.points} />} detail={<><span className="move-up">▲ {formatPoints(d.weekPoints)}</span> esta semana</>} />
         <Kpi label="Sequência" value={`${d.streak} ${d.streak === 1 ? "dia" : "dias"}`} accent
           detail={d.practicedToday ? "Já praticaste hoje" : "Pratica hoje para manter"} />
         <Kpi label={`Ranking · ${d.courseName ?? "Geral"}`} value={d.coursePosition.position ? `#${d.coursePosition.position}` : "—"}

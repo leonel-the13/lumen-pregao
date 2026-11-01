@@ -10,9 +10,9 @@ export default async function PublicLayout({ children }: { children: ReactNode }
   const theme = toAttr((await cookies()).get(THEME_COOKIE)?.value);
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <header className="topbar" style={{ padding: "14px clamp(18px,4vw,56px)" }}>
+      <header className="topbar public-top" style={{ padding: "14px clamp(18px,4vw,56px)" }}>
         <Brand />
-        <nav aria-label="Secções" className="row top-search" style={{ gap: 4, width: "auto" }}>
+        <nav aria-label="Secções" className="row public-nav" style={{ gap: 4 }}>
           <Link className="btn ghost sm" href="/#como-funciona">Como funciona</Link>
           <Link className="btn ghost sm" href="/#trilhas">Trilhas</Link>
           <Link className="btn ghost sm" href="/#maratona">A Maratona</Link>

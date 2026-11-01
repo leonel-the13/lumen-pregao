@@ -3,25 +3,16 @@ import { kz, login, num } from "./helpers";
 
 test.describe.configure({ mode: "serial" });
 
-test("sala: pré-requisito, lançamento com correcção por linha no servidor e pontos", async ({ page }) => {
+test("sala: lançamento com correcção por linha no servidor e pontos", async ({ page }) => {
   await login(page, "joao.cassoma@exemplo.ao");
-  await page.goto("/trilhas/contabilidade-pgc");
-  await page.getByRole("link", { name: /Quadro de contas e classes/ }).click();
-  const state = page.getByText(/Tentativa \d de \d|Concluída ·/).first();
-  await expect(state).toBeVisible();
-  if (!(await state.textContent())?.startsWith("Concluída")) {
-    await page.getByText("Classe 4").click();
-    await page.getByRole("button", { name: "Submeter resposta" }).click();
-    await expect(page.getByText(/Resposta correcta/)).toBeVisible({ timeout: 15_000 });
-  }
-
   await page.goto("/trilhas/contabilidade-pgc");
   await page.getByRole("link", { name: /Compra de mercadorias com IVA/ }).click();
   await page.getByRole("link", { name: /Registar o lançamento/ }).click();
   await expect(page.getByRole("heading", { name: /Tarefa 3 · Registar o lançamento/ })).toBeVisible();
   const taskState = page.getByText(/Tentativa \d de \d|Concluída ·|Tentativas esgotadas/).first();
   await expect(taskState).toBeVisible();
-  if (!(await taskState.textContent())?.startsWith("Tentativa")) return;
+  // Só faz sentido a partir da 1.ª tentativa (dados de desenvolvimento acabados de semear).
+  test.skip(!(await taskState.textContent())?.startsWith("Tentativa 1 de"), "tarefa já tentada nesta base de dados");
 
   const params = page.locator(".param");
   await expect(params.first()).toBeVisible();

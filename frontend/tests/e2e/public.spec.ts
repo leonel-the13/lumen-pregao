@@ -33,6 +33,7 @@ test("rotas autenticadas sem sessão levam à página de entrada", async ({ page
 
 test("registo com domínio não permitido é recusado", async ({ page }) => {
   await page.goto("/registo");
+  await page.waitForLoadState("networkidle");
   await page.getByLabel("Nome completo").fill("Teste E2E");
   await page.getByLabel("Email institucional").fill("teste@gmail.com");
   await page.getByLabel("Curso").selectOption({ label: "Economia" });
@@ -41,4 +42,24 @@ test("registo com domínio não permitido é recusado", async ({ page }) => {
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: "Criar conta" }).click();
   await expect(page.getByText("Só aceitamos o domínio de email institucional do ISPTEC.").last()).toBeVisible();
+});
+
+test("«Esqueci-me» responde sempre da mesma forma", async ({ page }) => {
+  await page.goto("/entrar");
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("link", { name: "Esqueci-me" }).click();
+  await page.waitForURL(/esqueci/);
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Email", { exact: true }).fill("ninguem@exemplo.ao");
+  await page.getByRole("button", { name: "Enviar link" }).click();
+  await expect(page.getByText("Se existir uma conta com este email")).toBeVisible();
+});
+
+test("link de redefinição inválido mostra o que fazer", async ({ page }) => {
+  await page.goto("/redefinir?token=invalido");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Nova palavra-passe").fill("Mussulo#Balancete-77");
+  await page.getByLabel("Confirmar palavra-passe").fill("Mussulo#Balancete-77");
+  await page.getByRole("button", { name: "Guardar palavra-passe" }).click();
+  await expect(page.getByText("Link inválido ou expirado")).toBeVisible();
 });

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SetCrumbs } from "@/components/layout/CrumbsContext";
 import { LegalSourcesPanel } from "@/components/authoring/LegalSourcesPanel";
+import { ReviewQueue } from "@/components/authoring/ReviewQueue";
 import { Alert } from "@/components/ui/Alert";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
@@ -39,7 +40,9 @@ export default async function Autoria({ searchParams }: { searchParams: Promise<
         ...(reviewer ? [{ key: "revisao", label: "Fila de revisão", href: "/autoria?tab=revisao", count: queue.length }] : []),
         { key: "fontes", label: "Fontes normativas", href: "/autoria?tab=fontes" },
       ]} />
-      {tab === "fontes" ? <LegalSourcesPanel sources={sources} canEdit={reviewer} /> : rows.length === 0 ? (
+      {tab === "fontes" ? <LegalSourcesPanel sources={sources} canEdit={reviewer} /> : tab === "revisao" && rows.length > 0 ? (
+        <ReviewQueue rows={rows} />
+      ) : rows.length === 0 ? (
         <EmptyState title={tab === "revisao" ? "A fila de revisão está vazia" : "Ainda não há exercícios"} body="Os exercícios aparecem aqui depois de criados." />
       ) : (
         <div className="tbl-wrap">
