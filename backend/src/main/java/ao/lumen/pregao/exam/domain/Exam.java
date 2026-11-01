@@ -40,6 +40,8 @@ public class Exam extends BaseEntity {
         this.status = status;
     }
 
+    public void setStatus(String status) { this.status = status; }
+
     public String getSlug() { return slug; }
     public String getTitle() { return title; }
     public UUID getModuleId() { return moduleId; }

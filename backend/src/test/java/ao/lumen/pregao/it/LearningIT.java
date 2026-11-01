@@ -63,8 +63,8 @@ class LearningIT extends IntegrationTest {
     @Test
     void hundredParallelIdenticalSubmissionsCreateOnlyOne() throws Exception {
         Api a = student("ana.lopes@exemplo.ao");
-        JsonNode r = room(a, "fiscalidade-iva", "Liquidação");
-        String attemptId = a.post("/tasks/" + r.path("tasks").get(0).path("id").asText() + "/attempts", null)
+        JsonNode r = room(a, "fiscalidade-iva", "Natureza");
+        String attemptId = a.post("/tasks/" + r.path("tasks").get(1).path("id").asText() + "/attempts", null)
                 .body().path("attemptId").asText();
         String key = UUID.randomUUID().toString();
         Map<String, Object> answer = Map.of("value", "1");
@@ -84,12 +84,7 @@ class LearningIT extends IntegrationTest {
     @Test
     void failedAttemptsCostPointsAndGradingIsReproducible() {
         Api a = student("joao.cassoma@exemplo.ao");
-        JsonNode first = room(a, "contabilidade-pgc", "Quadro");
-        String firstAttempt = a.post("/tasks/" + first.path("tasks").get(0).path("id").asText() + "/attempts", null).body().path("attemptId").asText();
-        var s0 = a.post("/attempts/" + firstAttempt + "/submissions", Map.of("selected", List.of("C")), Map.of("Idempotency-Key", UUID.randomUUID().toString()));
-        waitGraded(a, s0.body().path("submissionId").asText());
-
-        JsonNode r = room(a, "contabilidade-pgc", "Compra");
+        JsonNode r = room(a, "contabilidade-pgc", "Compra de mercadorias");
         JsonNode task = r.path("tasks").get(2);
         String attemptId = a.post("/tasks/" + task.path("id").asText() + "/attempts", null).body().path("attemptId").asText();
         String wrong = "{\"lines\":[{\"account\":\"26\",\"debit\":1},{\"account\":\"45\",\"credit\":1}]}";

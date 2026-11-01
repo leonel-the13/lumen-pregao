@@ -23,4 +23,7 @@ public interface AttemptRepository extends JpaRepository<Attempt, UUID> {
     List<Attempt> findByContestIdAndTeamId(UUID contestId, UUID teamId);
 
     List<Attempt> findByUserId(UUID userId);
+
+    @Query("select a.taskId, count(a) from Attempt a where a.taskId in :taskIds group by a.taskId")
+    List<Object[]> countByTasks(@Param("taskIds") Collection<UUID> taskIds);
 }

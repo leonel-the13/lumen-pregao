@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface ExerciseRepository extends JpaRepository<Exercise, UUID> {
     Optional<Exercise> findByCode(String code);
 
+    Optional<Exercise> findByExternalKey(String externalKey);
+
     List<Exercise> findByAuthorIdOrderByCreatedAtDesc(UUID authorId);
 
     List<Exercise> findAllByOrderByCreatedAtDesc();

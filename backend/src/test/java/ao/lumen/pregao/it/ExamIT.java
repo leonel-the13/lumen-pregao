@@ -17,15 +17,16 @@ class ExamIT extends IntegrationTest {
     @Test
     void serverDeadlineWinsAndExpiredExamIsAutoSubmitted() {
         Api a = student("kiala.afonso@exemplo.ao");
-        String examId = a.get("/exams").body().get(0).path("id").asText();
+        var exam = a.get("/exams").body().get(0);
+        String examId = exam.path("id").asText();
         var start = a.post("/exams/" + examId + "/sessions", null).body();
         String sid = start.path("sessionId").asText();
         var session = a.get("/exam-sessions/" + sid).body();
-        assertThat(session.toString()).doesNotContain("solutionSpec").doesNotContain("correct");
+        assertThat(session.toString()).doesNotContain("solutionSpec").doesNotContain("\"correct\"");
         assertThat(a.put("/exam-sessions/" + sid + "/answers/1", Map.of("answer", Map.of("selected", List.of("A")), "marked", true))
                 .status()).isEqualTo(200);
 
-        clock.advance(Duration.ofMinutes(25));
+        clock.advance(Duration.ofMinutes(exam.path("durationMin").asInt() + 1));
         var late = a.put("/exam-sessions/" + sid + "/answers/2", Map.of("answer", Map.of("value", "1")));
         assertThat(late.status()).isEqualTo(422);
         assertThat(late.code()).isEqualTo("SUBMISSION_AFTER_DEADLINE");

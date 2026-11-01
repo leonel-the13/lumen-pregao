@@ -58,6 +58,22 @@ public class Track extends BaseEntity {
         this.status = status;
     }
 
+    public void setStatus(ContentStatus status) { this.status = status; }
+
+    public void edit(String title, String summary, String description, int difficulty, String topic, List<String> courses,
+                     List<String> competencies, JsonNode completionRule, Integer estHours, int position) {
+        this.title = title;
+        this.summary = summary;
+        this.description = description;
+        this.difficulty = difficulty;
+        this.topic = topic;
+        this.courses = courses;
+        this.competencies = competencies;
+        this.completionRule = completionRule;
+        this.estHours = estHours;
+        this.position = position;
+    }
+
     public String getSlug() { return slug; }
     public String getTitle() { return title; }
     public String getSummary() { return summary; }

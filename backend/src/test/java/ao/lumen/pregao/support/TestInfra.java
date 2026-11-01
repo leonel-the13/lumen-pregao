@@ -41,9 +41,21 @@ public class TestInfra {
     public static class TokenCapture {
         public final ConcurrentHashMap<String, String> byEmail = new ConcurrentHashMap<>();
 
+        public final ConcurrentHashMap<String, String> passwordLinks = new ConcurrentHashMap<>();
+
         @EventListener
         public void on(AuthEvents.VerificationRequested e) {
             byEmail.put(e.email(), e.token());
+        }
+
+        @EventListener
+        public void on(AuthEvents.PasswordResetRequested e) {
+            passwordLinks.put(e.email(), e.token());
+        }
+
+        @EventListener
+        public void on(AuthEvents.UserInvited e) {
+            passwordLinks.put(e.email(), e.token());
         }
     }
 }

@@ -82,7 +82,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/v1/auth/csrf", "/api/v1/courses", "/api/v1/public/**",
                             "/api/v1/scoring-rules").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/v1/auth/register", "/api/v1/auth/verify",
-                            "/api/v1/auth/resend-verification", "/api/v1/auth/login", "/api/v1/auth/mfa").permitAll()
+                            "/api/v1/auth/resend-verification", "/api/v1/auth/login", "/api/v1/auth/mfa",
+                            "/api/v1/auth/password/forgot", "/api/v1/auth/password/reset").permitAll()
                     .requestMatchers("/api/v1/**").authenticated()
                     .anyRequest().denyAll())
             .exceptionHandling(e -> e

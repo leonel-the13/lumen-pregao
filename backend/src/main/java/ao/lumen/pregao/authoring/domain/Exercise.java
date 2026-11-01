@@ -13,6 +13,8 @@ public class Exercise extends BaseEntity {
     @Column(name = "author_id")
     private UUID authorId;
     private String topic;
+    @Column(name = "external_key")
+    private String externalKey;
 
     protected Exercise() {}
 
@@ -23,6 +25,8 @@ public class Exercise extends BaseEntity {
     }
 
     public void setTopic(String topic) { this.topic = topic; }
+    public void setExternalKey(String externalKey) { this.externalKey = externalKey; }
+    public String getExternalKey() { return externalKey; }
     public String getCode() { return code; }
     public UUID getAuthorId() { return authorId; }
     public String getTopic() { return topic; }

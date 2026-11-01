@@ -80,6 +80,11 @@ public class User extends BaseEntity {
         this.status = UserStatus.DELETION_REQUESTED;
         this.deletionRequestedAt = at;
     }
+    public void disableMfa() {
+        this.mfaSecretEnc = null;
+        this.mfaEnabled = false;
+    }
+
     public void enableMfa(String secretEnc) {
         this.mfaSecretEnc = secretEnc;
         this.mfaEnabled = true;

@@ -77,6 +77,31 @@ public class AuthoringController {
         return service.preview(me, id, seed);
     }
 
+    public record BulkTransition(@jakarta.validation.constraints.NotEmpty @jakarta.validation.constraints.Size(max = 200) List<UUID> versionIds,
+                                 @jakarta.validation.constraints.NotNull ao.lumen.pregao.authoring.domain.EditorialStatus to,
+                                 boolean referencesChecked, @jakarta.validation.constraints.Size(max = 2000) String notes) {}
+
+    public record BulkFailure(UUID versionId, String code, String detail) {}
+
+    public record BulkResult(int ok, List<BulkFailure> failed) {}
+
+    /** Transição em lote (ex.: aprovar e publicar o pacote importado). Cada versão segue as mesmas regras e fica em auditoria. */
+    @PostMapping("/versions/bulk-transition")
+    @PreAuthorize("hasAnyRole('REVIEWER','ADMIN')")
+    public BulkResult bulk(@AuthenticationPrincipal SessionUser me, @Valid @RequestBody BulkTransition req) {
+        int ok = 0;
+        List<BulkFailure> failed = new java.util.ArrayList<>();
+        for (UUID id : req.versionIds()) {
+            try {
+                service.transition(me, id, new TransitionRequest(req.to(), req.notes(), req.referencesChecked()));
+                ok++;
+            } catch (ao.lumen.pregao.common.error.DomainException e) {
+                failed.add(new BulkFailure(id, e.code(), e.getMessage()));
+            }
+        }
+        return new BulkResult(ok, failed);
+    }
+
     @PostMapping("/versions/{id}/transition")
     public VersionDto transition(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id,
                                  @Valid @RequestBody TransitionRequest req) {

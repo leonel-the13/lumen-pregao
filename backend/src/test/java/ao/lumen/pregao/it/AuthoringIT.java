@@ -50,7 +50,7 @@ class AuthoringIT extends IntegrationTest {
         var r = reviewer.patch("/legal-sources/" + pgc.path("id").asText(), body);
         assertThat(r.status()).isEqualTo(200);
         assertThat(r.body().path("affectedExercises").asInt()).isPositive();
-        assertThat(student("marta.neto@exemplo.ao").get("/authoring/exercises").body().toString()).contains("NEEDS_REVIEW");
+        assertThat(reviewer.get("/authoring/exercises").body().toString()).contains("NEEDS_REVIEW");
         assertThat(student("kiala.afonso@exemplo.ao").get("/rooms").body().toString()).isNotEmpty();
     }
 }

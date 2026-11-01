@@ -1,3 +1,4 @@
 package ao.lumen.pregao.identity.domain;
 
-public enum UserStatus { PENDING_VERIFICATION, ACTIVE, SUSPENDED, DELETION_REQUESTED }
+/** INVITED: conta criada por um administrador; só entra depois de definir a palavra-passe pelo link do email. */
+public enum UserStatus { PENDING_VERIFICATION, INVITED, ACTIVE, SUSPENDED, DELETION_REQUESTED }

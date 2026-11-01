@@ -246,6 +246,8 @@ public class AuthService {
         switch (u.getStatus()) {
             case PENDING_VERIFICATION -> throw DomainException.forbidden("EMAIL_NOT_VERIFIED",
                     "Ainda não confirmaste o teu email. Abre o link que te enviámos ou pede um novo.");
+            case INVITED -> throw DomainException.forbidden("INVITE_PENDING",
+                    "Antes de entrares, define a tua palavra-passe pelo link do convite que recebeste por email.");
             case SUSPENDED -> throw DomainException.forbidden("ACCOUNT_SUSPENDED",
                     "A tua conta está suspensa. Contacta a administração da Associação de Estudantes.");
             case DELETION_REQUESTED -> throw DomainException.forbidden("ACCOUNT_DELETION_REQUESTED",
@@ -274,7 +276,7 @@ public class AuthService {
         return handle;
     }
 
-    static String sha256(String s) {
+    public static String sha256(String s) {
         try {
             return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(s.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {

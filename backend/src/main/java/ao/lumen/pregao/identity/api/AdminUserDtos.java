@@ -15,5 +15,12 @@ public final class AdminUserDtos {
 
     public record RolesUpdate(@NotNull @Size(min = 1, max = 7) Set<String> roles) {}
 
+    public record InviteRequest(
+            @jakarta.validation.constraints.NotBlank(message = "Indica o nome.") @Size(min = 2, max = 120, message = "O nome tem de ter entre 2 e 120 caracteres.") String name,
+            @jakarta.validation.constraints.NotBlank(message = "Indica o email.") @jakarta.validation.constraints.Email(message = "Email inválido.") @Size(max = 254) String email,
+            @NotNull(message = "Escolhe pelo menos um perfil.") @Size(min = 1, max = 7, message = "Escolhe pelo menos um perfil.") Set<String> roles,
+            UUID courseId,
+            @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(5) Integer year) {}
+
     public record StatusUpdate(@NotNull UserStatus status) {}
 }

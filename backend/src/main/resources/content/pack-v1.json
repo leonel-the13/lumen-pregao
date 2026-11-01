@@ -1,0 +1,4241 @@
+{
+ "version": 1,
+ "exercises": [
+  {
+   "key": "pgc-classe-meios",
+   "topic": "PGC · Fundamentos",
+   "type": "A",
+   "title": "Classe dos meios monetários",
+   "statement": "Em que classe do PGC (versão do exercício) se registam os meios monetários, como a caixa e os depósitos à ordem?",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "Classe 2"
+     },
+     {
+      "key": "B",
+      "text": "Classe 3"
+     },
+     {
+      "key": "C",
+      "text": "Classe 4"
+     },
+     {
+      "key": "D",
+      "text": "Classe 5"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": []
+   },
+   "solution": {
+    "correct": [
+     "C"
+    ]
+   },
+   "tolerance": {},
+   "hints": [],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-classe-mercadorias",
+   "topic": "PGC · Fundamentos",
+   "type": "A",
+   "title": "Classe das existências",
+   "statement": "As mercadorias que a empresa compra para revender são existências. Em que classe do PGC (versão do exercício) se registam?",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "Classe 1"
+     },
+     {
+      "key": "B",
+      "text": "Classe 2"
+     },
+     {
+      "key": "C",
+      "text": "Classe 3"
+     },
+     {
+      "key": "D",
+      "text": "Classe 4"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": []
+   },
+   "solution": {
+    "correct": [
+     "B"
+    ]
+   },
+   "tolerance": {},
+   "hints": [],
+   "difficulty": 1,
+   "points": 30,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-contas-activo",
+   "topic": "PGC · Fundamentos",
+   "type": "A",
+   "title": "Contas do activo",
+   "statement": "Quais destas contas representam, em regra, elementos do activo da empresa? Escolhe todas as que se aplicam.",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "11 Imobilizações corpóreas"
+     },
+     {
+      "key": "B",
+      "text": "31 Clientes"
+     },
+     {
+      "key": "C",
+      "text": "32 Fornecedores"
+     },
+     {
+      "key": "D",
+      "text": "45 Caixa"
+     },
+     {
+      "key": "E",
+      "text": "51 Capital"
+     }
+    ],
+    "multiple": true
+   },
+   "paramSpec": {
+    "params": []
+   },
+   "solution": {
+    "correct": [
+     "A",
+     "B",
+     "D"
+    ]
+   },
+   "tolerance": {},
+   "hints": [
+    "O activo reúne os bens e direitos da empresa; as dívidas a terceiros pertencem ao passivo."
+   ],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-partidas-dobradas",
+   "topic": "PGC · Fundamentos",
+   "type": "A",
+   "title": "Princípio das partidas dobradas",
+   "statement": "No método das partidas dobradas, o que se verifica em qualquer lançamento correctamente registado?",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "A soma dos débitos é igual à soma dos créditos"
+     },
+     {
+      "key": "B",
+      "text": "Os débitos são sempre superiores aos créditos"
+     },
+     {
+      "key": "C",
+      "text": "Cada lançamento movimenta uma única conta"
+     },
+     {
+      "key": "D",
+      "text": "Os créditos registam sempre entradas de dinheiro"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": []
+   },
+   "solution": {
+    "correct": [
+     "A"
+    ]
+   },
+   "tolerance": {},
+   "hints": [],
+   "difficulty": 1,
+   "points": 30,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-equacao-cp",
+   "topic": "PGC · Fundamentos",
+   "type": "B",
+   "title": "Equação fundamental da contabilidade",
+   "statement": "A [empresa] apresenta um activo total de [activo] e um passivo total de [passivo]. Qual é o valor do capital próprio (Kz)?",
+   "presentation": {
+    "unit": "Kz",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "activo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 5000000,
+       "max": 12000000,
+       "step": 100000
+      }
+     },
+     {
+      "name": "passivo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1000000,
+       "max": 4000000,
+       "step": 100000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "activo - passivo",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Activo = Capital próprio + Passivo."
+   ],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-constituicao",
+   "topic": "PGC · Fundamentos",
+   "type": "C",
+   "title": "Constituição de uma sociedade",
+   "statement": "Os sócios constituíram a [empresa] (empresa fictícia) com um capital social de [capital], integralmente realizado em dinheiro e depositado na conta bancária da empresa. Regista a operação no Diário.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "capital",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1000000,
+       "max": 10000000,
+       "step": 500000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "43",
+      "side": "D",
+      "expr": "capital"
+     },
+     {
+      "account": "51",
+      "side": "C",
+      "expr": "capital"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "O dinheiro entrou numa conta bancária: a conta de depósitos à ordem é debitada.",
+    "O capital realizado pelos sócios regista-se na classe 5."
+   ],
+   "difficulty": 1,
+   "points": 60,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-deposito",
+   "topic": "PGC · Meios monetários",
+   "type": "C",
+   "title": "Depósito no banco",
+   "statement": "A [empresa] depositou na sua conta bancária [valor] que estavam na caixa. Regista a operação.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 50000,
+       "max": 900000,
+       "step": 10000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "43",
+      "side": "D",
+      "expr": "valor"
+     },
+     {
+      "account": "45",
+      "side": "C",
+      "expr": "valor"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "O dinheiro sai da caixa e entra no banco."
+   ],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-levantamento",
+   "topic": "PGC · Meios monetários",
+   "type": "C",
+   "title": "Levantamento para a caixa",
+   "statement": "A [empresa] levantou [valor] da conta bancária para reforçar a caixa. Regista a operação.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 50000,
+       "max": 600000,
+       "step": 10000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "45",
+      "side": "D",
+      "expr": "valor"
+     },
+     {
+      "account": "43",
+      "side": "C",
+      "expr": "valor"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "É a operação inversa de um depósito."
+   ],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-recebimento-cliente",
+   "topic": "PGC · Terceiros",
+   "type": "C",
+   "title": "Recebimento de um cliente",
+   "statement": "Um cliente da [empresa] pagou por transferência bancária uma dívida de [valor] relativa a vendas anteriores. Regista o recebimento.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 100000,
+       "max": 2000000,
+       "step": 10000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "43",
+      "side": "D",
+      "expr": "valor"
+     },
+     {
+      "account": "31",
+      "side": "C",
+      "expr": "valor"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "O direito sobre o cliente diminui: a conta 31 é creditada."
+   ],
+   "difficulty": 1,
+   "points": 50,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-saldo-conta",
+   "topic": "PGC · Terceiros",
+   "type": "B",
+   "title": "Saldo de uma conta",
+   "statement": "No mês, a conta 31 Clientes da [empresa] teve movimentos a débito de [debitos] e movimentos a crédito de [creditos]. Qual é o saldo devedor da conta no fim do mês (Kz)?",
+   "presentation": {
+    "unit": "Kz",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "debitos",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 2000000,
+       "max": 5000000,
+       "step": 50000
+      }
+     },
+     {
+      "name": "creditos",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 500000,
+       "max": 1900000,
+       "step": 50000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "debitos - creditos",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Saldo devedor = total a débito − total a crédito."
+   ],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-cmv-lancamento",
+   "topic": "PGC · Existências",
+   "type": "C",
+   "title": "Custo das mercadorias vendidas",
+   "statement": "A [empresa] vendeu mercadorias cujo custo de aquisição foi [custo]. Usando o sistema de inventário permanente, regista o custo das mercadorias vendidas (sem o registo da venda).",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "custo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 200000,
+       "max": 1500000,
+       "step": 10000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "71",
+      "side": "D",
+      "expr": "custo"
+     },
+     {
+      "account": "26",
+      "side": "C",
+      "expr": "custo"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "As mercadorias saem do armazém (crédito em 26) e o seu custo vai para a classe 7."
+   ],
+   "difficulty": 2,
+   "points": 50,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-cmv-calculo",
+   "topic": "PGC · Existências",
+   "type": "B",
+   "title": "Cálculo do CMV",
+   "statement": "A [empresa] tinha existências iniciais de mercadorias de [ei]. No período comprou [compras] e no fim do período o inventário apurou existências finais de [ef]. Calcula o custo das mercadorias vendidas (Kz).",
+   "presentation": {
+    "unit": "Kz",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "ei",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 900000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "compras",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1000000,
+       "max": 3000000,
+       "step": 50000
+      }
+     },
+     {
+      "name": "ef",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 200000,
+       "max": 800000,
+       "step": 10000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "ei + compras - ef",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "CMV = Existências iniciais + Compras − Existências finais."
+   ],
+   "difficulty": 2,
+   "points": 50,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-margem-bruta",
+   "topic": "PGC · Existências",
+   "type": "B",
+   "title": "Margem bruta",
+   "statement": "No período, a [empresa] vendeu [vendas] e o custo das mercadorias vendidas foi [cmv]. Qual é a margem bruta em percentagem das vendas (%, duas casas decimais)?",
+   "presentation": {
+    "unit": "%",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "vendas",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 2000000,
+       "max": 5000000,
+       "step": 100000
+      }
+     },
+     {
+      "name": "cmv",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1000000,
+       "max": 1900000,
+       "step": 50000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "round((vendas - cmv) / vendas * 100, 2)",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Margem bruta (%) = (Vendas − CMV) ÷ Vendas × 100."
+   ],
+   "difficulty": 2,
+   "points": 40,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-contexto-compra",
+   "topic": "IVA · Compras",
+   "type": "A",
+   "title": "Contexto da operação",
+   "statement": "A [empresa] comprou mercadorias ao fornecedor [fornecedor], a crédito (30 dias). Que tipo de operação é?",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "Compra a pronto pagamento"
+     },
+     {
+      "key": "B",
+      "text": "Compra a crédito"
+     },
+     {
+      "key": "C",
+      "text": "Venda a crédito"
+     },
+     {
+      "key": "D",
+      "text": "Devolução de mercadorias"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "fornecedor",
+      "type": "text",
+      "rule": {
+       "kind": "set",
+       "values": [
+        "Indústrias Cuanza",
+        "Kwanza Energia"
+       ]
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 900000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "correct": [
+     "B"
+    ]
+   },
+   "tolerance": {},
+   "hints": [],
+   "difficulty": 1,
+   "points": 30,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-contas-compra",
+   "topic": "IVA · Compras",
+   "type": "A",
+   "title": "Identificar as contas",
+   "statement": "Que contas são movimentadas no registo da compra a crédito da [empresa]? Escolhe todas as que se aplicam.",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "26 Mercadorias"
+     },
+     {
+      "key": "B",
+      "text": "34.5.x IVA suportado"
+     },
+     {
+      "key": "C",
+      "text": "32 Fornecedores"
+     },
+     {
+      "key": "D",
+      "text": "45 Caixa"
+     },
+     {
+      "key": "E",
+      "text": "61 Vendas"
+     }
+    ],
+    "multiple": true
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "fornecedor",
+      "type": "text",
+      "rule": {
+       "kind": "set",
+       "values": [
+        "Indústrias Cuanza",
+        "Kwanza Energia"
+       ]
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 900000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "correct": [
+     "A",
+     "B",
+     "C"
+    ]
+   },
+   "tolerance": {},
+   "hints": [],
+   "difficulty": 1,
+   "points": 20,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-registar-compra",
+   "topic": "IVA · Compras",
+   "type": "C",
+   "title": "Registar a compra a crédito",
+   "statement": "Em 3 de março, a [empresa] (empresa fictícia) comprou mercadorias ao fornecedor [fornecedor], a crédito (30 dias). Valor das mercadorias: [valor]. Taxa de IVA do exercício: [taxa]. Regista o lançamento no Diário.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "fornecedor",
+      "type": "text",
+      "rule": {
+       "kind": "set",
+       "values": [
+        "Indústrias Cuanza",
+        "Kwanza Energia"
+       ]
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 900000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "26",
+      "side": "D",
+      "expr": "valor"
+     },
+     {
+      "account": "34.5.x",
+      "side": "D",
+      "expr": "valor * taxa / 100"
+     },
+     {
+      "account": "32",
+      "side": "C",
+      "expr": "valor * (1 + taxa / 100)"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "A compra foi a crédito: a dívida ao fornecedor regista-se numa conta de Terceiros.",
+    "O IVA suportado calcula-se sobre o valor das mercadorias."
+   ],
+   "difficulty": 2,
+   "points": 40,
+   "refs": [
+    "PGC",
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-compra-pronto",
+   "topic": "IVA · Compras",
+   "type": "C",
+   "title": "Compra a pronto com IVA",
+   "statement": "A [empresa] comprou mercadorias no valor de [valor] (base), pagas de imediato por transferência bancária. Taxa de IVA do exercício: [taxa]. Regista a compra.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 200000,
+       "max": 800000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "26",
+      "side": "D",
+      "expr": "valor"
+     },
+     {
+      "account": "34.5.x",
+      "side": "D",
+      "expr": "valor * taxa / 100"
+     },
+     {
+      "account": "43",
+      "side": "C",
+      "expr": "valor * (1 + taxa / 100)"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "O pagamento foi imediato: a contrapartida é a conta bancária, não o fornecedor."
+   ],
+   "difficulty": 2,
+   "points": 60,
+   "refs": [
+    "PGC",
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-pagamento-fornecedor",
+   "topic": "IVA · Compras",
+   "type": "C",
+   "title": "Pagamento ao fornecedor",
+   "statement": "Trinta dias depois, a [empresa] pagou por transferência bancária a dívida ao fornecedor [fornecedor] relativa à compra de [valor] de mercadorias, com IVA à taxa [taxa]. Regista o pagamento.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "fornecedor",
+      "type": "text",
+      "rule": {
+       "kind": "set",
+       "values": [
+        "Indústrias Cuanza",
+        "Kwanza Energia"
+       ]
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 900000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "32",
+      "side": "D",
+      "expr": "valor * (1 + taxa / 100)"
+     },
+     {
+      "account": "43",
+      "side": "C",
+      "expr": "valor * (1 + taxa / 100)"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "O pagamento foi por transferência: usa a conta de depósitos à ordem."
+   ],
+   "difficulty": 2,
+   "points": 30,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-venda",
+   "topic": "IVA · Vendas",
+   "type": "C",
+   "title": "Venda a crédito com IVA",
+   "statement": "A [empresa] vendeu mercadorias a crédito a um cliente por [valor] (base). Taxa de IVA do exercício: [taxa]. Regista a venda (sem o custo das mercadorias vendidas).",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 1200000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "31",
+      "side": "D",
+      "expr": "valor * (1 + taxa / 100)"
+     },
+     {
+      "account": "61",
+      "side": "C",
+      "expr": "valor"
+     },
+     {
+      "account": "34.5.y",
+      "side": "C",
+      "expr": "valor * taxa / 100"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "O IVA liquidado na venda é uma dívida ao Estado."
+   ],
+   "difficulty": 2,
+   "points": 100,
+   "refs": [
+    "PGC",
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-prestacao-servicos",
+   "topic": "IVA · Vendas",
+   "type": "C",
+   "title": "Prestação de serviços com IVA",
+   "statement": "A [empresa] prestou serviços de manutenção a um cliente, a crédito, por [valor] (base). Taxa de IVA do exercício: [taxa]. Regista a operação.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "valor",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 150000,
+       "max": 900000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "31",
+      "side": "D",
+      "expr": "valor * (1 + taxa / 100)"
+     },
+     {
+      "account": "62",
+      "side": "C",
+      "expr": "valor"
+     },
+     {
+      "account": "34.5.y",
+      "side": "C",
+      "expr": "valor * taxa / 100"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Serviços prestados não são vendas de mercadorias: usa a conta de prestações de serviços."
+   ],
+   "difficulty": 2,
+   "points": 80,
+   "refs": [
+    "PGC",
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-total-factura",
+   "topic": "IVA · Liquidação",
+   "type": "B",
+   "title": "Total de uma factura",
+   "statement": "Uma factura de venda tem base tributável de [base] e IVA à taxa do exercício de [taxa]. Qual é o total da factura (Kz)?",
+   "presentation": {
+    "unit": "Kz",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "base",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 50000,
+       "max": 2000000,
+       "step": 5000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "base * (1 + taxa / 100)",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Total = base + IVA."
+   ],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-natureza",
+   "topic": "IVA · Liquidação",
+   "type": "A",
+   "title": "Natureza do IVA liquidado",
+   "statement": "Do ponto de vista contabilístico, o IVA liquidado pela empresa nas suas vendas é:",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "Uma dívida ao Estado, registada em Terceiros"
+     },
+     {
+      "key": "B",
+      "text": "Um proveito do exercício"
+     },
+     {
+      "key": "C",
+      "text": "Um custo do exercício"
+     },
+     {
+      "key": "D",
+      "text": "Um elemento do capital próprio"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": []
+   },
+   "solution": {
+    "correct": [
+     "A"
+    ]
+   },
+   "tolerance": {},
+   "hints": [],
+   "difficulty": 1,
+   "points": 30,
+   "refs": [
+    "PGC",
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-liquidado-venda",
+   "topic": "IVA · Liquidação",
+   "type": "B",
+   "title": "IVA liquidado numa venda",
+   "statement": "Uma empresa vendeu mercadorias por [vendas] (base). Com a taxa do exercício de [taxa], qual é o IVA liquidado (Kz)?",
+   "presentation": {
+    "unit": "Kz",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "vendas",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 1600000,
+       "step": 20000
+      }
+     },
+     {
+      "name": "compras",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 700000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "vendas * taxa / 100",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [],
+   "difficulty": 1,
+   "points": 20,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-dedutivel",
+   "topic": "IVA · Dedução",
+   "type": "B",
+   "title": "IVA dedutível nas compras",
+   "statement": "Uma empresa comprou mercadorias por [compras] (base), com factura válida. Com a taxa do exercício de [taxa], qual é o IVA dedutível (Kz)?",
+   "presentation": {
+    "unit": "Kz",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "vendas",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 1600000,
+       "step": 20000
+      }
+     },
+     {
+      "name": "compras",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 700000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "compras * taxa / 100",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [],
+   "difficulty": 1,
+   "points": 20,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-apurar-mes",
+   "topic": "IVA · Apuramento",
+   "type": "E",
+   "title": "Apurar o IVA do mês",
+   "statement": "No mês de março, a [empresa] vendeu [vendas] (base) e comprou [compras] (base) de mercadorias. Taxa de IVA do exercício: [taxa]. Apura o IVA do período, passo a passo.",
+   "presentation": {
+    "steps": [
+     {
+      "key": "liquidado",
+      "label": "IVA liquidado nas vendas",
+      "formula": "base das vendas × taxa"
+     },
+     {
+      "key": "dedutivel",
+      "label": "IVA suportado dedutível",
+      "formula": "base das compras × taxa",
+      "help": "Considera apenas IVA com documento válido e dedutível."
+     },
+     {
+      "key": "apurado",
+      "label": "Imposto apurado",
+      "formula": "IVA liquidado − IVA dedutível"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "vendas",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 1600000,
+       "step": 20000
+      }
+     },
+     {
+      "name": "compras",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 700000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "steps": [
+     {
+      "key": "liquidado",
+      "expr": "vendas * taxa / 100"
+     },
+     {
+      "key": "dedutivel",
+      "expr": "compras * taxa / 100"
+     },
+     {
+      "key": "apurado",
+      "expr": "(vendas - compras) * taxa / 100"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Se o IVA dedutível for maior do que o liquidado, o resultado é um crédito de imposto."
+   ],
+   "difficulty": 2,
+   "points": 40,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-apuramento-mensal",
+   "topic": "IVA · Apuramento",
+   "type": "E",
+   "title": "Apuramento mensal do IVA",
+   "statement": "A [empresa] apresenta, no período, vendas de [vendas] e compras de [compras] (bases tributáveis). Taxa aplicável: [taxa]. Apura o IVA do período.",
+   "presentation": {
+    "steps": [
+     {
+      "key": "liquidado",
+      "label": "IVA liquidado nas vendas",
+      "formula": "base das vendas × taxa"
+     },
+     {
+      "key": "dedutivel",
+      "label": "IVA suportado dedutível",
+      "formula": "base das compras × taxa",
+      "help": "Considera apenas IVA com documento válido e dedutível."
+     },
+     {
+      "key": "apurado",
+      "label": "Imposto apurado",
+      "formula": "IVA liquidado − IVA dedutível"
+     },
+     {
+      "key": "entregar",
+      "label": "Resultado do período",
+      "formula": "a entregar ao Estado (se positivo)"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "vendas",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 1600000,
+       "step": 20000
+      }
+     },
+     {
+      "name": "compras",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 700000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "steps": [
+     {
+      "key": "liquidado",
+      "expr": "vendas * taxa / 100"
+     },
+     {
+      "key": "dedutivel",
+      "expr": "compras * taxa / 100"
+     },
+     {
+      "key": "apurado",
+      "expr": "(vendas - compras) * taxa / 100"
+     },
+     {
+      "key": "entregar",
+      "expr": "max((vendas - compras) * taxa / 100, 0)"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Se o IVA dedutível for maior do que o liquidado, o resultado é um crédito de imposto a reportar."
+   ],
+   "difficulty": 2,
+   "points": 140,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-credito-imposto",
+   "topic": "IVA · Apuramento",
+   "type": "E",
+   "title": "Crédito de imposto",
+   "statement": "Num mês de investimento, a [empresa] vendeu [vendas] (base) e comprou [compras] (base) de mercadorias e equipamento, com facturas válidas. Taxa de IVA do exercício: [taxa]. Apura o resultado do período.",
+   "presentation": {
+    "steps": [
+     {
+      "key": "liquidado",
+      "label": "IVA liquidado nas vendas",
+      "formula": "base das vendas × taxa"
+     },
+     {
+      "key": "dedutivel",
+      "label": "IVA suportado dedutível",
+      "formula": "base das compras × taxa"
+     },
+     {
+      "key": "credito",
+      "label": "Crédito de imposto a reportar",
+      "formula": "IVA dedutível − IVA liquidado"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "vendas",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 600000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "compras",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 1200000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "taxa",
+      "type": "percent",
+      "rule": {
+       "kind": "constant",
+       "value": 14,
+       "legalSource": "IVA"
+      }
+     }
+    ]
+   },
+   "solution": {
+    "steps": [
+     {
+      "key": "liquidado",
+      "expr": "vendas * taxa / 100"
+     },
+     {
+      "key": "dedutivel",
+      "expr": "compras * taxa / 100"
+     },
+     {
+      "key": "credito",
+      "expr": "(compras - vendas) * taxa / 100"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Quando o IVA dedutível excede o liquidado, não há imposto a entregar: a diferença é um crédito."
+   ],
+   "difficulty": 2,
+   "points": 120,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-resultado-apuramento",
+   "topic": "IVA · Apuramento",
+   "type": "A",
+   "title": "Resultado do apuramento",
+   "statement": "Uma empresa liquidou 168 000,00 Kz de IVA nas vendas e suportou 70 000,00 Kz de IVA dedutível nas compras do mesmo período. Qual é o resultado do apuramento?",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "IVA a entregar ao Estado de 98 000,00 Kz"
+     },
+     {
+      "key": "B",
+      "text": "Crédito de imposto de 98 000,00 Kz"
+     },
+     {
+      "key": "C",
+      "text": "IVA a entregar de 238 000,00 Kz"
+     },
+     {
+      "key": "D",
+      "text": "Não há imposto a apurar"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": []
+   },
+   "solution": {
+    "correct": [
+     "A"
+    ]
+   },
+   "tolerance": {},
+   "hints": [],
+   "difficulty": 1,
+   "points": 30,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "iva-deducao-documento",
+   "topic": "IVA · Dedução",
+   "type": "A",
+   "title": "Condição para deduzir o IVA",
+   "statement": "Para que o IVA suportado numa compra possa, em regra, ser deduzido, a empresa precisa de:",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "Factura ou documento equivalente válido, emitido em seu nome"
+     },
+     {
+      "key": "B",
+      "text": "Pagar o fornecedor em numerário"
+     },
+     {
+      "key": "C",
+      "text": "Que a compra ultrapasse um valor mínimo"
+     },
+     {
+      "key": "D",
+      "text": "Que o fornecedor seja estrangeiro"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": []
+   },
+   "solution": {
+    "correct": [
+     "A"
+    ]
+   },
+   "tolerance": {},
+   "hints": [
+    "As condições exactas de dedução constam do Código do IVA (artigos a indicar pelo revisor)."
+   ],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "IVA"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-balancete",
+   "topic": "PGC · Regularizações",
+   "type": "A",
+   "title": "Balancete de verificação",
+   "statement": "Num balancete de verificação correctamente elaborado:",
+   "presentation": {
+    "options": [
+     {
+      "key": "A",
+      "text": "O total dos movimentos a débito é igual ao total dos movimentos a crédito"
+     },
+     {
+      "key": "B",
+      "text": "Todas as contas têm saldo devedor"
+     },
+     {
+      "key": "C",
+      "text": "Só aparecem contas do activo"
+     },
+     {
+      "key": "D",
+      "text": "O resultado líquido é sempre positivo"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": []
+   },
+   "solution": {
+    "correct": [
+     "A"
+    ]
+   },
+   "tolerance": {},
+   "hints": [],
+   "difficulty": 1,
+   "points": 30,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-amortizacao-quota",
+   "topic": "PGC · Regularizações",
+   "type": "B",
+   "title": "Quota de amortização",
+   "statement": "A [empresa] adquiriu um equipamento por [custo], com vida útil estimada de [vida] anos e valor residual nulo. Pelo método das quotas constantes, qual é a amortização anual (Kz)?",
+   "presentation": {
+    "unit": "Kz",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "custo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1200000,
+       "max": 6000000,
+       "step": 400000
+      }
+     },
+     {
+      "name": "vida",
+      "type": "int",
+      "rule": {
+       "kind": "set",
+       "values": [
+        4,
+        5,
+        8,
+        10
+       ]
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "custo / vida",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Quotas constantes: custo de aquisição ÷ anos de vida útil."
+   ],
+   "difficulty": 2,
+   "points": 50,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-amortizacao-lancamento",
+   "topic": "PGC · Regularizações",
+   "type": "C",
+   "title": "Registar a amortização",
+   "statement": "No fim do exercício, a [empresa] regista a amortização de um equipamento adquirido por [custo], com vida útil de [vida] anos, valor residual nulo e método das quotas constantes. Regista a amortização do exercício.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "custo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1200000,
+       "max": 6000000,
+       "step": 400000
+      }
+     },
+     {
+      "name": "vida",
+      "type": "int",
+      "rule": {
+       "kind": "set",
+       "values": [
+        4,
+        5,
+        8,
+        10
+       ]
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "73",
+      "side": "D",
+      "expr": "custo / vida"
+     },
+     {
+      "account": "18",
+      "side": "C",
+      "expr": "custo / vida"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "A amortização é um custo do exercício; a contrapartida acumula-se na conta de amortizações acumuladas."
+   ],
+   "difficulty": 2,
+   "points": 60,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-salarios",
+   "topic": "PGC · Regularizações",
+   "type": "C",
+   "title": "Processamento de salários",
+   "statement": "A [empresa] processou os salários do mês, com remunerações brutas de [salarios]. Para simplificar, não consideres retenções nem contribuições (fora do âmbito desta sala). Regista o processamento.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "salarios",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 3000000,
+       "step": 50000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "72",
+      "side": "D",
+      "expr": "salarios"
+     },
+     {
+      "account": "36",
+      "side": "C",
+      "expr": "salarios"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Processar salários cria um custo e uma dívida ao pessoal, que ainda não foi paga."
+   ],
+   "difficulty": 2,
+   "points": 50,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-pagamento-salarios",
+   "topic": "PGC · Regularizações",
+   "type": "C",
+   "title": "Pagamento de salários",
+   "statement": "A [empresa] pagou por transferência bancária os salários processados, no valor de [salarios]. Regista o pagamento.",
+   "presentation": {
+    "currency": "Kz"
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "salarios",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 3000000,
+       "step": 50000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "lines": [
+     {
+      "account": "36",
+      "side": "D",
+      "expr": "salarios"
+     },
+     {
+      "account": "43",
+      "side": "C",
+      "expr": "salarios"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "O pagamento extingue a dívida ao pessoal."
+   ],
+   "difficulty": 1,
+   "points": 40,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-balanco",
+   "topic": "PGC · Demonstrações financeiras",
+   "type": "D",
+   "title": "Balanço a 31 de março",
+   "statement": "Com base no balancete final (excerto) da [empresa], elabora o balanço a 31 de março. Valores fictícios gerados para esta tentativa.",
+   "presentation": {
+    "ledger": [
+     {
+      "account": "11",
+      "label": "Imobilizações corpóreas",
+      "value": {
+       "$expr": "imob"
+      },
+      "side": "D"
+     },
+     {
+      "account": "18",
+      "label": "Amortizações acumuladas",
+      "value": {
+       "$expr": "amort"
+      },
+      "side": "C"
+     },
+     {
+      "account": "26",
+      "label": "Mercadorias",
+      "value": {
+       "$expr": "merc"
+      },
+      "side": "D"
+     },
+     {
+      "account": "31",
+      "label": "Clientes",
+      "value": {
+       "$expr": "clientes"
+      },
+      "side": "D"
+     },
+     {
+      "account": "43",
+      "label": "Depósitos à ordem",
+      "value": {
+       "$expr": "depositos"
+      },
+      "side": "D"
+     },
+     {
+      "account": "32",
+      "label": "Fornecedores",
+      "value": {
+       "$expr": "fornecedores"
+      },
+      "side": "C"
+     },
+     {
+      "account": "34",
+      "label": "Estado",
+      "value": {
+       "$expr": "estado"
+      },
+      "side": "C"
+     },
+     {
+      "account": "51",
+      "label": "Capital",
+      "value": {
+       "$expr": "capital"
+      },
+      "side": "C"
+     },
+     {
+      "account": "88",
+      "label": "Resultado líquido",
+      "value": {
+       "$expr": "resultado"
+      },
+      "side": "C"
+     }
+    ],
+    "sections": [
+     {
+      "key": "activo",
+      "title": "Activo",
+      "totalKey": "total_activo",
+      "totalLabel": "Total do Activo",
+      "groups": [
+       {
+        "title": "Activo não corrente",
+        "items": [
+         {
+          "key": "imob_liq",
+          "label": "Imobilizações corpóreas (líquidas)"
+         }
+        ]
+       },
+       {
+        "title": "Activo corrente",
+        "items": [
+         {
+          "key": "existencias",
+          "label": "Existências"
+         },
+         {
+          "key": "clientes",
+          "label": "Clientes"
+         },
+         {
+          "key": "meios",
+          "label": "Meios monetários"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "key": "cp_passivo",
+      "title": "Capital próprio e passivo",
+      "totalKey": "total_cp_passivo",
+      "totalLabel": "Total do Capital próprio e Passivo",
+      "groups": [
+       {
+        "title": "Capital próprio",
+        "items": [
+         {
+          "key": "capital",
+          "label": "Capital"
+         },
+         {
+          "key": "resultado",
+          "label": "Resultado líquido do exercício"
+         }
+        ]
+       },
+       {
+        "title": "Passivo corrente",
+        "items": [
+         {
+          "key": "fornecedores",
+          "label": "Fornecedores"
+         },
+         {
+          "key": "estado",
+          "label": "Estado (IVA a pagar)"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "relations": [
+     {
+      "label": "Activo não corrente = bruto − amortizações"
+     },
+     {
+      "label": "Activo corrente = soma das rubricas"
+     },
+     {
+      "label": "Activo = Capital próprio + Passivo"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "imob",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 2000000,
+       "max": 3000000,
+       "step": 100000
+      },
+      "visible": false
+     },
+     {
+      "name": "amort",
+      "type": "money",
+      "visible": false,
+      "rule": {
+       "kind": "expr",
+       "expr": "imob * 0.2",
+       "scale": 2
+      }
+     },
+     {
+      "name": "merc",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 600000,
+       "max": 1000000,
+       "step": 20000
+      },
+      "visible": false
+     },
+     {
+      "name": "clientes",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 400000,
+       "max": 800000,
+       "step": 20000
+      },
+      "visible": false
+     },
+     {
+      "name": "depositos",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 700000,
+       "max": 1200000,
+       "step": 20000
+      },
+      "visible": false
+     },
+     {
+      "name": "fornecedores",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 500000,
+       "max": 900000,
+       "step": 20000
+      },
+      "visible": false
+     },
+     {
+      "name": "estado",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 50000,
+       "max": 120000,
+       "step": 10000
+      },
+      "visible": false
+     },
+     {
+      "name": "capital",
+      "type": "money",
+      "visible": false,
+      "rule": {
+       "kind": "constant",
+       "value": 2500000
+      }
+     },
+     {
+      "name": "resultado",
+      "type": "money",
+      "visible": false,
+      "rule": {
+       "kind": "expr",
+       "expr": "imob - amort + merc + clientes + depositos - fornecedores - estado - capital",
+       "scale": 2
+      }
+     }
+    ]
+   },
+   "solution": {
+    "items": {
+     "imob_liq": "imob - amort",
+     "existencias": "merc",
+     "clientes": "clientes",
+     "meios": "depositos",
+     "total_activo": "imob - amort + merc + clientes + depositos",
+     "capital": "capital",
+     "resultado": "resultado",
+     "fornecedores": "fornecedores",
+     "estado": "estado",
+     "total_cp_passivo": "capital + resultado + fornecedores + estado"
+    },
+    "relations": [
+     {
+      "label": "Activo = Capital próprio + Passivo",
+      "left": "total_activo",
+      "right": "total_cp_passivo"
+     },
+     {
+      "label": "Activo corrente = soma das rubricas",
+      "left": "total_activo",
+      "right": "imob_liq + existencias + clientes + meios"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "O resultado líquido do exercício faz parte do capital próprio."
+   ],
+   "difficulty": 3,
+   "points": 200,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "pgc-demonstracao-resultados",
+   "topic": "PGC · Demonstrações financeiras",
+   "type": "D",
+   "title": "Demonstração de resultados",
+   "statement": "Com base nos saldos das contas de proveitos e de custos da [empresa] no fim do exercício, elabora a demonstração de resultados (por natureza, simplificada) e apura o resultado operacional. Valores fictícios gerados para esta tentativa.",
+   "presentation": {
+    "kind": "income",
+    "ledger": [
+     {
+      "account": "61",
+      "label": "Vendas",
+      "value": {
+       "$expr": "vendas"
+      },
+      "side": "C"
+     },
+     {
+      "account": "62",
+      "label": "Prestações de serviços",
+      "value": {
+       "$expr": "servicos"
+      },
+      "side": "C"
+     },
+     {
+      "account": "71",
+      "label": "Custo das mercadorias vendidas",
+      "value": {
+       "$expr": "cmv"
+      },
+      "side": "D"
+     },
+     {
+      "account": "72",
+      "label": "Custos com o pessoal",
+      "value": {
+       "$expr": "pessoal"
+      },
+      "side": "D"
+     },
+     {
+      "account": "73",
+      "label": "Amortizações do exercício",
+      "value": {
+       "$expr": "amortizacoes"
+      },
+      "side": "D"
+     },
+     {
+      "account": "75",
+      "label": "Outros custos e perdas operacionais",
+      "value": {
+       "$expr": "outros"
+      },
+      "side": "D"
+     }
+    ],
+    "sections": [
+     {
+      "key": "proveitos",
+      "title": "Proveitos operacionais",
+      "totalKey": "total_proveitos",
+      "totalLabel": "Total dos proveitos operacionais",
+      "groups": [
+       {
+        "title": "Proveitos",
+        "items": [
+         {
+          "key": "vendas",
+          "label": "Vendas"
+         },
+         {
+          "key": "servicos",
+          "label": "Prestações de serviços"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "key": "custos",
+      "title": "Custos operacionais",
+      "totalKey": "total_custos",
+      "totalLabel": "Total dos custos operacionais",
+      "groups": [
+       {
+        "title": "Custos",
+        "items": [
+         {
+          "key": "cmv",
+          "label": "Custo das mercadorias vendidas"
+         },
+         {
+          "key": "pessoal",
+          "label": "Custos com o pessoal"
+         },
+         {
+          "key": "amortizacoes",
+          "label": "Amortizações do exercício"
+         },
+         {
+          "key": "outros",
+          "label": "Outros custos operacionais"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "key": "resultado",
+      "title": "Resultado",
+      "totalKey": "total_resultado",
+      "totalLabel": "Resultado operacional",
+      "groups": [
+       {
+        "title": "Resultado operacional",
+        "items": [
+         {
+          "key": "resultado_operacional",
+          "label": "Proveitos − Custos"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "relations": [
+     {
+      "label": "Resultado operacional = proveitos operacionais − custos operacionais"
+     }
+    ]
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "vendas",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 3000000,
+       "max": 6000000,
+       "step": 100000
+      },
+      "visible": false
+     },
+     {
+      "name": "servicos",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 200000,
+       "max": 800000,
+       "step": 50000
+      },
+      "visible": false
+     },
+     {
+      "name": "cmv",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1500000,
+       "max": 2900000,
+       "step": 50000
+      },
+      "visible": false
+     },
+     {
+      "name": "pessoal",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 400000,
+       "max": 900000,
+       "step": 50000
+      },
+      "visible": false
+     },
+     {
+      "name": "amortizacoes",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 100000,
+       "max": 300000,
+       "step": 10000
+      },
+      "visible": false
+     },
+     {
+      "name": "outros",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 50000,
+       "max": 200000,
+       "step": 10000
+      },
+      "visible": false
+     }
+    ]
+   },
+   "solution": {
+    "items": {
+     "vendas": "vendas",
+     "servicos": "servicos",
+     "total_proveitos": "vendas + servicos",
+     "cmv": "cmv",
+     "pessoal": "pessoal",
+     "amortizacoes": "amortizacoes",
+     "outros": "outros",
+     "total_custos": "cmv + pessoal + amortizacoes + outros",
+     "resultado_operacional": "vendas + servicos - cmv - pessoal - amortizacoes - outros",
+     "total_resultado": "vendas + servicos - cmv - pessoal - amortizacoes - outros"
+    },
+    "relations": [
+     {
+      "label": "Resultado operacional = proveitos − custos",
+      "left": "total_resultado",
+      "right": "total_proveitos - total_custos"
+     }
+    ]
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Os proveitos têm saldo credor; os custos, saldo devedor."
+   ],
+   "difficulty": 3,
+   "points": 200,
+   "refs": [
+    "PGC"
+   ],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-liquidez-geral",
+   "topic": "Análise · Liquidez",
+   "type": "F",
+   "title": "Liquidez geral",
+   "statement": "A [empresa] apresenta activo corrente de [ac] e passivo corrente de [pc]. Calcula a liquidez geral (duas casas decimais) e interpreta o resultado.",
+   "presentation": {
+    "unit": "",
+    "precision": 2,
+    "justification": {
+     "minLength": 80
+    }
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "ac",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 2400000,
+       "step": 50000
+      }
+     },
+     {
+      "name": "pc",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 500000,
+       "max": 1500000,
+       "step": 50000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "ac / pc",
+    "scale": 2,
+    "rounding": "HALF_UP",
+    "justification": {
+     "minLength": 80,
+     "keywordsAny": [
+      "liquidez",
+      "curto prazo",
+      "passivo corrente",
+      "solvência"
+     ],
+     "keywordsMin": 1
+    }
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [],
+   "difficulty": 2,
+   "points": 120,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-liquidez-reduzida",
+   "topic": "Análise · Liquidez",
+   "type": "F",
+   "title": "Liquidez reduzida",
+   "statement": "A [empresa] apresenta activo corrente de [ac], dos quais [exist] são existências, e passivo corrente de [pc]. Calcula a liquidez reduzida (duas casas decimais) e explica porque se excluem as existências.",
+   "presentation": {
+    "unit": "",
+    "precision": 2,
+    "justification": {
+     "minLength": 80
+    }
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "ac",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1500000,
+       "max": 3000000,
+       "step": 50000
+      }
+     },
+     {
+      "name": "exist",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 300000,
+       "max": 700000,
+       "step": 50000
+      }
+     },
+     {
+      "name": "pc",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 1400000,
+       "step": 50000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "(ac - exist) / pc",
+    "scale": 2,
+    "rounding": "HALF_UP",
+    "justification": {
+     "minLength": 80,
+     "keywordsAny": [
+      "existências",
+      "liquidez",
+      "curto prazo"
+     ],
+     "keywordsMin": 1
+    }
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [],
+   "difficulty": 2,
+   "points": 120,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-liquidez-imediata",
+   "topic": "Análise · Liquidez",
+   "type": "B",
+   "title": "Liquidez imediata",
+   "statement": "A [empresa] tem meios monetários (caixa e depósitos) de [disp] e passivo corrente de [pc]. Calcula a liquidez imediata (duas casas decimais).",
+   "presentation": {
+    "unit": "",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "disp",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 100000,
+       "max": 600000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "pc",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 800000,
+       "max": 1500000,
+       "step": 50000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "round(disp / pc, 2)",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Liquidez imediata = meios monetários ÷ passivo corrente."
+   ],
+   "difficulty": 2,
+   "points": 60,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-autonomia",
+   "topic": "Análise · Estrutura",
+   "type": "B",
+   "title": "Autonomia financeira",
+   "statement": "O balanço da [empresa] mostra capital próprio de [cp] e activo total de [activo]. Qual é a autonomia financeira (%, duas casas decimais)?",
+   "presentation": {
+    "unit": "%",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "cp",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 2000000,
+       "max": 5000000,
+       "step": 100000
+      }
+     },
+     {
+      "name": "activo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 6000000,
+       "max": 10000000,
+       "step": 100000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "round(cp / activo * 100, 2)",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Autonomia financeira = capital próprio ÷ activo × 100."
+   ],
+   "difficulty": 2,
+   "points": 60,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-endividamento",
+   "topic": "Análise · Estrutura",
+   "type": "B",
+   "title": "Endividamento",
+   "statement": "O balanço da [empresa] mostra passivo total de [passivo] e activo total de [activo]. Qual é o rácio de endividamento (%, duas casas decimais)?",
+   "presentation": {
+    "unit": "%",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "passivo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 2000000,
+       "max": 5000000,
+       "step": 100000
+      }
+     },
+     {
+      "name": "activo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 6000000,
+       "max": 10000000,
+       "step": 100000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "round(passivo / activo * 100, 2)",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Endividamento = passivo ÷ activo × 100."
+   ],
+   "difficulty": 2,
+   "points": 60,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-solvabilidade",
+   "topic": "Análise · Estrutura",
+   "type": "F",
+   "title": "Solvabilidade",
+   "statement": "A [empresa] apresenta capital próprio de [cp] e passivo total de [passivo]. Calcula o rácio de solvabilidade (duas casas decimais) e interpreta-o na perspectiva dos credores.",
+   "presentation": {
+    "unit": "",
+    "precision": 2,
+    "justification": {
+     "minLength": 80
+    }
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "cp",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1500000,
+       "max": 5000000,
+       "step": 100000
+      }
+     },
+     {
+      "name": "passivo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 1000000,
+       "max": 4000000,
+       "step": 100000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "cp / passivo",
+    "scale": 2,
+    "rounding": "HALF_UP",
+    "justification": {
+     "minLength": 80,
+     "keywordsAny": [
+      "solvabilidade",
+      "credores",
+      "capital próprio",
+      "passivo"
+     ],
+     "keywordsMin": 1
+    }
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [],
+   "difficulty": 2,
+   "points": 120,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-roe",
+   "topic": "Análise · Rendibilidade",
+   "type": "B",
+   "title": "Rendibilidade dos capitais próprios",
+   "statement": "A [empresa] obteve um resultado líquido de [rl] e tem capital próprio de [cp]. Qual é a rendibilidade dos capitais próprios (%, duas casas decimais)?",
+   "presentation": {
+    "unit": "%",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "rl",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 200000,
+       "max": 900000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "cp",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 2000000,
+       "max": 6000000,
+       "step": 100000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "round(rl / cp * 100, 2)",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "ROE = resultado líquido ÷ capital próprio × 100."
+   ],
+   "difficulty": 2,
+   "points": 60,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-margem-liquida",
+   "topic": "Análise · Rendibilidade",
+   "type": "B",
+   "title": "Margem líquida",
+   "statement": "A [empresa] vendeu [vendas] no exercício e obteve um resultado líquido de [rl]. Qual é a margem líquida (%, duas casas decimais)?",
+   "presentation": {
+    "unit": "%",
+    "precision": 2
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "vendas",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 3000000,
+       "max": 9000000,
+       "step": 100000
+      }
+     },
+     {
+      "name": "rl",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 150000,
+       "max": 900000,
+       "step": 10000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "round(rl / vendas * 100, 2)",
+    "scale": 2
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [
+    "Margem líquida = resultado líquido ÷ vendas × 100."
+   ],
+   "difficulty": 2,
+   "points": 60,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  },
+  {
+   "key": "an-roa",
+   "topic": "Análise · Rendibilidade",
+   "type": "F",
+   "title": "Rendibilidade do activo",
+   "statement": "A [empresa] obteve um resultado líquido de [rl] com um activo total de [activo]. Calcula a rendibilidade do activo (%, duas casas decimais) e interpreta o resultado.",
+   "presentation": {
+    "unit": "",
+    "precision": 2,
+    "justification": {
+     "minLength": 80
+    }
+   },
+   "paramSpec": {
+    "params": [
+     {
+      "name": "empresa",
+      "type": "text",
+      "rule": {
+       "kind": "entity",
+       "source": "companies"
+      }
+     },
+     {
+      "name": "rl",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 200000,
+       "max": 900000,
+       "step": 10000
+      }
+     },
+     {
+      "name": "activo",
+      "type": "money",
+      "rule": {
+       "kind": "range",
+       "min": 5000000,
+       "max": 12000000,
+       "step": 100000
+      }
+     }
+    ]
+   },
+   "solution": {
+    "expr": "rl / activo * 100",
+    "scale": 2,
+    "rounding": "HALF_UP",
+    "justification": {
+     "minLength": 80,
+     "keywordsAny": [
+      "rendibilidade",
+      "activo",
+      "recursos"
+     ],
+     "keywordsMin": 1
+    }
+   },
+   "tolerance": {
+    "type": "ABS",
+    "value": 0.01
+   },
+   "hints": [],
+   "difficulty": 2,
+   "points": 120,
+   "refs": [],
+   "feedbackPolicy": "DETAILED",
+   "maxAttempts": 3
+  }
+ ],
+ "tracks": [
+  {
+   "slug": "contabilidade-pgc",
+   "title": "Contabilidade Financeira segundo o PGC",
+   "summary": "Balancete, lançamentos e demonstrações financeiras.",
+   "description": "Objectivos: dominar o quadro de contas do PGC, registar as operações correntes pelo método das partidas dobradas, preparar o balancete e elaborar o balanço e a demonstração de resultados.",
+   "difficulty": 1,
+   "topic": "Contabilidade",
+   "courses": [
+    "CONT",
+    "ECON",
+    "GEST"
+   ],
+   "competencies": [
+    "Registo contabilístico",
+    "IVA",
+    "Demonstrações financeiras"
+   ],
+   "completionRule": "Requisito de conclusão: todas as salas ≥ 70 % e exame final ≥ 10/20 (a confirmar por trilha).",
+   "estHours": 18,
+   "position": 0,
+   "status": "PUBLISHED",
+   "modules": [
+    {
+     "title": "Fundamentos e o PGC",
+     "summary": "Quadro de contas, classes e partidas dobradas",
+     "rooms": [
+      {
+       "key": "pgc-r-quadro",
+       "title": "O quadro de contas do PGC",
+       "description": "Classes do PGC e natureza das contas.",
+       "objectives": [
+        "Reconhecer as classes do PGC",
+        "Distinguir activo de passivo"
+       ],
+       "difficulty": 1,
+       "estMinutes": 20,
+       "context": "O Plano Geral de Contabilidade organiza as contas por classes, cada uma com um código. Nesta sala revês as classes e a natureza das contas mais usadas. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "pgc-classe-meios",
+         "title": "Classe dos meios monetários",
+         "points": 40
+        },
+        {
+         "exercise": "pgc-classe-mercadorias",
+         "title": "Classe das existências",
+         "points": 30
+        },
+        {
+         "exercise": "pgc-contas-activo",
+         "title": "Contas do activo",
+         "points": 40
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-equacao",
+       "title": "Equação fundamental e partidas dobradas",
+       "description": "Activo, capital próprio e passivo.",
+       "objectives": [
+        "Aplicar a equação fundamental",
+        "Compreender as partidas dobradas"
+       ],
+       "difficulty": 1,
+       "estMinutes": 20,
+       "context": "Toda a contabilidade assenta na igualdade Activo = Capital próprio + Passivo e no princípio de que cada débito tem um crédito de igual valor. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "pgc-r-quadro"
+       ],
+       "tasks": [
+        {
+         "exercise": "pgc-partidas-dobradas",
+         "title": "Princípio das partidas dobradas",
+         "points": 30
+        },
+        {
+         "exercise": "pgc-equacao-cp",
+         "title": "Equação fundamental",
+         "points": 40
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-constituicao",
+       "title": "Constituição de uma sociedade",
+       "description": "O primeiro lançamento de uma empresa.",
+       "objectives": [
+        "Registar a realização do capital"
+       ],
+       "difficulty": 1,
+       "estMinutes": 15,
+       "context": "Na constituição, os sócios entregam bens ou dinheiro à sociedade em troca do capital social. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "pgc-r-equacao"
+       ],
+       "tasks": [
+        {
+         "exercise": "pgc-constituicao",
+         "title": "Registar a constituição",
+         "points": 60
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Meios monetários e terceiros",
+     "summary": "Caixa, depósitos, clientes e fornecedores",
+     "rooms": [
+      {
+       "key": "pgc-r-caixa",
+       "title": "Caixa e depósitos",
+       "description": "Movimentos entre a caixa e o banco.",
+       "objectives": [
+        "Registar depósitos e levantamentos"
+       ],
+       "difficulty": 1,
+       "estMinutes": 20,
+       "context": "A caixa e os depósitos à ordem são meios monetários: movimentá-los entre si não altera o património total. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "pgc-deposito",
+         "title": "Depósito no banco",
+         "points": 40
+        },
+        {
+         "exercise": "pgc-levantamento",
+         "title": "Levantamento para a caixa",
+         "points": 40
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-terceiros",
+       "title": "Clientes e fornecedores",
+       "description": "Recebimentos, pagamentos e saldos.",
+       "objectives": [
+        "Registar recebimentos e pagamentos",
+        "Calcular o saldo de uma conta"
+       ],
+       "difficulty": 2,
+       "estMinutes": 30,
+       "context": "As contas de Terceiros registam direitos (clientes) e obrigações (fornecedores). O saldo mostra o que está por receber ou por pagar. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "pgc-r-caixa"
+       ],
+       "tasks": [
+        {
+         "exercise": "pgc-recebimento-cliente",
+         "title": "Recebimento de um cliente",
+         "points": 50
+        },
+        {
+         "exercise": "pgc-saldo-conta",
+         "title": "Saldo da conta de clientes",
+         "points": 40
+        },
+        {
+         "exercise": "iva-pagamento-fornecedor",
+         "title": "Pagamento a um fornecedor",
+         "points": 50
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Existências",
+     "summary": "Compras, mercadorias e custo das vendas",
+     "rooms": [
+      {
+       "key": "pgc-r-compras",
+       "title": "Compras de mercadorias",
+       "description": "Compra a pronto pagamento com IVA.",
+       "objectives": [
+        "Registar uma compra a pronto",
+        "Separar o IVA suportado"
+       ],
+       "difficulty": 2,
+       "estMinutes": 25,
+       "context": "Quando a compra é paga de imediato, a contrapartida é o meio monetário usado e não o fornecedor. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "iva-compra-pronto",
+         "title": "Compra a pronto com IVA",
+         "points": 60
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-cmv",
+       "title": "Custo das mercadorias vendidas",
+       "description": "CMV, inventário e margem bruta.",
+       "objectives": [
+        "Calcular o CMV",
+        "Registar o CMV",
+        "Calcular a margem bruta"
+       ],
+       "difficulty": 2,
+       "estMinutes": 35,
+       "context": "O custo das mercadorias vendidas liga as existências aos resultados. Com inventário periódico, CMV = EI + Compras − EF. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "pgc-r-compras"
+       ],
+       "tasks": [
+        {
+         "exercise": "pgc-cmv-calculo",
+         "title": "Cálculo do CMV",
+         "points": 50
+        },
+        {
+         "exercise": "pgc-cmv-lancamento",
+         "title": "Registar o CMV",
+         "points": 50
+        },
+        {
+         "exercise": "pgc-margem-bruta",
+         "title": "Margem bruta",
+         "points": 40
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "IVA nas operações correntes",
+     "summary": "Suportado, liquidado e apuramento",
+     "rooms": [
+      {
+       "key": "pgc-r-compra-iva",
+       "title": "Compra de mercadorias com IVA",
+       "description": "Lançamentos, IVA suportado e pagamento.",
+       "objectives": [
+        "Registar a compra a crédito",
+        "Separar o IVA suportado",
+        "Verificar o equilíbrio"
+       ],
+       "difficulty": 2,
+       "estMinutes": 35,
+       "context": "A **Distribuidora Mussulo, Lda.** e as restantes entidades são empresas fictícias. Os valores destacados são únicos para a tua tentativa. A taxa de IVA é um parâmetro do exercício (**a confirmar** com o revisor).",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "iva-contexto-compra",
+         "title": "Contexto da operação",
+         "points": 30
+        },
+        {
+         "exercise": "iva-contas-compra",
+         "title": "Identificar as contas",
+         "points": 20
+        },
+        {
+         "exercise": "iva-registar-compra",
+         "title": "Registar o lançamento",
+         "points": 40
+        },
+        {
+         "exercise": "iva-apurar-mes",
+         "title": "Apurar o IVA do mês",
+         "points": 40
+        },
+        {
+         "exercise": "iva-pagamento-fornecedor",
+         "title": "Pagamento ao fornecedor",
+         "points": 30
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-venda-iva",
+       "title": "Venda com IVA liquidado",
+       "description": "Registo de vendas a crédito com IVA.",
+       "objectives": [
+        "Registar a venda",
+        "Separar o IVA liquidado"
+       ],
+       "difficulty": 2,
+       "estMinutes": 30,
+       "context": "Na venda, o IVA liquidado é uma dívida ao Estado até ao apuramento. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "pgc-r-compra-iva"
+       ],
+       "tasks": [
+        {
+         "exercise": "iva-venda",
+         "title": "Registar a venda",
+         "points": 100
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-servicos",
+       "title": "Prestação de serviços com IVA",
+       "description": "Serviços, IVA e total da factura.",
+       "objectives": [
+        "Registar uma prestação de serviços",
+        "Calcular o total de uma factura"
+       ],
+       "difficulty": 2,
+       "estMinutes": 30,
+       "context": "As prestações de serviços seguem a mesma lógica das vendas, mas usam uma conta de proveitos própria. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "pgc-r-venda-iva"
+       ],
+       "tasks": [
+        {
+         "exercise": "iva-prestacao-servicos",
+         "title": "Registar a prestação de serviços",
+         "points": 80
+        },
+        {
+         "exercise": "iva-total-factura",
+         "title": "Total da factura",
+         "points": 40
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Balancete e regularizações",
+     "summary": "Balancete, amortizações e salários",
+     "rooms": [
+      {
+       "key": "pgc-r-balancete",
+       "title": "Balancete de verificação",
+       "description": "Controlo do equilíbrio dos registos.",
+       "objectives": [
+        "Interpretar o balancete"
+       ],
+       "difficulty": 1,
+       "estMinutes": 15,
+       "context": "O balancete lista as contas com os totais a débito e a crédito e os saldos, e verifica o equilíbrio dos registos. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "pgc-balancete",
+         "title": "Balancete de verificação",
+         "points": 30
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-amortizacoes",
+       "title": "Amortizações do exercício",
+       "description": "Quotas constantes e registo.",
+       "objectives": [
+        "Calcular a quota anual",
+        "Registar a amortização"
+       ],
+       "difficulty": 2,
+       "estMinutes": 30,
+       "context": "A amortização reparte o custo de um activo fixo pelos anos de vida útil. Nesta sala usa-se o método das quotas constantes e valor residual nulo. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "pgc-r-balancete"
+       ],
+       "tasks": [
+        {
+         "exercise": "pgc-amortizacao-quota",
+         "title": "Quota de amortização",
+         "points": 50
+        },
+        {
+         "exercise": "pgc-amortizacao-lancamento",
+         "title": "Registar a amortização",
+         "points": 60
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-salarios",
+       "title": "Processamento de salários",
+       "description": "Custos com o pessoal e pagamento.",
+       "objectives": [
+        "Registar o processamento",
+        "Registar o pagamento"
+       ],
+       "difficulty": 2,
+       "estMinutes": 25,
+       "context": "Primeiro reconhece-se o custo e a dívida ao pessoal; depois regista-se o pagamento. Retenções e contribuições ficam para uma sala própria (taxas a confirmar). Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "pgc-r-amortizacoes"
+       ],
+       "tasks": [
+        {
+         "exercise": "pgc-salarios",
+         "title": "Processamento de salários",
+         "points": 50
+        },
+        {
+         "exercise": "pgc-pagamento-salarios",
+         "title": "Pagamento de salários",
+         "points": 40
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Demonstrações financeiras",
+     "summary": "Balanço e demonstração de resultados",
+     "rooms": [
+      {
+       "key": "pgc-r-balanco",
+       "title": "Balanço",
+       "description": "Do balancete final ao balanço.",
+       "objectives": [
+        "Classificar as contas do balancete",
+        "Verificar Activo = Capital próprio + Passivo"
+       ],
+       "difficulty": 3,
+       "estMinutes": 40,
+       "context": "Usa o balancete final para preencher o balanço. A estrutura de rubricas segue o modelo do PGC (**a confirmar**).",
+       "prerequisites": [
+        "pgc-r-salarios"
+       ],
+       "tasks": [
+        {
+         "exercise": "pgc-balanco",
+         "title": "Elaborar o balanço",
+         "points": 200
+        }
+       ]
+      },
+      {
+       "key": "pgc-r-dr",
+       "title": "Demonstração de resultados",
+       "description": "Proveitos, custos e resultado operacional.",
+       "objectives": [
+        "Agrupar proveitos e custos",
+        "Apurar o resultado operacional"
+       ],
+       "difficulty": 3,
+       "estMinutes": 40,
+       "context": "A demonstração de resultados por natureza mostra os proveitos e os custos do exercício. Nesta sala apura-se o resultado operacional; o modelo completo do PGC está **a confirmar**.",
+       "prerequisites": [
+        "pgc-r-balanco"
+       ],
+       "tasks": [
+        {
+         "exercise": "pgc-demonstracao-resultados",
+         "title": "Elaborar a demonstração de resultados",
+         "points": 200
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "fiscalidade-iva",
+   "title": "Fiscalidade Angolana · IVA",
+   "summary": "Incidência, liquidação, dedução e apuramento.",
+   "description": "Pratica o cálculo do IVA passo a passo. Base: Código do IVA, Lei n.º 7/19 (versão em vigor e artigos a confirmar).",
+   "difficulty": 2,
+   "topic": "Fiscalidade",
+   "courses": [
+    "CONT",
+    "ECON",
+    "GEST"
+   ],
+   "competencies": [
+    "IVA",
+    "Apuramento"
+   ],
+   "completionRule": "Requisito de conclusão a confirmar.",
+   "estHours": 10,
+   "position": 1,
+   "status": "PUBLISHED",
+   "modules": [
+    {
+     "title": "Incidência e liquidação",
+     "summary": "Natureza do IVA e liquidação",
+     "rooms": [
+      {
+       "key": "iva-r-natureza",
+       "title": "Natureza do IVA",
+       "description": "O IVA na contabilidade da empresa.",
+       "objectives": [
+        "Classificar o IVA liquidado",
+        "Calcular o total de uma factura"
+       ],
+       "difficulty": 1,
+       "estMinutes": 20,
+       "context": "O IVA é cobrado pela empresa aos clientes e entregue ao Estado; contabilisticamente é uma conta de Terceiros. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "iva-natureza",
+         "title": "Natureza do IVA liquidado",
+         "points": 30
+        },
+        {
+         "exercise": "iva-total-factura",
+         "title": "Total de uma factura",
+         "points": 40
+        }
+       ]
+      },
+      {
+       "key": "iva-r-liquidacao",
+       "title": "Liquidação e dedução",
+       "description": "IVA liquidado e IVA dedutível.",
+       "objectives": [
+        "Calcular o IVA de uma operação"
+       ],
+       "difficulty": 1,
+       "estMinutes": 20,
+       "context": "Exercícios numéricos sobre o IVA de operações simples. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "iva-r-natureza"
+       ],
+       "tasks": [
+        {
+         "exercise": "iva-liquidado-venda",
+         "title": "IVA liquidado numa venda",
+         "points": 20
+        },
+        {
+         "exercise": "iva-dedutivel",
+         "title": "IVA dedutível nas compras",
+         "points": 20
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Apuramento",
+     "summary": "Imposto a entregar e crédito de imposto",
+     "rooms": [
+      {
+       "key": "iva-r-apuramento",
+       "title": "Apuramento mensal do IVA",
+       "description": "Calculadora fiscal passo a passo.",
+       "objectives": [
+        "Calcular o IVA liquidado e o dedutível",
+        "Apurar o imposto do período"
+       ],
+       "difficulty": 2,
+       "estMinutes": 30,
+       "context": "Cada passo é corrigido no servidor antes de avançares para o seguinte. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "iva-apuramento-mensal",
+         "title": "Apuramento mensal do IVA",
+         "points": 140
+        }
+       ]
+      },
+      {
+       "key": "iva-r-credito",
+       "title": "Crédito de imposto",
+       "description": "Quando o IVA dedutível excede o liquidado.",
+       "objectives": [
+        "Apurar um crédito de imposto",
+        "Interpretar o resultado do apuramento"
+       ],
+       "difficulty": 2,
+       "estMinutes": 30,
+       "context": "Em meses de investimento, o IVA suportado pode ultrapassar o liquidado. As regras de reporte e reembolso estão no Código do IVA (artigos a confirmar). Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "iva-r-apuramento"
+       ],
+       "tasks": [
+        {
+         "exercise": "iva-credito-imposto",
+         "title": "Crédito de imposto",
+         "points": 120
+        },
+        {
+         "exercise": "iva-resultado-apuramento",
+         "title": "Resultado do apuramento",
+         "points": 30
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Dedução",
+     "summary": "Condições de dedução do IVA",
+     "rooms": [
+      {
+       "key": "iva-r-deducao",
+       "title": "Requisitos de dedução",
+       "description": "Documentos e condições.",
+       "objectives": [
+        "Identificar as condições de dedução"
+       ],
+       "difficulty": 2,
+       "estMinutes": 15,
+       "context": "Só o IVA suportado com documento válido e nas condições legais é dedutível. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "iva-deducao-documento",
+         "title": "Condição para deduzir o IVA",
+         "points": 40
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "analise-demonstracoes",
+   "title": "Análise de Demonstrações Financeiras",
+   "summary": "Rácios de liquidez, estrutura e rendibilidade.",
+   "description": "Calcula e interpreta rácios a partir de demonstrações de empresas fictícias.",
+   "difficulty": 2,
+   "topic": "Análise financeira",
+   "courses": [
+    "CONT",
+    "ECON",
+    "GEST"
+   ],
+   "competencies": [
+    "Análise de rácios"
+   ],
+   "completionRule": "Requisito de conclusão a confirmar.",
+   "estHours": 12,
+   "position": 2,
+   "status": "PUBLISHED",
+   "modules": [
+    {
+     "title": "Liquidez",
+     "summary": "Liquidez geral, reduzida e imediata",
+     "rooms": [
+      {
+       "key": "an-r-liquidez-geral",
+       "title": "Liquidez geral",
+       "description": "Cálculo e interpretação.",
+       "objectives": [
+        "Calcular a liquidez geral",
+        "Interpretar o rácio"
+       ],
+       "difficulty": 2,
+       "estMinutes": 25,
+       "context": "Os rácios de liquidez medem a capacidade de pagar as dívidas de curto prazo com os activos de curto prazo. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "an-liquidez-geral",
+         "title": "Liquidez geral",
+         "points": 120
+        }
+       ]
+      },
+      {
+       "key": "an-r-liquidez",
+       "title": "Liquidez reduzida e imediata",
+       "description": "Rácios mais exigentes.",
+       "objectives": [
+        "Excluir as existências",
+        "Usar só meios monetários"
+       ],
+       "difficulty": 2,
+       "estMinutes": 30,
+       "context": "A liquidez reduzida exclui as existências, que demoram a converter-se em dinheiro; a imediata considera só os meios monetários. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "an-r-liquidez-geral"
+       ],
+       "tasks": [
+        {
+         "exercise": "an-liquidez-reduzida",
+         "title": "Liquidez reduzida",
+         "points": 120
+        },
+        {
+         "exercise": "an-liquidez-imediata",
+         "title": "Liquidez imediata",
+         "points": 60
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Estrutura financeira",
+     "summary": "Autonomia, endividamento e solvabilidade",
+     "rooms": [
+      {
+       "key": "an-r-estrutura",
+       "title": "Autonomia e endividamento",
+       "description": "Como a empresa se financia.",
+       "objectives": [
+        "Calcular a autonomia financeira",
+        "Calcular o endividamento"
+       ],
+       "difficulty": 2,
+       "estMinutes": 25,
+       "context": "A estrutura financeira mostra a parte do activo financiada por capitais próprios e por capitais alheios. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "an-autonomia",
+         "title": "Autonomia financeira",
+         "points": 60
+        },
+        {
+         "exercise": "an-endividamento",
+         "title": "Endividamento",
+         "points": 60
+        }
+       ]
+      },
+      {
+       "key": "an-r-solvabilidade",
+       "title": "Solvabilidade",
+       "description": "A perspectiva dos credores.",
+       "objectives": [
+        "Calcular e interpretar a solvabilidade"
+       ],
+       "difficulty": 2,
+       "estMinutes": 25,
+       "context": "A solvabilidade compara o capital próprio com o passivo: quanto maior, maior a garantia dada aos credores. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "an-r-estrutura"
+       ],
+       "tasks": [
+        {
+         "exercise": "an-solvabilidade",
+         "title": "Solvabilidade",
+         "points": 120
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Rendibilidade",
+     "summary": "ROE, margem líquida e ROA",
+     "rooms": [
+      {
+       "key": "an-r-roe",
+       "title": "Rendibilidade dos capitais próprios",
+       "description": "ROE e margem líquida.",
+       "objectives": [
+        "Calcular o ROE",
+        "Calcular a margem líquida"
+       ],
+       "difficulty": 2,
+       "estMinutes": 25,
+       "context": "A rendibilidade relaciona o resultado com os capitais investidos ou com as vendas. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [],
+       "tasks": [
+        {
+         "exercise": "an-roe",
+         "title": "Rendibilidade dos capitais próprios",
+         "points": 60
+        },
+        {
+         "exercise": "an-margem-liquida",
+         "title": "Margem líquida",
+         "points": 60
+        }
+       ]
+      },
+      {
+       "key": "an-r-roa",
+       "title": "Rendibilidade do activo",
+       "description": "Eficiência na utilização dos recursos.",
+       "objectives": [
+        "Calcular e interpretar o ROA"
+       ],
+       "difficulty": 2,
+       "estMinutes": 25,
+       "context": "O ROA mede quanto resultado a empresa gera por cada kwanza de activo. Todas as empresas e valores são fictícios. As referências ao PGC e ao Código do IVA estão **a confirmar** por revisor.",
+       "prerequisites": [
+        "an-r-roe"
+       ],
+       "tasks": [
+        {
+         "exercise": "an-roa",
+         "title": "Rendibilidade do activo",
+         "points": 120
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "power-bi-financas",
+   "title": "Power BI para Finanças",
+   "summary": "Datasets, medidas e visualizações.",
+   "description": "Fase posterior.",
+   "difficulty": 2,
+   "topic": "Power BI",
+   "courses": [
+    "CONT",
+    "ECON",
+    "GEST"
+   ],
+   "competencies": [],
+   "estHours": 9,
+   "position": 3,
+   "status": "COMING_SOON",
+   "modules": []
+  },
+  {
+   "slug": "mercado-capitais",
+   "title": "Mercado de Capitais",
+   "summary": "Empresas fictícias, relatórios e carteira virtual.",
+   "description": "Fase posterior.",
+   "difficulty": 3,
+   "topic": "Mercado",
+   "courses": [
+    "ECON",
+    "GEST"
+   ],
+   "competencies": [],
+   "estHours": 8,
+   "position": 4,
+   "status": "COMING_SOON",
+   "modules": []
+  }
+ ],
+ "exams": [
+  {
+   "slug": "exame-modulo-4-iva",
+   "title": "Exame · Módulo 4 · IVA nas operações correntes",
+   "track": "contabilidade-pgc",
+   "module": 4,
+   "durationMin": 20,
+   "topic": "IVA",
+   "count": 6,
+   "passMark": 10
+  },
+  {
+   "slug": "exame-final-pgc",
+   "title": "Exame final · Contabilidade Financeira segundo o PGC",
+   "track": "contabilidade-pgc",
+   "module": 6,
+   "durationMin": 40,
+   "topic": "PGC",
+   "count": 10,
+   "passMark": 10
+  },
+  {
+   "slug": "exame-analise-financeira",
+   "title": "Exame · Análise de Demonstrações Financeiras",
+   "track": "analise-demonstracoes",
+   "module": 3,
+   "durationMin": 25,
+   "topic": "Análise",
+   "count": 5,
+   "passMark": 10
+  }
+ ]
+}

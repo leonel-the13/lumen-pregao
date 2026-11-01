@@ -36,6 +36,22 @@ public class AdminUserController {
         return service.search(q, role, cursor, limit);
     }
 
+    @org.springframework.web.bind.annotation.PostMapping("/invite")
+    @org.springframework.web.bind.annotation.ResponseStatus(org.springframework.http.HttpStatus.CREATED)
+    public AdminUserRow invite(@AuthenticationPrincipal SessionUser me, @Valid @RequestBody AdminUserDtos.InviteRequest in) {
+        return service.invite(me.id(), me.name(), in.name(), in.email(), in.roles(), in.courseId(), in.year());
+    }
+
+    @org.springframework.web.bind.annotation.PostMapping("/{id}/resend-invite")
+    public AdminUserRow resendInvite(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id) {
+        return service.resendInvite(me.id(), me.name(), id);
+    }
+
+    @org.springframework.web.bind.annotation.PostMapping("/{id}/reset-mfa")
+    public AdminUserRow resetMfa(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id) {
+        return service.resetMfa(me.id(), id);
+    }
+
     @PatchMapping("/{id}/roles")
     public AdminUserRow roles(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id,
                               @Valid @RequestBody RolesUpdate body) {

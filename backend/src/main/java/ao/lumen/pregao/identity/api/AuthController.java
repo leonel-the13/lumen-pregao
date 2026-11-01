@@ -12,6 +12,7 @@ import ao.lumen.pregao.identity.api.AuthDtos.RegisterRequest;
 import ao.lumen.pregao.identity.api.AuthDtos.ResendRequest;
 import ao.lumen.pregao.identity.api.AuthDtos.VerifyRequest;
 import ao.lumen.pregao.identity.app.AuthService;
+import ao.lumen.pregao.identity.app.PasswordService;
 import ao.lumen.pregao.identity.app.SessionManager;
 import ao.lumen.pregao.identity.infra.CourseRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,11 +34,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class AuthController {
     private final AuthService auth;
+    private final PasswordService passwords;
     private final SessionManager sessions;
     private final CourseRepository courses;
 
-    public AuthController(AuthService auth, SessionManager sessions, CourseRepository courses) {
+    public AuthController(AuthService auth, PasswordService passwords, SessionManager sessions, CourseRepository courses) {
         this.auth = auth;
+        this.passwords = passwords;
         this.sessions = sessions;
         this.courses = courses;
     }
@@ -73,6 +76,20 @@ public class AuthController {
         var user = auth.verify(r.token());
         boolean signedIn = auth.loginAfterVerification(user, req, res);
         return Map.of("status", "verified", "signedIn", signedIn);
+    }
+
+    @PostMapping("/auth/password/forgot")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Accepted forgot(@Valid @RequestBody AuthDtos.ForgotRequest r, HttpServletRequest req) {
+        passwords.forgot(r.email(), ClientIp.of(req));
+        return new Accepted("reset_sent", "Se existir uma conta com este email, enviámos um link para redefinir a palavra-passe.");
+    }
+
+    @PostMapping("/auth/password/reset")
+    public Map<String, Object> reset(@Valid @RequestBody AuthDtos.ResetRequest r, HttpServletRequest req) {
+        String email = passwords.reset(r.token(), r.password());
+        sessions.terminate(req);
+        return Map.of("status", "password_set", "email", email);
     }
 
     @PostMapping("/auth/login")

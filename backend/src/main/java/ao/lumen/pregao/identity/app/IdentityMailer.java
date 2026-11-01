@@ -51,6 +51,38 @@ public class IdentityMailer {
                 """.formatted(props.baseUrl()));
     }
 
+    @TransactionalEventListener
+    public void onReset(AuthEvents.PasswordResetRequested e) {
+        String link = props.baseUrl() + "/redefinir?token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
+        send(e.email(), "Redefinir a palavra-passe · Lúmen Pregão", """
+                Olá, %s.
+
+                Recebemos um pedido para redefinir a tua palavra-passe. Abre este link para escolher uma nova:
+                %s
+
+                O link é válido durante 1 hora e só pode ser usado uma vez. Se não foste tu, ignora este email:
+                a tua palavra-passe actual continua válida.
+
+                Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC
+                """.formatted(e.name(), link));
+    }
+
+    @TransactionalEventListener
+    public void onInvite(AuthEvents.UserInvited e) {
+        String link = props.baseUrl() + "/redefinir?convite=1&token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
+        send(e.email(), "Convite para o Lúmen Pregão", """
+                Olá, %s.
+
+                %s criou uma conta para ti no Lúmen Pregão. Antes de entrares, define a tua palavra-passe neste link:
+                %s
+
+                O link é válido durante 72 horas e só pode ser usado uma vez. Se o teu perfil exigir segundo factor,
+                vais configurá-lo no primeiro login.
+
+                Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC
+                """.formatted(e.name(), e.invitedBy(), link));
+    }
+
     private void send(String to, String subject, String body) {
         executor.submit(() -> {
             try {

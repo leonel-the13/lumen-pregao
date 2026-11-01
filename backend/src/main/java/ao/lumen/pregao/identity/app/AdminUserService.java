@@ -28,8 +28,14 @@ public class AdminUserService {
     private final SessionRevocation revocation;
     private final Clock clock;
 
+    private final ao.lumen.pregao.identity.infra.CourseRepository courses;
+    private final PasswordService passwords;
+
     public AdminUserService(UserRepository users, RoleRepository roles, AuditService audit,
-                            SessionRevocation revocation, Clock clock) {
+                            SessionRevocation revocation, Clock clock,
+                            ao.lumen.pregao.identity.infra.CourseRepository courses, PasswordService passwords) {
+        this.courses = courses;
+        this.passwords = passwords;
         this.users = users;
         this.roles = roles;
         this.audit = audit;
@@ -62,6 +68,55 @@ public class AdminUserService {
         u.getRoles().clear();
         u.getRoles().addAll(roles.findByCodeIn(codes));
         audit.record(actor, "ROLES_CHANGED", "User", userId, Map.of("roles", before), Map.of("roles", new TreeSet<>(codes)));
+        revocation.revokeAll(userId, clock.instant());
+        return row(u);
+    }
+
+    /**
+     * Cria uma conta por convite. A pessoa recebe um email e só entra depois de definir a palavra-passe;
+     * perfis privilegiados configuram o 2.º factor no primeiro login. Não aplica a restrição de domínio do registo.
+     */
+    @Transactional
+    public AdminUserRow invite(UUID actor, String actorName, String name, String rawEmail, Set<String> codes,
+                               UUID courseId, Integer year) {
+        if (!Roles.ALL.containsAll(codes) || codes.contains(Roles.TEAM_CAPTAIN)) {
+            throw DomainException.badRequest("UNKNOWN_ROLE", "Há perfis inválidos no pedido.");
+        }
+        String email = rawEmail.strip().toLowerCase(java.util.Locale.ROOT);
+        if (users.existsByEmail(email)) {
+            throw DomainException.conflict("EMAIL_TAKEN", "Já existe uma conta com este email.");
+        }
+        var course = courseId == null ? null : courses.findById(courseId)
+                .orElseThrow(() -> DomainException.badRequest("COURSE_NOT_FOUND", "O curso escolhido não existe."));
+        String handle = "convidado-" + UUID.randomUUID().toString().substring(0, 8);
+        User u = new User(email, passwords.unusablePasswordHash(), name.strip(), course, year, handle, clock.instant());
+        u.setStatus(UserStatus.INVITED);
+        u.getRoles().addAll(roles.findByCodeIn(codes));
+        users.save(u);
+        audit.record(actor, "USER_INVITED", "User", u.getId(), null, Map.of("roles", new TreeSet<>(codes)));
+        passwords.sendInvite(u, actorName);
+        return row(u);
+    }
+
+    @Transactional
+    public AdminUserRow resendInvite(UUID actor, String actorName, UUID userId) {
+        User u = users.findWithRolesById(userId)
+                .orElseThrow(() -> DomainException.notFound("USER_NOT_FOUND", "O utilizador não existe."));
+        if (u.getStatus() != UserStatus.INVITED) {
+            throw DomainException.conflict("NOT_INVITED", "Esta conta já aceitou o convite.");
+        }
+        passwords.sendInvite(u, actorName);
+        audit.record(actor, "INVITE_RESENT", "User", userId, null, null);
+        return row(u);
+    }
+
+    /** Repõe o 2.º factor (telemóvel perdido): no próximo login a pessoa configura-o de novo. */
+    @Transactional
+    public AdminUserRow resetMfa(UUID actor, UUID userId) {
+        User u = users.findWithRolesById(userId)
+                .orElseThrow(() -> DomainException.notFound("USER_NOT_FOUND", "O utilizador não existe."));
+        u.disableMfa();
+        audit.record(actor, "MFA_RESET", "User", userId, null, null);
         revocation.revokeAll(userId, clock.instant());
         return row(u);
     }

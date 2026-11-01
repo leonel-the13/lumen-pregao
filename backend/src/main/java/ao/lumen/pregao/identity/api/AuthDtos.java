@@ -37,6 +37,12 @@ public final class AuthDtos {
 
     public record Accepted(String status, String detail) {}
 
+    public record ForgotRequest(@NotBlank(message = "Indica o teu email.") @Email(message = "Email inválido.") @Size(max = 254) String email) {}
+
+    public record ResetRequest(
+            @NotBlank @Size(max = 128) String token,
+            @NotBlank(message = "Indica uma palavra-passe.") @Size(min = 12, max = 128, message = "A palavra-passe tem de ter entre 12 e 128 caracteres.") String password) {}
+
     public record CsrfResponse(String headerName, String token) {}
 
     public record CourseDto(UUID id, String code, String name) {}
