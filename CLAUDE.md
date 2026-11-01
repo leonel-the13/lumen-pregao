@@ -175,7 +175,8 @@ O gestor de pacotes e o wrapper Maven são os indicados acima. Se mudarem, actua
   - `DB_URL`, `DB_USER`, `DB_PASSWORD`;
   - `REDIS_URL`;
   - `MAIL_*`;
-  - `SESSION_SECRET`, `MFA_ENC_KEY`;
+  - `MFA_ENC_KEY` (as sessões ficam no Redis com Spring Session; não há `SESSION_SECRET`);
+  - `ALLOWED_EMAIL_LOCAL_PATTERN` (parte local do email de estudante; por defeito `^[0-9]{8}$`);
   - `ALLOWED_EMAIL_DOMAIN` (**a confirmar**);
   - `APP_BASE_URL`.
 - **`.env.example`:** documenta todas as variáveis, sem valores reais. `.env*` está no `.gitignore`.

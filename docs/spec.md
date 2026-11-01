@@ -622,3 +622,32 @@ pela equipa; o contrato completo está em `docs/openapi.json` (verificado no CI)
   «Equipa editorial» (sem acesso); aprovação e publicação por revisor/admin, também em lote (`POST /authoring/versions/bulk-transition`).
 - **Pré-requisitos:** dentro de cada módulo, as salas seguem em sequência; os módulos podem estudar-se em paralelo, excepto
   as Demonstrações financeiras, que exigem o módulo anterior.
+
+### B.5 Abertura a todos os cursos, notificações, avaliações e feedback (01/11/2026)
+- **Quem se regista:** só emails do domínio institucional (`ALLOWED_EMAIL_DOMAIN=isptec.co.ao`) cuja parte local é o número
+  de estudante com 8 dígitos (`ALLOWED_EMAIL_LOCAL_PATTERN`, por defeito `^[0-9]{8}$`; ex.: `20221987@isptec.co.ao`).
+  Erro `EMAIL_NOT_STUDENT`. Docentes e membros da AE entram por convite.
+- **Cursos:** a plataforma é focada no DCSA mas aberta a todo o ISPTEC; V4 acrescenta o curso «Outro curso do ISPTEC» (`OUTRO`).
+- **Notificações** (`notifications`): `GET /me/notifications` (cursor), `GET /me/notifications/unread-count`,
+  `POST /me/notifications/{id}/read`, `POST /me/notifications/read-all`. Geradas por: boas-vindas, conquistas, convites e
+  saídas de equipa, mudanças de estado do contest e publicação de resultados, exame corrigido automaticamente, fluxo editorial
+  (revisores recebem «para rever»; autores recebem aprovação, publicação, devolução e alertas legais), feedback novo (admins),
+  segurança (palavra-passe alterada, código de recuperação usado).
+- **Emails em HTML** com a identidade visual (texto alternativo incluído) e personalizados com o primeiro nome.
+- **Códigos de recuperação do 2.º factor:** 8 códigos `XXXX-XXXX` de uso único, devolvidos uma vez por `POST /auth/mfa`
+  (200 `{status:"enrolled", recoveryCodes}`) ao configurar o 2.º factor; aceites no lugar do código TOTP;
+  `POST /me/mfa/recovery-codes` gera novos. Só o hash fica guardado.
+- **Avaliações de salas** (`room_ratings`): `GET/PUT /rooms/{id}/rating` (1–5 estrelas, comentário opcional ≤ 1000). Só quem
+  já iniciou uma tarefa da sala pode avaliar (`RATING_NOT_ALLOWED`); uma avaliação por pessoa e sala (actualizável).
+- **Feedback da plataforma** (`feedback`): `POST /feedback` (categoria `SUGGESTION|BUG|CONTENT|PRAISE|OTHER`, nota opcional,
+  mensagem, página; 5 por hora); `GET /admin/feedback?status=`, `PATCH /admin/feedback/{id}` (`NEW|READ|RESOLVED`, auditado).
+- **Números públicos:** `GET /public/stats` (sem sessão): trilhas, salas, exercícios publicados, estudantes activos,
+  submissões corrigidas e média das avaliações (só com ≥ 5 respostas). Só agregados.
+- **Eliminação efectiva:** `POST /admin/users/{id}/anonymize` executa um pedido `DELETION_REQUESTED`: apaga nome, email,
+  pseudónimo, 2.º factor e perfis, estado `DELETED`, termina sessões e retira a conta dos rankings. Os registos imutáveis
+  (pontos, auditoria) ficam ligados a um id sem dados pessoais.
+- **Exportação de dados:** passa a incluir exames e contests.
+- **Sessões em Redis** (Spring Session): sobrevivem a deploys e reinícios.
+- **Edição de conteúdo:** `PUT /admin/content/tracks/{id}`, `PUT /admin/content/rooms/{id}`, `PUT /admin/content/tasks/{id}`
+  (título, pontos e versão do exercício; as tentativas antigas mantêm a sua versão).
+- **Equipas:** `POST /teams/{id}/leave` (membro não capitão, antes do bloqueio; o capitão é notificado).

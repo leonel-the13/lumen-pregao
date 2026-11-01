@@ -61,6 +61,7 @@ public class AuthoringService {
     private final SolutionPreviewer previewer;
     private final UserDirectory directory;
     private final AuditService audit;
+    private final ao.lumen.pregao.notification.app.NotificationService notifications;
     private final AppProperties props;
     private final ObjectMapper json;
     private final Clock clock;
@@ -70,7 +71,8 @@ public class AuthoringService {
                             LegalSourceRepository sources, ExerciseCatalog catalog, ParamGenerator generator,
                             StatementRenderer renderer, GradingService grading, SolutionPreviewer previewer,
                             UserDirectory directory, AuditService audit, AppProperties props, ObjectMapper json,
-                            Clock clock) {
+                            Clock clock, ao.lumen.pregao.notification.app.NotificationService notifications) {
+        this.notifications = notifications;
         this.exercises = exercises;
         this.versions = versions;
         this.workflows = workflows;
@@ -217,6 +219,18 @@ public class AuthoringService {
         w.moveTo(req.to(), me.id(), req.notes() == null ? null : MarkdownSanitizer.clean(req.notes()), clock.instant());
         audit.record(me.id(), "EDITORIAL_" + req.to(), "ExerciseVersion", versionId,
                 Map.of("status", from), Map.of("status", req.to()));
+        String code = v.getExercise().getCode();
+        String link = "/autoria/" + v.getExercise().getId();
+        switch (req.to()) {
+            case IN_REVIEW -> notifications.notifyAll(directory.idsWithRoles(java.util.Set.of("REVIEWER", "ADMIN")).stream()
+                    .filter(id -> !id.equals(me.id())).toList(), "EDITORIAL", "Exercício para rever: " + code, v.getTitle(), link);
+            case APPROVED -> notifications.notify(v.getExercise().getAuthorId(), "EDITORIAL", code + " aprovado", v.getTitle(), link);
+            case PUBLISHED -> notifications.notify(v.getExercise().getAuthorId(), "EDITORIAL", code + " publicado",
+                    "Já está visível para os estudantes.", link);
+            case DRAFT -> notifications.notify(v.getExercise().getAuthorId(), "EDITORIAL", code + " devolvido para alterações",
+                    req.notes() == null ? "Vê as notas do revisor." : req.notes(), link);
+            default -> { }
+        }
         return toDto(v, w, references.findByVersionIds(List.of(versionId)));
     }
 

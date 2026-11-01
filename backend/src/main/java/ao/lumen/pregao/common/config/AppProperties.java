@@ -19,9 +19,9 @@ public record AppProperties(
         Contest contest,
         @DefaultValue DevSeed devSeed) {
 
-    public record Identity(String allowedEmailDomain, Duration verificationTtl, int rememberMeDays) {}
+    public record Identity(String allowedEmailDomain, String emailLocalPattern, Duration verificationTtl, int rememberMeDays) {}
 
-    public record Security(String mfaEncKey, String sessionSecret, RateLimit rateLimit) {}
+    public record Security(String mfaEncKey, RateLimit rateLimit) {}
 
     public record RateLimit(int loginMaxFailures, int loginMaxFailuresPerIp, Duration loginWindow, int submissionsPerMinute,
                             int registerPerHour, int invitesPerHour) {}

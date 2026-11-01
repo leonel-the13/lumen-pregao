@@ -19,6 +19,8 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, UUID> {
 
     List<TeamMember> findByUserId(UUID userId);
 
+    List<TeamMember> findByContestId(UUID contestId);
+
     long countByTeamId(UUID teamId);
 
     @Query("select count(m) from TeamMember m where m.teamId = :teamId and m.confirmedAt is not null")

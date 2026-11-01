@@ -158,6 +158,41 @@ public class ContentAdminService {
         return t.getId();
     }
 
+    @Transactional
+    public void editTrack(UUID actor, UUID id, TrackInput in) {
+        Track t = tracks.findById(id).orElseThrow(() -> DomainException.notFound("TRACK_NOT_FOUND", "A trilha não existe."));
+        t.edit(in.title(), in.summary(), MarkdownSanitizer.clean(in.description() == null ? "" : in.description()), in.difficulty(),
+                in.topic(), new ArrayList<>(in.courses() == null ? t.getCourses() : in.courses()),
+                new ArrayList<>(in.competencies() == null ? t.getCompetencies() : in.competencies()),
+                in.completionRule() == null ? t.getCompletionRule() : json.createObjectNode().put("text", in.completionRule()),
+                in.estHours(), t.getPosition());
+        if (in.status() != null) t.setStatus(ContentStatus.valueOf(in.status()));
+        audit.record(actor, "TRACK_EDITED", "Track", id, null, Map.of("title", in.title()));
+    }
+
+    @Transactional
+    public void editRoom(UUID actor, UUID id, RoomInput in) {
+        Room r = rooms.findById(id).orElseThrow(() -> DomainException.notFound("ROOM_NOT_FOUND", "A sala não existe."));
+        r.edit(in.title(), in.description(), new ArrayList<>(in.objectives() == null ? r.getObjectives() : in.objectives()),
+                in.difficulty(), in.estMinutes(), MarkdownSanitizer.clean(in.context() == null ? r.getContext() : in.context()));
+        if (in.prerequisites() != null) {
+            if (in.prerequisites().contains(id)) throw DomainException.rule("PREREQUISITE_CYCLE", "Uma sala não pode ser pré-requisito de si própria.");
+            r.setPrerequisites(new ArrayList<>(in.prerequisites()));
+        }
+        if (in.status() != null) r.setStatus(ContentStatus.valueOf(in.status()));
+        audit.record(actor, "ROOM_EDITED", "Room", id, null, Map.of("title", in.title()));
+    }
+
+    /** Muda título, pontos ou a versão do exercício (ex.: nova versão publicada). As tentativas antigas mantêm a sua versão. */
+    @Transactional
+    public void editTask(UUID actor, UUID id, TaskInput in) {
+        Task t = tasks.findById(id).orElseThrow(() -> DomainException.notFound("TASK_NOT_FOUND", "A tarefa não existe."));
+        catalog.definition(in.exerciseVersionId());
+        var before = Map.of("points", t.getPoints(), "exerciseVersionId", t.getExerciseVersionId());
+        t.edit(in.title(), in.points(), in.exerciseVersionId());
+        audit.record(actor, "TASK_EDITED", "Task", id, before, Map.of("points", in.points(), "exerciseVersionId", in.exerciseVersionId()));
+    }
+
     /** Só remove tarefas sem tentativas (o histórico dos estudantes nunca se perde). */
     @Transactional
     public void removeTask(UUID actor, UUID taskId) {

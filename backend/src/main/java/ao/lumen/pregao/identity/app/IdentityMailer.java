@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ao.lumen.pregao.common.mail.EmailSender;
+import ao.lumen.pregao.common.mail.EmailTemplate;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -27,68 +29,52 @@ public class IdentityMailer {
     @TransactionalEventListener
     public void onVerification(AuthEvents.VerificationRequested e) {
         String link = props.baseUrl() + "/verificar?token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
-        send(e.email(), "Confirma o teu email · Lúmen Pregão", """
-                Olá, %s.
-
-                Para activar a tua conta no Lúmen Pregão, abre este link no mesmo dispositivo:
-                %s
-
-                O link é válido durante %d horas. Se não criaste esta conta, ignora este email.
-
-                Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC
-                """.formatted(e.name(), link, props.identity().verificationTtl().toHours()));
+        send(e.email(), EmailTemplate.build("Confirma o teu email · Lúmen Pregão", "Falta um passo para activares a tua conta.",
+                "Olá, " + EmailTemplate.firstName(e.name()) + "!",
+                List.of("Obrigado por te juntares ao Lúmen Pregão, o laboratório de competências do DCSA: trilhas práticas, "
+                        + "exames e a Maratona de casos, com correcção no servidor.",
+                        "Para activares a conta, confirma que este email é teu. Abre o link no mesmo dispositivo onde te registaste."),
+                "Confirmar o meu email", link,
+                "O link é válido durante " + props.identity().verificationTtl().toHours() + " horas. Se não criaste esta conta, ignora este email."));
     }
 
     @TransactionalEventListener(fallbackExecution = true)
     public void onDuplicate(AuthEvents.DuplicateRegistration e) {
-        send(e.email(), "Já tens conta · Lúmen Pregão", """
-                Olá.
-
-                Alguém tentou criar uma conta com este email, mas ela já existe.
-                Se foste tu, entra em %s/entrar. Se não foste, podes ignorar este email.
-
-                Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC
-                """.formatted(props.baseUrl()));
+        send(e.email(), EmailTemplate.build("Já tens conta · Lúmen Pregão", "Alguém tentou criar uma conta com o teu email.",
+                "Olá!",
+                List.of("Alguém tentou criar uma conta no Lúmen Pregão com este email, mas ela já existe.",
+                        "Se foste tu, entra com a tua palavra-passe. Se não te lembras dela, usa «Esqueci-me» no ecrã de entrada."),
+                "Entrar no Lúmen Pregão", props.baseUrl() + "/entrar", "Se não foste tu, podes ignorar este email: a tua conta não foi alterada."));
     }
 
     @TransactionalEventListener
     public void onReset(AuthEvents.PasswordResetRequested e) {
         String link = props.baseUrl() + "/redefinir?token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
-        send(e.email(), "Redefinir a palavra-passe · Lúmen Pregão", """
-                Olá, %s.
-
-                Recebemos um pedido para redefinir a tua palavra-passe. Abre este link para escolher uma nova:
-                %s
-
-                O link é válido durante 1 hora e só pode ser usado uma vez. Se não foste tu, ignora este email:
-                a tua palavra-passe actual continua válida.
-
-                Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC
-                """.formatted(e.name(), link));
+        send(e.email(), EmailTemplate.build("Redefinir a palavra-passe · Lúmen Pregão", "Escolhe uma nova palavra-passe.",
+                "Olá, " + EmailTemplate.firstName(e.name()) + "!",
+                List.of("Recebemos um pedido para redefinir a palavra-passe da tua conta.",
+                        "Ao definires a nova palavra-passe, as sessões abertas noutros dispositivos terminam."),
+                "Escolher nova palavra-passe", link,
+                "O link é válido durante 1 hora e só pode ser usado uma vez. Se não foste tu, ignora este email: a palavra-passe actual continua válida."));
     }
 
     @TransactionalEventListener
     public void onInvite(AuthEvents.UserInvited e) {
         String link = props.baseUrl() + "/redefinir?convite=1&token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
-        send(e.email(), "Convite para o Lúmen Pregão", """
-                Olá, %s.
-
-                %s criou uma conta para ti no Lúmen Pregão. Antes de entrares, define a tua palavra-passe neste link:
-                %s
-
-                O link é válido durante 72 horas e só pode ser usado uma vez. Se o teu perfil exigir segundo factor,
-                vais configurá-lo no primeiro login.
-
-                Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC
-                """.formatted(e.name(), e.invitedBy(), link));
+        send(e.email(), EmailTemplate.build("Convite para o Lúmen Pregão", e.invitedBy() + " convidou-te para a equipa da plataforma.",
+                "Olá, " + EmailTemplate.firstName(e.name()) + "!",
+                List.of(e.invitedBy() + " criou uma conta para ti no Lúmen Pregão, a plataforma de prática do DCSA da Associação de Estudantes.",
+                        "Antes de entrares, define a tua palavra-passe. Se o teu perfil for de administração, revisão, júri ou organização, "
+                                + "vais configurar o segundo factor no primeiro login."),
+                "Activar a minha conta", link, "O link é válido durante 72 horas e só pode ser usado uma vez."));
     }
 
-    private void send(String to, String subject, String body) {
+    private void send(String to, EmailTemplate.Email email) {
         executor.submit(() -> {
             try {
-                mail.send(to, subject, body);
+                mail.send(to, email);
             } catch (RuntimeException ex) {
-                log.warn("Falha ao enviar email «{}»: {}", subject, ex.getMessage());
+                log.warn("Falha ao enviar email «{}»: {}", email.subject(), ex.getMessage());
             }
         });
     }

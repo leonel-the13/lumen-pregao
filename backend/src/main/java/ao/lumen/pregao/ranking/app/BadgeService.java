@@ -18,8 +18,11 @@ public class BadgeService {
     private final BadgeRepository badges;
     private final UserBadgeRepository userBadges;
     private final PointService points;
+    private final ao.lumen.pregao.notification.app.NotificationService notifications;
 
-    public BadgeService(BadgeRepository badges, UserBadgeRepository userBadges, @Lazy PointService points) {
+    public BadgeService(BadgeRepository badges, UserBadgeRepository userBadges, @Lazy PointService points,
+                        ao.lumen.pregao.notification.app.NotificationService notifications) {
+        this.notifications = notifications;
         this.badges = badges;
         this.userBadges = userBadges;
         this.points = points;
@@ -34,6 +37,10 @@ public class BadgeService {
         boolean inserted = userBadges.insertIfAbsent(UuidV7.next(), userId, badge.getId()) == 1;
         if (inserted && badge.getPoints() > 0) {
             points.award(userId, null, PointSource.BADGE, code, badge.getPoints());
+        }
+        if (inserted) {
+            notifications.notify(userId, "BADGE", "Nova conquista: " + badge.getTitle(),
+                    badge.getDescription() + (badge.getPoints() > 0 ? " · +" + badge.getPoints() + " pts" : ""), "/portefolio");
         }
         return inserted;
     }

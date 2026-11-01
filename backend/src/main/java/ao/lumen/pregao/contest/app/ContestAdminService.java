@@ -45,12 +45,14 @@ public class ContestAdminService {
     private final PointService points;
     private final BadgeService badges;
     private final AuditService audit;
+    private final ao.lumen.pregao.notification.app.NotificationService notifications;
     private final ApplicationEventPublisher events;
 
     public ContestAdminService(ContestRepository contests, ContestProblemRepository problems, TeamRepository teams,
                                TeamMemberRepository members, ScoreboardRepository scoreboards,
                                SubmissionRepository submissions, ExerciseCatalog catalog, PointService points,
-                               BadgeService badges, AuditService audit, ApplicationEventPublisher events) {
+                               BadgeService badges, AuditService audit, ApplicationEventPublisher events, ao.lumen.pregao.notification.app.NotificationService notifications) {
+        this.notifications = notifications;
         this.contests = contests;
         this.problems = problems;
         this.teams = teams;
@@ -136,6 +138,8 @@ public class ContestAdminService {
             }
         }
         transition(me, c, ContestState.RESULTS_PUBLISHED);
+        notifications.notifyAll(byTeam.values().stream().flatMap(List::stream).map(TeamMember::getUserId).toList(), "CONTEST",
+                c.getTitle(), "Os resultados foram publicados. Vê a classificação final.", "/competicoes/" + id);
         return row(c);
     }
 

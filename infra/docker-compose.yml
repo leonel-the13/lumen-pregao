@@ -36,7 +36,6 @@ services:
       REDIS_URL: redis://redis:6379
       MAIL_HOST: mailpit
       MAIL_PORT: 1025
-      SESSION_SECRET: ${SESSION_SECRET}
       MFA_ENC_KEY: ${MFA_ENC_KEY}
       ALLOWED_EMAIL_DOMAIN: ${ALLOWED_EMAIL_DOMAIN}
       APP_BASE_URL: ${APP_BASE_URL:-http://localhost:3000}

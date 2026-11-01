@@ -76,6 +76,12 @@ public class ContestController {
         return contests.join(id, me);
     }
 
+    @PostMapping("/teams/{id}/leave")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void leave(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id) {
+        contests.leave(id, me);
+    }
+
     @PostMapping("/teams/{id}/decline")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void decline(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id) {

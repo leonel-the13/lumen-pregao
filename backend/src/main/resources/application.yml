@@ -27,6 +27,10 @@ spring:
   data:
     redis:
       url: ${REDIS_URL:redis://localhost:6379}
+  session:
+    redis:
+      namespace: lumen:session
+      flush-mode: on-save
   mail:
     host: ${MAIL_HOST:localhost}
     port: ${MAIL_PORT:1025}
@@ -94,11 +98,12 @@ app:
   identity:
     # domínio institucional — a confirmar (spec §4.1); vazio = recusa todos os registos
     allowed-email-domain: ${ALLOWED_EMAIL_DOMAIN:}
+    # parte local do email de estudante: número de estudante com 8 dígitos (ex.: 20221987@isptec.co.ao); vazio = sem regra
+    email-local-pattern: ${ALLOWED_EMAIL_LOCAL_PATTERN:^[0-9]{8}$}
     verification-ttl: 24h
     remember-me-days: 14
   security:
     mfa-enc-key: ${MFA_ENC_KEY:}
-    session-secret: ${SESSION_SECRET:}
     rate-limit:
       login-max-failures: 5
       # por IP é mais alto porque a rede do campus partilha IPs (a confirmar)

@@ -34,12 +34,14 @@ public class PasswordService {
     private final RateLimiter limiter;
     private final SessionRevocation revocation;
     private final AuditService audit;
+    private final ao.lumen.pregao.notification.app.NotificationService notifications;
     private final ApplicationEventPublisher events;
     private final Clock clock;
 
     public PasswordService(UserRepository users, PasswordTokenRepository tokens, PasswordEncoder encoder,
                            RateLimiter limiter, SessionRevocation revocation, AuditService audit,
-                           ApplicationEventPublisher events, Clock clock) {
+                           ApplicationEventPublisher events, Clock clock, ao.lumen.pregao.notification.app.NotificationService notifications) {
+        this.notifications = notifications;
         this.users = users;
         this.tokens = tokens;
         this.encoder = encoder;
@@ -86,6 +88,9 @@ public class PasswordService {
         tokens.invalidateAll(u.getId(), now);
         t.use(now);
         audit.record(u.getId(), invite ? "INVITE_ACCEPTED" : "PASSWORD_RESET", "User", u.getId(), null, null);
+        notifications.notify(u.getId(), "SECURITY", invite ? "Conta activada" : "Palavra-passe alterada",
+                invite ? "A tua conta está pronta. Se o teu perfil o exigir, configura o 2.º factor no primeiro login."
+                        : "Se não foste tu, contacta a administração de imediato.", "/definicoes");
         revocation.revokeAll(u.getId(), now);
         return u.getEmail();
     }

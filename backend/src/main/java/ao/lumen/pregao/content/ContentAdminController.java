@@ -59,6 +59,21 @@ public class ContentAdminController {
         content.setTrackStatus(me.id(), id, in.status());
     }
 
+    @org.springframework.web.bind.annotation.PutMapping("/tracks/{id}")
+    public void editTrack(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id, @Valid @RequestBody TrackInput in) {
+        content.editTrack(me.id(), id, in);
+    }
+
+    @org.springframework.web.bind.annotation.PutMapping("/rooms/{id}")
+    public void editRoom(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id, @Valid @RequestBody RoomInput in) {
+        content.editRoom(me.id(), id, in);
+    }
+
+    @org.springframework.web.bind.annotation.PutMapping("/tasks/{id}")
+    public void editTask(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id, @Valid @RequestBody TaskInput in) {
+        content.editTask(me.id(), id, in);
+    }
+
     @PostMapping("/tracks/{id}/modules")
     @ResponseStatus(HttpStatus.CREATED)
     public Map<String, UUID> addModule(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id, @Valid @RequestBody ModuleInput in) {

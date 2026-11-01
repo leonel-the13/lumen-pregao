@@ -31,6 +31,12 @@ public class Task extends BaseEntity {
         this.points = points;
     }
 
+    public void edit(String title, int points, UUID exerciseVersionId) {
+        this.title = title;
+        this.points = points;
+        this.exerciseVersionId = exerciseVersionId;
+    }
+
     public Room getRoom() { return room; }
     public int getPosition() { return position; }
     public String getTitle() { return title; }

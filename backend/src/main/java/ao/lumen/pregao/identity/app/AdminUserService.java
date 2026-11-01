@@ -30,10 +30,13 @@ public class AdminUserService {
 
     private final ao.lumen.pregao.identity.infra.CourseRepository courses;
     private final PasswordService passwords;
+    private final org.springframework.context.ApplicationEventPublisher events;
 
     public AdminUserService(UserRepository users, RoleRepository roles, AuditService audit,
                             SessionRevocation revocation, Clock clock,
-                            ao.lumen.pregao.identity.infra.CourseRepository courses, PasswordService passwords) {
+                            ao.lumen.pregao.identity.infra.CourseRepository courses, PasswordService passwords,
+                            org.springframework.context.ApplicationEventPublisher events) {
+        this.events = events;
         this.courses = courses;
         this.passwords = passwords;
         this.users = users;
@@ -107,6 +110,22 @@ public class AdminUserService {
         }
         passwords.sendInvite(u, actorName);
         audit.record(actor, "INVITE_RESENT", "User", userId, null, null);
+        return row(u);
+    }
+
+    /** Executa um pedido de eliminação: anonimiza a conta (irreversível) e termina as sessões. */
+    @Transactional
+    public AdminUserRow anonymize(UUID actor, UUID userId) {
+        User u = users.findWithRolesById(userId)
+                .orElseThrow(() -> DomainException.notFound("USER_NOT_FOUND", "O utilizador não existe."));
+        if (u.getStatus() != UserStatus.DELETION_REQUESTED) {
+            throw DomainException.conflict("NO_DELETION_REQUEST", "Só é possível eliminar contas com pedido de eliminação.");
+        }
+        u.getRoles().clear();
+        u.anonymize(passwords.unusablePasswordHash(), clock.instant());
+        audit.record(actor, "ACCOUNT_DELETED", "User", userId, null, null);
+        events.publishEvent(new AuthEvents.AccountDeleted(userId));
+        revocation.revokeAll(userId, clock.instant());
         return row(u);
     }
 

@@ -62,6 +62,7 @@ public class ExamService {
     private final BadgeService badges;
     private final CatalogService rooms;
     private final AuditService audit;
+    private final ao.lumen.pregao.notification.app.NotificationService notifications;
     private final AppProperties props;
     private final ObjectMapper json;
     private final Clock clock;
@@ -69,7 +70,8 @@ public class ExamService {
     public ExamService(ExamRepository exams, ExamSessionRepository sessions, ExerciseCatalog catalog,
                        ParamGenerator generator, StatementRenderer renderer, GradingService grading,
                        PointService points, BadgeService badges, CatalogService rooms, AuditService audit,
-                       AppProperties props, ObjectMapper json, Clock clock) {
+                       AppProperties props, ObjectMapper json, Clock clock, ao.lumen.pregao.notification.app.NotificationService notifications) {
+        this.notifications = notifications;
         this.exams = exams;
         this.sessions = sessions;
         this.catalog = catalog;
@@ -211,6 +213,9 @@ public class ExamService {
         }
         if (s.getStatus() == ExamSessionStatus.SUBMITTED || s.getStatus() == ExamSessionStatus.EXPIRED_AUTO_SUBMITTED) {
             grade(s);
+            notifications.notify(s.getUserId(), "EXAM", "Relatório do exame disponível",
+                    "O tempo terminou e as respostas guardadas foram corrigidas. Nota: " + s.getGrade().stripTrailingZeros().toPlainString().replace('.', ',') + "/20.",
+                    "/exames/sessao/" + s.getId());
         }
     }
 

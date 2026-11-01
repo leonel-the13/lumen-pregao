@@ -35,13 +35,17 @@ public class ContestLifecycle {
     private final ScoreboardRepository scoreboards;
     private final SubmissionRepository submissions;
     private final AuditService audit;
+    private final ao.lumen.pregao.notification.app.NotificationService notifications;
+    private final ao.lumen.pregao.contest.infra.TeamMemberRepository members;
     private final ApplicationEventPublisher events;
     private final TransactionTemplate tx;
     private final Clock clock;
 
     public ContestLifecycle(ContestRepository contests, TeamRepository teams, ScoreboardRepository scoreboards,
                             SubmissionRepository submissions, AuditService audit, ApplicationEventPublisher events,
-                            TransactionTemplate tx, Clock clock) {
+                            TransactionTemplate tx, Clock clock, ao.lumen.pregao.notification.app.NotificationService notifications, ao.lumen.pregao.contest.infra.TeamMemberRepository members) {
+        this.notifications = notifications;
+        this.members = members;
         this.contests = contests;
         this.teams = teams;
         this.scoreboards = scoreboards;
@@ -91,6 +95,17 @@ public class ContestLifecycle {
         c.moveTo(next);
         audit.record(null, "CONTEST_" + next, "Contest", id, Map.of("state", from), Map.of("state", next));
         events.publishEvent(new ContestEvents.StateChanged(id, next));
+        String msg = switch (next) {
+            case WAITING_ROOM -> "A sala de espera abriu. Confirma a tua equipa antes do início.";
+            case RUNNING -> "Os enunciados foram libertados. Boa sorte!";
+            case FROZEN -> "O ranking congelou. Continuas a ver os teus resultados.";
+            case SUBMISSIONS_CLOSED -> "As submissões terminaram. Os resultados são anunciados em breve.";
+            default -> null;
+        };
+        if (msg != null) {
+            notifications.notifyAll(members.findByContestId(id).stream().map(m -> m.getUserId()).toList(), "CONTEST",
+                    c.getTitle(), msg, "/competicoes/" + id);
+        }
         log.info("Contest {}: {} → {}", c.getSlug(), from, next);
         return true;
     }

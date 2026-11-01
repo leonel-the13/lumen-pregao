@@ -47,6 +47,11 @@ public class AdminUserController {
         return service.resendInvite(me.id(), me.name(), id);
     }
 
+    @org.springframework.web.bind.annotation.PostMapping("/{id}/anonymize")
+    public AdminUserRow anonymize(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id) {
+        return service.anonymize(me.id(), id);
+    }
+
     @org.springframework.web.bind.annotation.PostMapping("/{id}/reset-mfa")
     public AdminUserRow resetMfa(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id) {
         return service.resetMfa(me.id(), id);

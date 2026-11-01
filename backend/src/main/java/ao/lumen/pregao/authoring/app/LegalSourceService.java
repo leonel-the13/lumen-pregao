@@ -21,11 +21,13 @@ public class LegalSourceService {
     private final LegalSourceRepository sources;
     private final ReviewWorkflowRepository workflows;
     private final AuditService audit;
+    private final ao.lumen.pregao.notification.app.NotificationService notifications;
     private final AppProperties props;
     private final Clock clock;
 
     public LegalSourceService(LegalSourceRepository sources, ReviewWorkflowRepository workflows, AuditService audit,
-                              AppProperties props, Clock clock) {
+                              AppProperties props, Clock clock, ao.lumen.pregao.notification.app.NotificationService notifications) {
+        this.notifications = notifications;
         this.sources = sources;
         this.workflows = workflows;
         this.audit = audit;
@@ -68,6 +70,10 @@ public class LegalSourceService {
                 var from = w.getStatus();
                 w.legalAlert(now, unpublish);
                 affected++;
+                notifications.notify(w.getExerciseVersion().getExercise().getAuthorId(), "LEGAL_ALERT",
+                        "Norma alterada: " + w.getExerciseVersion().getExercise().getCode(),
+                        "«" + s.getTitle() + "» tem nova versão. Revê o exercício e envia-o de novo para revisão.",
+                        "/autoria/" + w.getExerciseVersion().getExercise().getId());
                 if (from != w.getStatus()) {
                     audit.record(actor, "EDITORIAL_" + w.getStatus(), "ExerciseVersion", w.getExerciseVersion().getId(),
                             Map.of("status", from), Map.of("status", w.getStatus(), "reason", "LEGAL_SOURCE_VERSION"));

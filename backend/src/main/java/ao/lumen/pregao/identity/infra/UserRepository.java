@@ -26,6 +26,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @EntityGraph(attributePaths = {"roles", "course"})
     Optional<User> findByPortfolioHandle(String handle);
 
+    @Query("select u.id from User u join u.roles r where r.code in :codes and u.status = 'ACTIVE'")
+    List<UUID> idsWithRoles(@Param("codes") Collection<String> codes);
+
     boolean existsByEmail(String email);
 
     boolean existsByPseudonym(String pseudonym);

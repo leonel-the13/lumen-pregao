@@ -1,6 +1,7 @@
 app:
   identity:
     allowed-email-domain: exemplo.ao
+    email-local-pattern: ""
   security:
     mfa-enc-key: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=
     session-secret: dGVzdC1zZXNzaW9uLXNlY3JldC0zMi1ieXRlcy1sb25n

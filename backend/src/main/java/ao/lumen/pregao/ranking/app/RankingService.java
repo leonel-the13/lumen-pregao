@@ -102,7 +102,7 @@ public class RankingService {
             pos++;
             UUID id = UUID.fromString(t.getValue());
             var u = users.get(id);
-            if (u == null) continue;
+            if (u == null || (!u.active() && !id.equals(me))) continue;
             boolean isMe = id.equals(me);
             String name = isMe ? "Tu · " + u.shortName() : u.publicName();
             String initials = isMe ? u.initials() : u.publicInitials();

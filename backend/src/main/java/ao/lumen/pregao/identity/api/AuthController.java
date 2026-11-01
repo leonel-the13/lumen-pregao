@@ -99,10 +99,17 @@ public class AuthController {
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
+    /** 204 no login normal; 200 com os códigos de recuperação quando o 2.º factor acabou de ser configurado. */
     @PostMapping("/auth/mfa")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void mfa(@Valid @RequestBody MfaRequest r, HttpServletRequest req, HttpServletResponse res) {
-        auth.mfa(r.code(), req, res);
+    public ResponseEntity<AuthDtos.MfaResult> mfa(@Valid @RequestBody MfaRequest r, HttpServletRequest req, HttpServletResponse res) {
+        var codes = auth.mfa(r.code(), req, res);
+        return codes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(new AuthDtos.MfaResult("enrolled", codes));
+    }
+
+    @PostMapping("/me/mfa/recovery-codes")
+    public AuthDtos.MfaResult regenerate(@org.springframework.security.core.annotation.AuthenticationPrincipal
+                                         ao.lumen.pregao.common.security.SessionUser me) {
+        return new AuthDtos.MfaResult("regenerated", auth.regenerateRecoveryCodes(me.id()));
     }
 
     @PostMapping("/auth/logout")

@@ -104,8 +104,19 @@ class IdentityIT extends IntegrationTest {
         if (step.body().has("secret")) {
             rememberSecret("organizador@exemplo.ao", step.body().path("secret").asText());
             String code = Totp.generate(step.body().path("secret").asText(), Instant.now().getEpochSecond() / 30);
-            assertThat(a.post("/auth/mfa", Map.of("code", code)).status()).isEqualTo(204);
+            var enrolled = a.post("/auth/mfa", Map.of("code", code));
+            assertThat(enrolled.status()).isEqualTo(200);
+            assertThat(enrolled.body().path("recoveryCodes").size()).isEqualTo(8);
             assertThat(a.get("/me").body().path("roles").toString()).contains("CONTEST_ORGANIZER");
+
+            // Um código de recuperação substitui o código da aplicação, uma única vez.
+            String recovery = enrolled.body().path("recoveryCodes").get(0).asText();
+            Api b = api();
+            assertThat(b.login("organizador@exemplo.ao", PASSWORD).body().path("status").asText()).isEqualTo("mfa_required");
+            assertThat(b.post("/auth/mfa", Map.of("code", recovery)).status()).isEqualTo(204);
+            Api c = api();
+            c.login("organizador@exemplo.ao", PASSWORD);
+            assertThat(c.post("/auth/mfa", Map.of("code", recovery)).status()).isEqualTo(401);
         }
     }
 

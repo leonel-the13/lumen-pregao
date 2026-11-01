@@ -59,6 +59,11 @@ public class UserDirectory {
                 .orElseThrow(() -> DomainException.notFound("USER_NOT_FOUND", "O utilizador não existe."));
     }
 
+    /** Contas activas com algum dos perfis (ex.: revisores e administradores, para notificações). */
+    public java.util.List<UUID> idsWithRoles(java.util.Set<String> roles) {
+        return users.idsWithRoles(roles);
+    }
+
     public Optional<UserSummary> byEmail(String email) {
         return users.findByEmail(email.strip().toLowerCase(Locale.ROOT)).map(UserDirectory::toSummary);
     }

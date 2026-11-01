@@ -50,6 +50,8 @@ public class User extends BaseEntity {
     private Instant lastLoginAt;
     @Column(name = "deletion_requested_at")
     private Instant deletionRequestedAt;
+    @Column(name = "deleted_at")
+    private Instant deletedAt;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
@@ -80,6 +82,24 @@ public class User extends BaseEntity {
         this.status = UserStatus.DELETION_REQUESTED;
         this.deletionRequestedAt = at;
     }
+    /** Remove os dados pessoais; mantém o id para a integridade dos registos imutáveis (pontos, auditoria). */
+    public void anonymize(String unusableHash, Instant at) {
+        String tag = getId().toString().substring(0, 8);
+        this.email = "eliminado-" + tag + "@eliminado.invalid";
+        this.name = "Conta eliminada";
+        this.pseudonym = null;
+        this.rankingVisibility = RankingVisibility.HIDDEN;
+        this.portfolioPublic = false;
+        this.portfolioHandle = "eliminado-" + tag;
+        this.passwordHash = unusableHash;
+        this.mfaSecretEnc = null;
+        this.mfaEnabled = false;
+        this.course = null;
+        this.year = null;
+        this.status = UserStatus.DELETED;
+        this.deletedAt = at;
+    }
+
     public void disableMfa() {
         this.mfaSecretEnc = null;
         this.mfaEnabled = false;

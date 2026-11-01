@@ -66,8 +66,8 @@ limites de horas de computação do teu plano antes de escolher o plano gratuito
 | `SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE` | `10` |
 | `REDIS_URL` | Internal URL do Key Value |
 | `MFA_ENC_KEY` | `openssl rand -base64 32` (**guardar cópia segura**: se mudar, os 2.º factores registados deixam de funcionar) |
-| `SESSION_SECRET` | `openssl rand -base64 32` (reservado; hoje não é usado pelo código) |
-| `ALLOWED_EMAIL_DOMAIN` | domínio institucional do ISPTEC (**a confirmar**; vazio = ninguém se regista) |
+| `ALLOWED_EMAIL_DOMAIN` | `isptec.co.ao` (vazio = ninguém se regista) |
+| `ALLOWED_EMAIL_LOCAL_PATTERN` | opcional; por defeito `^[0-9]{8}$`: só emails de estudante que começam pelo número de 8 dígitos (ex.: `20221987@isptec.co.ao`). Contas de docentes e da AE entram por convite na Administração |
 | `APP_BASE_URL` | URL público do frontend, ex.: `https://pregao.exemplo.ao` (usado nos links dos emails) |
 | `SESSION_COOKIE_SECURE` | `true` |
 | `RESEND_API_KEY`, `MAIL_FROM` | API do Resend; `MAIL_FROM` num domínio verificado no Resend |
@@ -164,7 +164,7 @@ Consequências:
 
 - [ ] `SPRING_PROFILES_ACTIVE=prod` (nunca `dev`)
 - [ ] `MFA_ENC_KEY` gerada e guardada fora do Render
-- [ ] `ALLOWED_EMAIL_DOMAIN` confirmado com a AE
+- [x] `ALLOWED_EMAIL_DOMAIN=isptec.co.ao`
 - [ ] Email de verificação recebido numa conta real (SMTP ou API)
 - [ ] IP do cliente correcto nos logs de auditoria (§6)
 - [ ] SSE a funcionar através do Cloudflare (§5.5)

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
 /**
@@ -30,13 +29,18 @@ public class MailConfig {
             return new ResendEmailSender(key, props.mailFrom(), json);
         }
         log.info("Email: SMTP (RESEND_API_KEY não definida)");
-        return (to, subject, body) -> {
-            SimpleMailMessage m = new SimpleMailMessage();
-            m.setFrom(props.mailFrom());
-            m.setTo(to);
-            m.setSubject(subject);
-            m.setText(body);
-            smtp.send(m);
+        return (to, email) -> {
+            try {
+                var message = smtp.createMimeMessage();
+                var helper = new org.springframework.mail.javamail.MimeMessageHelper(message, true, "UTF-8");
+                helper.setFrom(props.mailFrom());
+                helper.setTo(to);
+                helper.setSubject(email.subject());
+                helper.setText(email.text(), email.html());
+                smtp.send(message);
+            } catch (jakarta.mail.MessagingException e) {
+                throw new IllegalStateException("Falha ao preparar o email: " + e.getMessage(), e);
+            }
         };
     }
 
@@ -54,9 +58,10 @@ public class MailConfig {
         }
 
         @Override
-        public void send(String to, String subject, String body) {
+        public void send(String to, EmailTemplate.Email email) {
             try {
-                String payload = json.writeValueAsString(Map.of("from", from, "to", List.of(to), "subject", subject, "text", body));
+                String payload = json.writeValueAsString(Map.of("from", from, "to", List.of(to), "subject", email.subject(),
+                        "text", email.text(), "html", email.html()));
                 HttpResponse<String> r = http.send(HttpRequest.newBuilder(ENDPOINT).timeout(Duration.ofSeconds(15))
                         .header("Authorization", "Bearer " + key).header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(payload)).build(), HttpResponse.BodyHandlers.ofString());

@@ -30,7 +30,11 @@ public final class AuthDtos {
             @NotBlank @Size(max = 128) String password,
             boolean remember) {}
 
-    public record MfaRequest(@NotBlank @Pattern(regexp = "\\d{6}", message = "O código tem 6 dígitos.") String code) {}
+    /** Código de 6 dígitos da aplicação ou código de recuperação (XXXX-XXXX). */
+    public record MfaRequest(@NotBlank @Pattern(regexp = "\\d{6}|[A-Za-z0-9]{4}-?[A-Za-z0-9]{4}",
+            message = "Escreve o código de 6 dígitos ou um código de recuperação.") String code) {}
+
+    public record MfaResult(String status, java.util.List<String> recoveryCodes) {}
 
     /** Resposta de login quando falta o 2.º factor. `otpauthUri`/`secret` só no primeiro registo do factor. */
     public record LoginStep(String status, String otpauthUri, String secret) {}

@@ -63,6 +63,15 @@ public class Room extends BaseEntity {
     }
 
     public void setStatus(ContentStatus status) { this.status = status; }
+
+    public void edit(String title, String description, List<String> objectives, int difficulty, int estMinutes, String context) {
+        this.title = title;
+        this.description = description;
+        this.objectives = objectives;
+        this.difficulty = difficulty;
+        this.estMinutes = estMinutes;
+        this.context = context;
+    }
     public void setPrerequisites(List<UUID> prerequisites) { this.prerequisites = prerequisites; }
 
     public TrackModule getModule() { return module; }

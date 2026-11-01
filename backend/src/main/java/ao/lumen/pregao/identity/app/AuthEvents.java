@@ -11,5 +11,8 @@ public final class AuthEvents {
 
     public record PasswordResetRequested(String email, String name, String token) {}
 
+    /** Conta anonimizada: os módulos retiram-na das projecções (rankings). */
+    public record AccountDeleted(java.util.UUID userId) {}
+
     public record UserInvited(String email, String name, String invitedBy, String token) {}
 }

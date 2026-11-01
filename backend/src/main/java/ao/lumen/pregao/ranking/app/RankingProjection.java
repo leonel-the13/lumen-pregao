@@ -51,6 +51,16 @@ public class RankingProjection {
         }
     }
 
+    @TransactionalEventListener
+    public void onAccountDeleted(ao.lumen.pregao.identity.app.AuthEvents.AccountDeleted e) {
+        try {
+            Set<String> keys = redis.keys("rank:*");
+            if (keys != null) keys.forEach(k -> redis.opsForZSet().remove(k, e.userId().toString()));
+        } catch (RuntimeException ex) {
+            log.warn("Não foi possível retirar a conta eliminada dos rankings: {}", ex.getClass().getSimpleName());
+        }
+    }
+
     /** Regra única com a reconstrução: quem tem 0 pontos não aparece no ranking. */
     private void increment(String key, String member, int delta) {
         Double score = redis.opsForZSet().incrementScore(key, member, delta);
@@ -93,6 +103,7 @@ public class RankingProjection {
         Map<String, Map<String, Long>> byKey = new HashMap<>();
         totals.forEach((id, pts) -> {
             var u = users.get(id);
+            if (u == null || !u.active()) return; // contas suspensas ou eliminadas não aparecem
             put(byKey, RankingKeys.global(), id, pts);
             if (u != null && u.courseCode() != null) put(byKey, RankingKeys.course(u.courseCode()), id, pts);
             if (u != null && u.year() != null) put(byKey, RankingKeys.year(u.year()), id, pts);

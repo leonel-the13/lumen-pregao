@@ -13,6 +13,7 @@ server:
 app:
   identity:
     allowed-email-domain: ${ALLOWED_EMAIL_DOMAIN:exemplo.ao}
+    email-local-pattern: ""
   dev-seed:
     enabled: true
 

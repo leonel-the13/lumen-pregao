@@ -77,6 +77,7 @@ public class ContestService {
     private final OffensiveFilter offensive;
     private final RateLimiter limiter;
     private final AuditService audit;
+    private final ao.lumen.pregao.notification.app.NotificationService notifications;
     private final AppProperties props;
     private final ObjectMapper json;
     private final Clock clock;
@@ -86,7 +87,8 @@ public class ContestService {
                           AttemptService attemptService, AttemptRepository attempts, SubmissionRepository submissionRepo,
                           SubmissionService submissions, ExerciseCatalog catalog, StatementRenderer renderer,
                           UserDirectory directory, OffensiveFilter offensive, RateLimiter limiter, AuditService audit,
-                          AppProperties props, ObjectMapper json, Clock clock) {
+                          AppProperties props, ObjectMapper json, Clock clock, ao.lumen.pregao.notification.app.NotificationService notifications) {
+        this.notifications = notifications;
         this.contests = contests;
         this.problems = problems;
         this.teams = teams;
@@ -285,6 +287,9 @@ public class ContestService {
         if (taken >= c.getMaxTeam()) throw DomainException.rule("TEAM_FULL", "A equipa já tem " + c.getMaxTeam() + " lugares ocupados ou convidados.");
         if (invites.findFirstByTeamIdAndInviteeUserIdAndStatus(teamId, invitee.id(), "PENDING").isEmpty()) {
             invites.save(new TeamInvite(teamId, invitee.id(), captain.getUserId()));
+            notifications.notify(invitee.id(), "TEAM_INVITE", "Convite para a equipa " + t.getName(),
+                    directory.summary(captain.getUserId()).shortName() + " convidou-te para o contest «" + c.getTitle() + "».",
+                    "/competicoes/" + c.getId());
             audit.record(me.id(), "TEAM_INVITE_SENT", "Team", teamId, null, Map.of("invitee", invitee.id()));
         }
         return teamView(t, c, me.id());
@@ -306,6 +311,24 @@ public class ContestService {
         inv.respond("ACCEPTED", clock.instant());
         audit.record(me.id(), "TEAM_JOINED", "Team", teamId, null, null);
         return teamView(t, c, me.id());
+    }
+
+    /** Um membro (não capitão) sai da equipa antes do bloqueio. */
+    @Transactional
+    public void leave(UUID teamId, SessionUser me) {
+        Team t = teams.findForUpdate(teamId).orElseThrow(() -> DomainException.notFound("TEAM_NOT_FOUND", "A equipa não existe."));
+        Contest c = contests.findById(t.getContestId()).orElseThrow();
+        TeamMember m = members.findByContestIdAndUserId(c.getId(), me.id()).filter(x -> x.getTeamId().equals(teamId))
+                .orElseThrow(() -> DomainException.forbidden("NOT_MEMBER", "Não fazes parte desta equipa."));
+        if (m.isCaptain()) {
+            throw DomainException.rule("CAPTAIN_CANNOT_LEAVE", "O capitão não pode sair: elimina a equipa ou passa-a a outro membro.");
+        }
+        ensureEditable(c, t);
+        members.delete(m);
+        audit.record(me.id(), "TEAM_LEFT", "Team", teamId, null, null);
+        members.findByTeamIdOrderByCreatedAtAsc(teamId).stream().filter(TeamMember::isCaptain).findFirst()
+                .ifPresent(cap -> notifications.notify(cap.getUserId(), "TEAM", "Um membro saiu da equipa " + t.getName(),
+                        directory.summary(me.id()).shortName() + " saiu da equipa.", "/competicoes/" + c.getId()));
     }
 
     @Transactional

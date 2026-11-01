@@ -56,7 +56,7 @@ public abstract class IntegrationTest {
         if (secret != null) SECRETS.put(email, secret);
         secret = SECRETS.get(email);
         var m = a.post("/auth/mfa", Map.of("code", Totp.generate(secret, clock.instant().getEpochSecond() / 30)));
-        if (m.status() != 204) throw new IllegalStateException("mfa falhou: " + m);
+        if (m.status() != 204 && m.status() != 200) throw new IllegalStateException("mfa falhou: " + m);
         return a;
     }
 

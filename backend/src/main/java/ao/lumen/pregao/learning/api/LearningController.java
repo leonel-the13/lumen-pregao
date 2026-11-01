@@ -38,9 +38,11 @@ public class LearningController {
     private final AttemptService attempts;
     private final SubmissionService submissions;
     private final List<SubmissionVisibility> visibility;
+    private final ao.lumen.pregao.learning.app.RoomRatingService ratings;
 
     public LearningController(CatalogService catalog, AttemptService attempts, SubmissionService submissions,
-                              List<SubmissionVisibility> visibility) {
+                              List<SubmissionVisibility> visibility, ao.lumen.pregao.learning.app.RoomRatingService ratings) {
+        this.ratings = ratings;
         this.catalog = catalog;
         this.attempts = attempts;
         this.submissions = submissions;
@@ -77,6 +79,20 @@ public class LearningController {
     @GetMapping("/rooms/{id}")
     public RoomDetail room(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id) {
         return catalog.room(me.id(), id);
+    }
+
+    public record RatingInput(@jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(5) int stars,
+                              @jakarta.validation.constraints.Size(max = 1000) String comment) {}
+
+    @GetMapping("/rooms/{id}/rating")
+    public ao.lumen.pregao.learning.app.RoomRatingService.RatingSummary rating(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id) {
+        return ratings.summary(me.id(), id);
+    }
+
+    @PutMapping("/rooms/{id}/rating")
+    public ao.lumen.pregao.learning.app.RoomRatingService.RatingSummary rate(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id,
+                                                                            @jakarta.validation.Valid @RequestBody RatingInput in) {
+        return ratings.rate(me.id(), id, in.stars(), in.comment());
     }
 
     @PostMapping("/tasks/{id}/attempts")

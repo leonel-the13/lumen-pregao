@@ -713,6 +713,34 @@
         },
         "type" : "object"
       },
+      "CursorPageFeedbackView" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FeedbackView"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "CursorPageNotificationView" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/NotificationView"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "Dashboard" : {
         "properties" : {
           "activity" : {
@@ -1023,6 +1051,64 @@
           },
           "updatedAt" : {
             "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "FeedbackInput" : {
+        "properties" : {
+          "category" : {
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "message" : {
+            "maxLength" : 2000,
+            "minLength" : 5,
+            "type" : "string"
+          },
+          "page" : {
+            "maxLength" : 300,
+            "minLength" : 0,
+            "type" : "string"
+          },
+          "rating" : {
+            "format" : "int32",
+            "maximum" : 5,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        },
+        "required" : [ "category", "message" ],
+        "type" : "object"
+      },
+      "FeedbackView" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "author" : {
+            "type" : "string"
+          },
+          "category" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "page" : {
+            "type" : "string"
+          },
+          "rating" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "status" : {
             "type" : "string"
           }
         },
@@ -1393,11 +1479,25 @@
         "properties" : {
           "code" : {
             "minLength" : 1,
-            "pattern" : "\\d{6}",
+            "pattern" : "\\d{6}|[A-Za-z0-9]{4}-?[A-Za-z0-9]{4}",
             "type" : "string"
           }
         },
         "required" : [ "code" ],
+        "type" : "object"
+      },
+      "MfaResult" : {
+        "properties" : {
+          "recoveryCodes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "status" : {
+            "type" : "string"
+          }
+        },
         "type" : "object"
       },
       "ModuleAdmin" : {
@@ -1499,6 +1599,34 @@
           "weekPoints" : {
             "format" : "int64",
             "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "NotificationView" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "body" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "type" : "string"
+          },
+          "link" : {
+            "type" : "string"
+          },
+          "read" : {
+            "type" : "boolean"
+          },
+          "title" : {
+            "type" : "string"
           }
         },
         "type" : "object"
@@ -1750,6 +1878,41 @@
           },
           "total" : {
             "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "RatingInput" : {
+        "properties" : {
+          "comment" : {
+            "maxLength" : 1000,
+            "minLength" : 0,
+            "type" : "string"
+          },
+          "stars" : {
+            "format" : "int32",
+            "maximum" : 5,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "RatingSummary" : {
+        "properties" : {
+          "average" : {
+            "type" : "number"
+          },
+          "count" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "myComment" : {
+            "type" : "string"
+          },
+          "myStars" : {
+            "format" : "int32",
             "type" : "integer"
           }
         },
@@ -2312,7 +2475,6 @@
         "properties" : {
           "status" : {
             "minLength" : 1,
-            "pattern" : "DRAFT|PUBLISHED|COMING_SOON",
             "type" : "string"
           }
         },
@@ -2322,7 +2484,7 @@
       "StatusUpdate" : {
         "properties" : {
           "status" : {
-            "enum" : [ "PENDING_VERIFICATION", "INVITED", "ACTIVE", "SUSPENDED", "DELETION_REQUESTED" ],
+            "enum" : [ "PENDING_VERIFICATION", "INVITED", "ACTIVE", "SUSPENDED", "DELETION_REQUESTED", "DELETED" ],
             "type" : "string"
           }
         },
@@ -3272,6 +3434,34 @@
           }
         },
         "tags" : [ "content-admin-controller" ]
+      },
+      "put" : {
+        "operationId" : "editRoom",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RoomInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "content-admin-controller" ]
       }
     },
     "/api/v1/admin/content/rooms/{id}/tasks" : {
@@ -3330,6 +3520,34 @@
         "responses" : {
           "204" : {
             "description" : "No Content"
+          }
+        },
+        "tags" : [ "content-admin-controller" ]
+      },
+      "put" : {
+        "operationId" : "editTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
           }
         },
         "tags" : [ "content-admin-controller" ]
@@ -3403,6 +3621,34 @@
             "application/json" : {
               "schema" : {
                 "$ref" : "#/components/schemas/StatusInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "content-admin-controller" ]
+      },
+      "put" : {
+        "operationId" : "editTrack",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TrackInput"
               }
             }
           },
@@ -3622,6 +3868,77 @@
         "tags" : [ "contest-admin-controller" ]
       }
     },
+    "/api/v1/admin/feedback" : {
+      "get" : {
+        "operationId" : "list_7",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CursorPageFeedbackView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "feedback-controller" ]
+      }
+    },
+    "/api/v1/admin/feedback/{id}" : {
+      "patch" : {
+        "operationId" : "status_1",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/StatusInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "feedback-controller" ]
+      }
+    },
     "/api/v1/admin/rankings/rebuild" : {
       "post" : {
         "operationId" : "rebuild",
@@ -3646,7 +3963,7 @@
     },
     "/api/v1/admin/users" : {
       "get" : {
-        "operationId" : "list_5",
+        "operationId" : "list_6",
         "parameters" : [ {
           "in" : "query",
           "name" : "q",
@@ -3742,6 +4059,33 @@
           },
           "required" : true
         },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdminUserRow"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-user-controller" ]
+      }
+    },
+    "/api/v1/admin/users/{id}/anonymize" : {
+      "post" : {
+        "operationId" : "anonymize",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
         "responses" : {
           "200" : {
             "content" : {
@@ -3934,7 +4278,7 @@
     },
     "/api/v1/attempts/{id}/submissions" : {
       "post" : {
-        "operationId" : "submit_2",
+        "operationId" : "submit_3",
         "parameters" : [ {
           "in" : "path",
           "name" : "id",
@@ -4055,8 +4399,15 @@
           "required" : true
         },
         "responses" : {
-          "204" : {
-            "description" : "No Content"
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MfaResult"
+                }
+              }
+            },
+            "description" : "OK"
           }
         },
         "tags" : [ "auth-controller" ]
@@ -4473,7 +4824,7 @@
     },
     "/api/v1/contests" : {
       "get" : {
-        "operationId" : "list_4",
+        "operationId" : "list_5",
         "responses" : {
           "200" : {
             "content" : {
@@ -4578,7 +4929,7 @@
     },
     "/api/v1/contests/{id}/problems/{label}/submissions" : {
       "post" : {
-        "operationId" : "submit_1",
+        "operationId" : "submit_2",
         "parameters" : [ {
           "in" : "path",
           "name" : "id",
@@ -4840,7 +5191,7 @@
     },
     "/api/v1/exam-sessions/{id}/submit" : {
       "post" : {
-        "operationId" : "submit",
+        "operationId" : "submit_1",
         "parameters" : [ {
           "in" : "path",
           "name" : "id",
@@ -4867,7 +5218,7 @@
     },
     "/api/v1/exams" : {
       "get" : {
-        "operationId" : "list_3",
+        "operationId" : "list_4",
         "responses" : {
           "200" : {
             "content" : {
@@ -4911,6 +5262,38 @@
           }
         },
         "tags" : [ "exam-controller" ]
+      }
+    },
+    "/api/v1/feedback" : {
+      "post" : {
+        "operationId" : "submit",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FeedbackInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "additionalProperties" : {
+                    "format" : "uuid",
+                    "type" : "string"
+                  },
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Created"
+          }
+        },
+        "tags" : [ "feedback-controller" ]
       }
     },
     "/api/v1/legal-sources" : {
@@ -5121,6 +5504,122 @@
         "tags" : [ "me-controller" ]
       }
     },
+    "/api/v1/me/mfa/recovery-codes" : {
+      "post" : {
+        "operationId" : "regenerate",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MfaResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "auth-controller" ]
+      }
+    },
+    "/api/v1/me/notifications" : {
+      "get" : {
+        "operationId" : "list_3",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CursorPageNotificationView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "notification-controller" ]
+      }
+    },
+    "/api/v1/me/notifications/read-all" : {
+      "post" : {
+        "operationId" : "readAll",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "additionalProperties" : {
+                    "format" : "int32",
+                    "type" : "integer"
+                  },
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "notification-controller" ]
+      }
+    },
+    "/api/v1/me/notifications/unread-count" : {
+      "get" : {
+        "operationId" : "unread",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "additionalProperties" : {
+                    "format" : "int64",
+                    "type" : "integer"
+                  },
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "notification-controller" ]
+      }
+    },
+    "/api/v1/me/notifications/{id}/read" : {
+      "post" : {
+        "operationId" : "read",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          }
+        },
+        "tags" : [ "notification-controller" ]
+      }
+    },
     "/api/v1/me/portfolio" : {
       "get" : {
         "operationId" : "mine",
@@ -5223,9 +5722,28 @@
         "tags" : [ "portfolio-controller" ]
       }
     },
+    "/api/v1/public/stats" : {
+      "get" : {
+        "operationId" : "stats",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "public-stats-controller" ]
+      }
+    },
     "/api/v1/rankings" : {
       "get" : {
-        "operationId" : "read",
+        "operationId" : "read_1",
         "parameters" : [ {
           "in" : "query",
           "name" : "scope",
@@ -5343,6 +5861,68 @@
               "*/*" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/RoomDetail"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "learning-controller" ]
+      }
+    },
+    "/api/v1/rooms/{id}/rating" : {
+      "get" : {
+        "operationId" : "rating",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RatingSummary"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "learning-controller" ]
+      },
+      "put" : {
+        "operationId" : "rate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RatingInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RatingSummary"
                 }
               }
             },
@@ -5534,6 +6114,26 @@
               }
             },
             "description" : "OK"
+          }
+        },
+        "tags" : [ "contest-controller" ]
+      }
+    },
+    "/api/v1/teams/{id}/leave" : {
+      "post" : {
+        "operationId" : "leave",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
           }
         },
         "tags" : [ "contest-controller" ]
