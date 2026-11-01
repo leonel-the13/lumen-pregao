@@ -35,3 +35,7 @@ frontend/.open-next/
 frontend/.wrangler/
 frontend/.dev.vars
 frontend/.vercel/
+
+# variáveis de produção guardadas localmente (nunca no repositório)
+_env
+*.env

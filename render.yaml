@@ -4,8 +4,11 @@ services:
   - type: web
     name: lumen-pregao-api
     runtime: docker
-    rootDir: backend
-    dockerfilePath: ./Dockerfile
+    # Caminhos relativos à raiz do repositório (sem rootDir, para não ficar backend/backend)
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    buildFilter:
+      paths: ["backend/**"]
     region: frankfurt
     plan: starter
     branch: main
