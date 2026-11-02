@@ -8,10 +8,10 @@ import { useToast } from "@/components/ui/Toast";
 import { get, put } from "@/lib/api-client";
 import { isApiError } from "@/lib/errors";
 
-interface Summary { average: number; count: number; myStars: number | null; myComment: string | null }
+interface Summary { average: number; count: number; myStars?: number | null; myComment?: string | null; canRate: boolean }
 
 /** Avaliação da sala: média pública e a avaliação do próprio estudante (depois de iniciar uma tarefa). */
-export function RoomRating({ roomId, canRate }: { roomId: string; canRate: boolean }) {
+export function RoomRating({ roomId }: { roomId: string }) {
   const toast = useToast();
   const [s, setS] = useState<Summary | null>(null);
   const [stars, setStars] = useState<number | null>(null);
@@ -22,7 +22,7 @@ export function RoomRating({ roomId, canRate }: { roomId: string; canRate: boole
   useEffect(() => {
     get<Summary>(`/rooms/${roomId}/rating`).then((r) => {
       setS(r);
-      setStars(r.myStars);
+      setStars(r.myStars ?? null);
       setComment(r.myComment ?? "");
     }).catch(() => {});
   }, [roomId]);
@@ -54,9 +54,9 @@ export function RoomRating({ roomId, canRate }: { roomId: string; canRate: boole
           <span className="mono">{avg.toLocaleString("pt-PT", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} · {s.count}</span>
         </span>}
       </div>
-      {!canRate && s.myStars === null ? (
-        <p className="small muted" style={{ margin: 0 }}>Resolve uma tarefa para poderes avaliar esta sala.</p>
-      ) : s.myStars !== null && !editing ? (
+      {!s.canRate && s.myStars == null ? (
+        <p className="small muted" style={{ margin: 0 }}>Começa uma tarefa desta sala para a poderes avaliar.</p>
+      ) : s.myStars != null && !editing ? (
         <div className="row small" style={{ gap: 8 }}>
           <span className="muted">A tua avaliação:</span>
           <StarRating value={s.myStars} label="A tua avaliação" size={22} />

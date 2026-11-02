@@ -1904,6 +1904,9 @@
           "average" : {
             "type" : "number"
           },
+          "canRate" : {
+            "type" : "boolean"
+          },
           "count" : {
             "format" : "int64",
             "type" : "integer"
@@ -2132,6 +2135,12 @@
       },
       "RoomAdmin" : {
         "properties" : {
+          "context" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
           "difficulty" : {
             "format" : "int32",
             "type" : "integer"
@@ -2143,6 +2152,12 @@
           "id" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "objectives" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
           },
           "position" : {
             "format" : "int32",
@@ -2740,6 +2755,17 @@
       },
       "TrackAdmin" : {
         "properties" : {
+          "description" : {
+            "type" : "string"
+          },
+          "difficulty" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "estHours" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
           "id" : {
             "format" : "uuid",
             "type" : "string"
@@ -2760,7 +2786,13 @@
           "status" : {
             "type" : "string"
           },
+          "summary" : {
+            "type" : "string"
+          },
           "title" : {
+            "type" : "string"
+          },
+          "topic" : {
             "type" : "string"
           }
         },

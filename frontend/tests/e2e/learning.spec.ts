@@ -4,6 +4,7 @@ import { kz, login, num } from "./helpers";
 test.describe.configure({ mode: "serial" });
 
 test("sala: lançamento com correcção por linha no servidor e pontos", async ({ page }) => {
+  test.setTimeout(120_000); // fluxo longo: login, trilha, sala, duas submissões corrigidas no servidor
   await login(page, "joao.cassoma@exemplo.ao");
   await page.goto("/trilhas/contabilidade-pgc");
   await page.getByRole("link", { name: /Compra de mercadorias com IVA/ }).click();

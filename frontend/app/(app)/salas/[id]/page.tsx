@@ -85,7 +85,7 @@ export default async function Sala({ params, searchParams }: { params: Promise<{
               </Card>
             )}
             {room.context && <Card className="small" style={{ padding: 16 }}><Markdown text={room.context} /></Card>}
-            <RoomRating roomId={room.id} canRate={room.tasks.some((t) => t.state !== "AVAILABLE" && t.state !== "UNAVAILABLE")} />
+            <RoomRating roomId={room.id} />
           </aside>
           <section aria-label="Área de trabalho">
             {current ? (

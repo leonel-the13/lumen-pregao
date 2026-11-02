@@ -27,13 +27,12 @@ public class RoomRatingService {
         this.attempts = attempts;
     }
 
-    public record RatingSummary(BigDecimal average, long count, Integer myStars, String myComment) {}
+    public record RatingSummary(BigDecimal average, long count, Integer myStars, String myComment, boolean canRate) {}
 
     @Transactional
     public RatingSummary rate(UUID user, UUID roomId, int stars, String comment) {
         if (stars < 1 || stars > 5) throw DomainException.badRequest("RATING_INVALID", "A avaliação vai de 1 a 5 estrelas.");
-        List<UUID> taskIds = tasks.findByRoomIds(List.of(roomId)).stream().map(Task::getId).toList();
-        if (taskIds.isEmpty() || attempts.findForUserTasks(user, taskIds).isEmpty()) {
+        if (!tried(user, roomId)) {
             throw DomainException.rule("RATING_NOT_ALLOWED", "Resolve pelo menos uma tarefa desta sala antes de a avaliar.");
         }
         RoomRating r = ratings.findByUserIdAndRoomId(user, roomId).orElseGet(() -> new RoomRating(user, roomId));
@@ -49,6 +48,11 @@ public class RoomRatingService {
         var mine = ratings.findByUserIdAndRoomId(user, roomId);
         BigDecimal avg = row[0] == null ? BigDecimal.ZERO : new BigDecimal(row[0].toString()).setScale(1, RoundingMode.HALF_UP);
         return new RatingSummary(avg, ((Number) row[1]).longValue(), mine.map(RoomRating::getStars).orElse(null),
-                mine.map(RoomRating::getComment).orElse(null));
+                mine.map(RoomRating::getComment).orElse(null), tried(user, roomId));
+    }
+
+    private boolean tried(UUID user, UUID roomId) {
+        List<UUID> taskIds = tasks.findByRoomIds(List.of(roomId)).stream().map(Task::getId).toList();
+        return !taskIds.isEmpty() && !attempts.findForUserTasks(user, taskIds).isEmpty();
     }
 }

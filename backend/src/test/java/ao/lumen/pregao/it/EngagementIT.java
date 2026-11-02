@@ -53,8 +53,10 @@ class EngagementIT extends IntegrationTest {
         Api s = newStudent("avaliacao@exemplo.ao");
         String room = firstOpenRoom(s);
         assertThat(s.put("/rooms/" + room + "/rating", Map.of("stars", 5)).code()).isEqualTo("RATING_NOT_ALLOWED");
+        assertThat(s.get("/rooms/" + room + "/rating").body().path("canRate").asBoolean()).isFalse();
         String task = s.get("/rooms/" + room).body().path("tasks").get(0).path("id").asText();
         assertThat(s.post("/tasks/" + task + "/attempts", null).status()).isIn(200, 201);
+        assertThat(s.get("/rooms/" + room + "/rating").body().path("canRate").asBoolean()).isTrue();
         assertThat(s.put("/rooms/" + room + "/rating", Map.of("stars", 6)).status()).isEqualTo(400);
         JsonNode r = s.put("/rooms/" + room + "/rating", Map.of("stars", 4, "comment", "Enunciado claro.")).body();
         assertThat(r.path("myStars").asInt()).isEqualTo(4);

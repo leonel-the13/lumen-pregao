@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("landing mostra a proposta, o rodapé institucional e alterna o tema", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Aprender é saber");
-  await expect(page.getByText("Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC")).toBeVisible();
+  await expect(page.getByRole("contentinfo").getByText("Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC")).toBeVisible();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.getByRole("button", { name: "Mudar para modo claro" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");

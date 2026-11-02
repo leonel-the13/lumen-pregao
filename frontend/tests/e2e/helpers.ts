@@ -1,4 +1,4 @@
-import { expect, type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 export const PASSWORD = process.env.E2E_PASSWORD ?? "lumen-dev-2026!";
 
