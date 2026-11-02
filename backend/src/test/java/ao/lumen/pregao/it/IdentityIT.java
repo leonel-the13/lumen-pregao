@@ -57,6 +57,27 @@ class IdentityIT extends IntegrationTest {
     }
 
     @Test
+    void browserThatRegisteredSignsInWhenEmailIsConfirmedOnAnotherDevice() {
+        Api pc = api();
+        assertThat(pc.post("/auth/register", registration("dois.dispositivos@exemplo.ao")).status()).isEqualTo(202);
+        assertThat(pc.cookie("LP_PENDING")).isNotBlank();
+        var pending = pc.get("/auth/registration-status").body();
+        assertThat(pending.path("verified").asBoolean()).isFalse();
+        assertThat(pending.path("resendInSeconds").asLong()).isBetween(1L, 45L); // a contagem vem do servidor
+        assertThat(pc.get("/me").status()).isEqualTo(401);
+
+        Api phone = api();
+        assertThat(phone.post("/auth/verify", Map.of("token", tokens.byEmail.get("dois.dispositivos@exemplo.ao"))).status()).isEqualTo(200);
+
+        var done = pc.get("/auth/registration-status").body();
+        assertThat(done.path("verified").asBoolean()).isTrue();
+        assertThat(done.path("signedIn").asBoolean()).isTrue();
+        assertThat(pc.get("/me").body().path("email").asText()).isEqualTo("dois.dispositivos@exemplo.ao");
+        // O token é de uso único; outro browser sem o cookie não ganha nada.
+        assertThat(api().get("/auth/registration-status").body().path("verified").asBoolean()).isFalse();
+    }
+
+    @Test
     void registeringAgainBeforeVerifyingSendsANewVerificationLink() {
         assertThat(api().post("/auth/register", registration("por.confirmar@exemplo.ao")).status()).isEqualTo(202);
         String first = tokens.byEmail.get("por.confirmar@exemplo.ao");

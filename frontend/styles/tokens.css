@@ -379,3 +379,8 @@ dialog.modal-dialog::backdrop{animation:fade-in var(--dur-3) var(--ease-out) bot
 .faq details>p{padding:0 18px 16px}
 .faq summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:var(--r-3)}
 .credits{margin:-40px 0 0;text-align:center;font-size:11px;color:var(--muted);opacity:.55;letter-spacing:.02em}
+.password-wrap{position:relative}
+.password-wrap .password-input{padding-right:52px}
+.password-toggle{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;border:0;background:none;color:var(--muted);cursor:pointer;border-radius:var(--r-2)}
+.password-toggle:hover{color:var(--text)}
+.password-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}

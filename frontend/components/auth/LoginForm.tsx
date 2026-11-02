@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
-import { Field, Input } from "@/components/ui/Field";
+import { Field, Input, PasswordInput } from "@/components/ui/Field";
 import { post } from "@/lib/api-client";
 import { isApiError } from "@/lib/errors";
 import { RecoveryCodesView } from "./RecoveryCodesView";
@@ -15,7 +15,7 @@ function safeNext(next?: string) {
   return next && next.startsWith("/") && !next.startsWith("//") ? next : "/inicio";
 }
 
-export function LoginForm({ next, expired, passwordSet }: { next?: string; expired?: boolean; passwordSet?: boolean }) {
+export function LoginForm({ next, expired, passwordSet, verified }: { next?: string; expired?: boolean; passwordSet?: boolean; verified?: boolean }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -112,11 +112,12 @@ export function LoginForm({ next, expired, passwordSet }: { next?: string; expir
     <form className="stack" style={{ gap: 16 }} onSubmit={submit} noValidate>
       {expired && <Alert tone="info" title="A tua sessão expirou">O teu rascunho foi guardado. Entra de novo para continuar.</Alert>}
       {passwordSet && <Alert tone="pos" title="Palavra-passe definida">Já podes entrar com a nova palavra-passe.</Alert>}
+      {verified && <Alert tone="pos" title="Email confirmado">A tua conta está activa. Entra com o email e a palavra-passe.</Alert>}
       <Field label="Email institucional">
         {({ id }) => <Input id={id} type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />}
       </Field>
       <Field label="Palavra-passe">
-        {({ id }) => <Input id={id} type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />}
+        {({ id }) => <PasswordInput id={id} autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />}
       </Field>
       <div className="row" style={{ justifyContent: "space-between" }}>
         <label className="check"><input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />Manter sessão neste dispositivo</label>

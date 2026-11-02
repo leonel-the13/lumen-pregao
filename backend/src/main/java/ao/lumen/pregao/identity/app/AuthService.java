@@ -82,7 +82,8 @@ public class AuthService {
     // ───────────────────────── registo e verificação ─────────────────────────
 
     @Transactional
-    public void register(RegisterRequest r, String ip) {
+    /** Devolve a conta à espera de confirmação (nova ou ainda por confirmar); vazio quando o email já tinha conta activa. */
+    public Optional<java.util.UUID> register(RegisterRequest r, String ip) {
         if (!limiter.tryAcquire("register:ip:" + ip, props.security().rateLimit().registerPerHour(), Duration.ofHours(1))) {
             throw DomainException.tooMany("Demasiados registos a partir desta rede. Tenta de novo mais tarde.");
         }
@@ -104,11 +105,11 @@ public class AuthService {
             // Não revela a existência da conta: responde igual. Conta por confirmar → novo link de verificação;
             // conta já activa → aviso ao titular com o link para entrar.
             if (existing.get().getStatus() == UserStatus.PENDING_VERIFICATION) {
-                if (limiter.tryAcquire("resend:" + email, 1, Duration.ofSeconds(45))) issueVerification(existing.get(), clock.instant());
-            } else {
-                events.publishEvent(new AuthEvents.DuplicateRegistration(email));
+                if (limiter.tryAcquire("resend:" + email, 1, RESEND_COOLDOWN)) issueVerification(existing.get(), clock.instant());
+                return Optional.of(existing.get().getId());
             }
-            return;
+            events.publishEvent(new AuthEvents.DuplicateRegistration(email));
+            return Optional.empty();
         }
         Instant now = clock.instant();
         User u = new User(email, encoder.encode(r.password()), r.name().strip(), course, r.year(),
@@ -117,12 +118,27 @@ public class AuthService {
         users.save(u);
         audit.record(u.getId(), "USER_REGISTERED", "User", u.getId(), null, Map.of("course", course.getCode()));
         issueVerification(u, now);
+        limiter.tryAcquire("resend:" + email, 1, RESEND_COOLDOWN); // começa a contagem para «Reenviar email»
+        return Optional.of(u.getId());
+    }
+
+    static final Duration RESEND_COOLDOWN = Duration.ofSeconds(45);
+
+    public record RegistrationStatus(boolean verified, boolean signedIn, long resendInSeconds) {}
+
+    /** Estado do registo feito neste browser: quando a conta já foi confirmada (em qualquer dispositivo), entra aqui. */
+    @Transactional
+    public RegistrationStatus registrationStatus(java.util.UUID userId, HttpServletRequest req, HttpServletResponse res) {
+        User u = users.findWithRolesById(userId).orElse(null);
+        if (u == null) return new RegistrationStatus(false, false, 0);
+        if (u.getStatus() == UserStatus.ACTIVE) return new RegistrationStatus(true, loginAfterVerification(u, req, res), 0);
+        return new RegistrationStatus(false, false, limiter.ttlSeconds("resend:" + u.getEmail()));
     }
 
     @Transactional
     public void resendVerification(String rawEmail) {
         String email = rawEmail.strip().toLowerCase(Locale.ROOT);
-        if (!limiter.tryAcquire("resend:" + email, 1, Duration.ofSeconds(45))) {
+        if (!limiter.tryAcquire("resend:" + email, 1, RESEND_COOLDOWN)) {
             throw DomainException.tooMany("Espera alguns segundos antes de pedir outro email.");
         }
         users.findByEmail(email).filter(u -> u.getStatus() == UserStatus.PENDING_VERIFICATION)

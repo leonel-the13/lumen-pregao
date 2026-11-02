@@ -21,7 +21,7 @@ test("o primeiro Tab mostra o atalho para o conteúdo", async ({ page }) => {
 test("login com dados errados mostra mensagem genérica", async ({ page }) => {
   await page.goto("/entrar");
   await page.getByLabel("Email institucional").fill("ninguem@exemplo.ao");
-  await page.getByLabel("Palavra-passe").fill("qualquer-coisa-123");
+  await page.getByLabel("Palavra-passe", { exact: true }).fill("qualquer-coisa-123");
   await page.getByRole("button", { name: "Entrar" }).click();
   await expect(page.getByText("Verifica o email e a palavra-passe. Após 5 tentativas, espera 15 min.")).toBeVisible();
 });
@@ -38,7 +38,7 @@ test("registo com domínio não permitido é recusado", async ({ page }) => {
   await page.getByLabel("Email institucional").fill("teste@gmail.com");
   await page.getByLabel("Curso").selectOption({ label: "Economia" });
   await page.getByLabel("Ano").selectOption("2");
-  await page.getByLabel("Palavra-passe").fill("Mussulo#Balancete-77");
+  await page.getByLabel("Palavra-passe", { exact: true }).fill("Mussulo#Balancete-77");
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: "Criar conta" }).click();
   await expect(page.getByText("Só aceitamos o domínio de email institucional do ISPTEC.").last()).toBeVisible();

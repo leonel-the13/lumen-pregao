@@ -2022,6 +2022,21 @@
         "required" : [ "courseId", "email", "name", "password", "year" ],
         "type" : "object"
       },
+      "RegistrationStatus" : {
+        "properties" : {
+          "resendInSeconds" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "signedIn" : {
+            "type" : "boolean"
+          },
+          "verified" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
       "Report" : {
         "properties" : {
           "autoSubmitted" : {
@@ -4525,6 +4540,32 @@
               }
             },
             "description" : "Accepted"
+          }
+        },
+        "tags" : [ "auth-controller" ]
+      }
+    },
+    "/api/v1/auth/registration-status" : {
+      "get" : {
+        "operationId" : "registrationStatus",
+        "parameters" : [ {
+          "in" : "cookie",
+          "name" : "LP_PENDING",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RegistrationStatus"
+                }
+              }
+            },
+            "description" : "OK"
           }
         },
         "tags" : [ "auth-controller" ]

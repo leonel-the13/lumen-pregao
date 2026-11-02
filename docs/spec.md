@@ -652,3 +652,12 @@ pela equipa; o contrato completo está em `docs/openapi.json` (verificado no CI)
 - **Edição de conteúdo:** `PUT /admin/content/tracks/{id}`, `PUT /admin/content/rooms/{id}`, `PUT /admin/content/tasks/{id}`
   (título, pontos e versão do exercício; as tentativas antigas mantêm a sua versão).
 - **Equipas:** `POST /teams/{id}/leave` (membro não capitão, antes do bloqueio; o capitão é notificado).
+
+### B.6 Confirmação de email em qualquer dispositivo (02/11/2026)
+- `POST /auth/register` define o cookie `LP_PENDING` (HttpOnly, 24 h, caminho `/api/v1/auth`) com um token aleatório;
+  o Redis guarda só o hash → conta. É sempre definido, mesmo quando o email já tinha conta, para não revelar contas.
+- `GET /auth/registration-status` (público): `{verified, signedIn, resendInSeconds}`. Quando a conta já foi confirmada
+  (em qualquer dispositivo), inicia a sessão nesse browser (só estudantes; perfis privilegiados entram com 2.º factor)
+  e apaga o token. A página «Confirma o teu email» consulta-o a cada 3 s e quando volta a ficar visível.
+- `resendInSeconds` vem do limite do servidor (45 s): a contagem do «Reenviar email» não recomeça com o refresh.
+- Registar de novo uma conta ainda por confirmar envia um novo link de verificação (antes enviava «Já tens conta»).

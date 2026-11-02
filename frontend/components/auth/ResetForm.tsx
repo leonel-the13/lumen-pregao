@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
-import { Field, Input } from "@/components/ui/Field";
+import { Field, Input, PasswordInput } from "@/components/ui/Field";
 import { post } from "@/lib/api-client";
 import { isApiError } from "@/lib/errors";
 
@@ -39,10 +39,10 @@ export function ResetForm({ token, invite }: { token?: string; invite?: boolean 
         {invite ? "Bem-vindo ao Lúmen Lab. Escolhe a tua palavra-passe para activar a conta." : "Escolhe uma nova palavra-passe. As sessões abertas noutros dispositivos terminam."}
       </p>
       <Field label="Nova palavra-passe" hint="12+ caracteres. Evita palavras óbvias e o teu nome." error={error?.field === "password" ? error.message : undefined}>
-        {({ id, describedBy, invalid }) => <Input id={id} aria-describedby={describedBy} invalid={invalid} type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} />}
+        {({ id, describedBy, invalid }) => <PasswordInput id={id} aria-describedby={describedBy} invalid={invalid} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} />}
       </Field>
       <Field label="Confirmar palavra-passe" error={mismatch ? "As palavras-passe não coincidem." : undefined}>
-        {({ id, describedBy, invalid }) => <Input id={id} aria-describedby={describedBy} invalid={invalid} type="password" autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />}
+        {({ id, describedBy, invalid }) => <PasswordInput id={id} aria-describedby={describedBy} invalid={invalid} autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />}
       </Field>
       {error && !error.field && (
         <Alert tone="neg" title={error.expired ? "Link inválido ou expirado" : "Não foi possível concluir"}>

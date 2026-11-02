@@ -1,5 +1,5 @@
 "use client";
-import { useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import { useId, useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 import { Icon } from "./Icon";
 
 interface FieldProps {
@@ -43,4 +43,19 @@ export function Select({ invalid, className, children, ...props }: SelectHTMLAtt
 
 export function TextArea({ invalid, className, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }) {
   return <textarea className={["input", invalid && "is-err", className].filter(Boolean).join(" ")} aria-invalid={invalid || undefined} {...props} />;
+}
+
+/** Campo de palavra-passe com botão para mostrar/esconder (o texto não sai do campo; o leitor de ecrã anuncia o estado). */
+export function PasswordInput({ invalid, className, ...props }: Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & { invalid?: boolean }) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="password-wrap">
+      <Input {...props} invalid={invalid} className={["password-input", className].filter(Boolean).join(" ")}
+        type={visible ? "text" : "password"} autoCapitalize="none" spellCheck={false} />
+      <button type="button" className="password-toggle" aria-pressed={visible}
+        aria-label={visible ? "Esconder a palavra-passe" : "Mostrar a palavra-passe"} onClick={() => setVisible((v) => !v)}>
+        <Icon name={visible ? "eyeOff" : "eye"} />
+      </button>
+    </div>
+  );
 }

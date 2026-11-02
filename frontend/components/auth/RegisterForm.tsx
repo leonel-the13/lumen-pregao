@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
-import { Field, Input, Select } from "@/components/ui/Field";
+import { Field, Input, PasswordInput, Select } from "@/components/ui/Field";
 import { post } from "@/lib/api-client";
 import { isApiError } from "@/lib/errors";
 
@@ -77,7 +77,7 @@ export function RegisterForm({ courses }: { courses: { id: string; name: string 
         </Field>
       </div>
       <Field label="Palavra-passe" hint="12+ caracteres. Evita palavras óbvias." error={errors.password}>
-        {({ id, describedBy, invalid }) => <Input id={id} aria-describedby={describedBy} invalid={invalid} type="password" autoComplete="new-password" value={form.password} onChange={(e) => set("password")(e.target.value)} />}
+        {({ id, describedBy, invalid }) => <PasswordInput id={id} aria-describedby={describedBy} invalid={invalid} autoComplete="new-password" value={form.password} onChange={(e) => set("password")(e.target.value)} />}
       </Field>
       <label className="check">
         <input type="checkbox" checked={form.consent} onChange={(e) => set("consent")(e.target.checked)} aria-invalid={!!errors.consent} />

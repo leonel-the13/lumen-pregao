@@ -13,6 +13,7 @@ import ao.lumen.pregao.identity.api.AuthDtos.ResendRequest;
 import ao.lumen.pregao.identity.api.AuthDtos.VerifyRequest;
 import ao.lumen.pregao.identity.app.AuthService;
 import ao.lumen.pregao.identity.app.PasswordService;
+import ao.lumen.pregao.identity.app.PendingRegistrations;
 import ao.lumen.pregao.identity.app.SessionManager;
 import ao.lumen.pregao.identity.infra.CourseRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +38,14 @@ public class AuthController {
     private final PasswordService passwords;
     private final SessionManager sessions;
     private final CourseRepository courses;
+    private final PendingRegistrations pendingRegistrations;
+    private final boolean secureCookies;
 
-    public AuthController(AuthService auth, PasswordService passwords, SessionManager sessions, CourseRepository courses) {
+    public AuthController(AuthService auth, PasswordService passwords, SessionManager sessions, CourseRepository courses,
+                          PendingRegistrations pendingRegistrations,
+                          @org.springframework.beans.factory.annotation.Value("${server.servlet.session.cookie.secure:true}") boolean secureCookies) {
+        this.pendingRegistrations = pendingRegistrations;
+        this.secureCookies = secureCookies;
         this.auth = auth;
         this.passwords = passwords;
         this.sessions = sessions;
@@ -58,10 +65,32 @@ public class AuthController {
 
     @PostMapping("/auth/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Accepted register(@Valid @RequestBody RegisterRequest r, HttpServletRequest req) {
-        auth.register(r, ClientIp.of(req));
+    public Accepted register(@Valid @RequestBody RegisterRequest r, HttpServletRequest req, HttpServletResponse res) {
+        var pending = auth.register(r, ClientIp.of(req));
+        res.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, pendingCookie(pendingRegistrations.issue(pending),
+                PendingRegistrations.TTL).toString());
         return new Accepted("verification_sent",
-                "Enviámos um link para o teu email institucional. Abre-o neste dispositivo para activar a conta.");
+                "Enviámos um link para o teu email institucional. Podes abri-lo em qualquer dispositivo: esta página continua sozinha.");
+    }
+
+    /** Consultado pela página «Confirma o teu email» do browser onde a pessoa se registou. */
+    @GetMapping("/auth/registration-status")
+    public AuthService.RegistrationStatus registrationStatus(
+            @org.springframework.web.bind.annotation.CookieValue(name = PendingRegistrations.COOKIE, required = false) String token,
+            HttpServletRequest req, HttpServletResponse res) {
+        var userId = pendingRegistrations.resolve(token);
+        if (userId.isEmpty()) return new AuthService.RegistrationStatus(false, false, 0);
+        var status = auth.registrationStatus(userId.get(), req, res);
+        if (status.verified()) {
+            pendingRegistrations.consume(token);
+            res.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, pendingCookie("", java.time.Duration.ZERO).toString());
+        }
+        return status;
+    }
+
+    private org.springframework.http.ResponseCookie pendingCookie(String value, java.time.Duration maxAge) {
+        return org.springframework.http.ResponseCookie.from(PendingRegistrations.COOKIE, value)
+                .httpOnly(true).secure(secureCookies).sameSite("Lax").path("/api/v1/auth").maxAge(maxAge).build();
     }
 
     @PostMapping("/auth/resend-verification")

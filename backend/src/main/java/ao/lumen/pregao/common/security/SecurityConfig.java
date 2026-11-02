@@ -79,7 +79,7 @@ public class SecurityConfig {
                     .requestMatchers("/actuator/health/**", "/actuator/info").permitAll()
                     .requestMatchers("/api/v1/openapi", "/api/v1/openapi/**", "/api/v1/docs", "/api/v1/docs/**",
                             "/api/v1/swagger-ui/**", "/swagger-ui/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v1/auth/csrf", "/api/v1/courses", "/api/v1/public/**",
+                    .requestMatchers(HttpMethod.GET, "/api/v1/auth/csrf", "/api/v1/auth/registration-status", "/api/v1/courses", "/api/v1/public/**",
                             "/api/v1/scoring-rules").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/v1/auth/register", "/api/v1/auth/verify",
                             "/api/v1/auth/resend-verification", "/api/v1/auth/login", "/api/v1/auth/mfa",

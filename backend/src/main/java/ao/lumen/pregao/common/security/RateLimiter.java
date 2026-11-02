@@ -43,6 +43,16 @@ public class RateLimiter {
         }
     }
 
+    /** Segundos até o limite expirar (0 se não houver limite activo). */
+    public long ttlSeconds(String key) {
+        try {
+            Long t = redis.getExpire("rl:" + key);
+            return t == null || t < 0 ? 0 : t;
+        } catch (RuntimeException e) {
+            return 0;
+        }
+    }
+
     public void reset(String key) {
         try {
             redis.delete("rl:" + key);
