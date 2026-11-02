@@ -1,12 +1,14 @@
 "use client";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Button } from "./Button";
 import { Field, Input } from "./Field";
 
 /** Modal acessível (dialog nativo: foco preso, Esc fecha). */
-export function Modal({ open, onClose, title, children, actions, labelledBy = "modal-title" }:
+export function Modal({ open, onClose, title, children, actions, labelledBy }:
   { open: boolean; onClose: () => void; title: string; children?: ReactNode; actions?: ReactNode; labelledBy?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const autoId = useId();
+  const titleId = labelledBy ?? `modal-${autoId}`;
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
@@ -14,9 +16,9 @@ export function Modal({ open, onClose, title, children, actions, labelledBy = "m
     if (!open && d.open) d.close();
   }, [open]);
   return (
-    <dialog ref={ref} className="modal-dialog" aria-labelledby={labelledBy} onClose={onClose} onCancel={onClose}>
+    <dialog ref={ref} className="modal-dialog" aria-labelledby={titleId} onClose={onClose} onCancel={onClose}>
       <div className="modal stack" style={{ gap: 16 }}>
-        <h2 id={labelledBy} className="h2">{title}</h2>
+        <h2 id={titleId} className="h2">{title}</h2>
         {children && <div className="muted" style={{ fontSize: 14.5 }}>{children}</div>}
         {actions && <div className="row" style={{ justifyContent: "flex-end", gap: 10 }}>{actions}</div>}
       </div>

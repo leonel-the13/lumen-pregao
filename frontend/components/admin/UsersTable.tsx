@@ -35,7 +35,7 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
     try {
       await patch(`/admin/users/${edit.id}/roles`, { roles });
       if (status !== edit.status) await patch(`/admin/users/${edit.id}`, { status });
-      toast({ tone: "pos", title: "Utilizador actualizado", body: "As sessões activas foram terminadas para aplicar as alterações." });
+      toast({ tone: "pos", title: `${edit.name} actualizado`, body: `${edit.email} · as sessões activas desta pessoa foram terminadas.` });
       setEdit(null);
       router.refresh();
     } catch (e) { setErr((e as Error).message); }
@@ -55,14 +55,16 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
                   <td><Badge tone={st}>{sl}</Badge></td>
                   <td>{u.mfaEnabled ? "Sim" : "—"}</td>
                   <td className="small mono">{u.lastLoginAt ? formatDateTime(u.lastLoginAt) : "—"}</td>
-                  <td className="row" style={{ gap: 4, flexWrap: "nowrap" }}>
-                    {u.status !== "DELETED" && <Button size="sm" variant="ghost" icon="pen" onClick={() => open(u)}>Editar</Button>}
+                  <td className="actions-cell">
+                    <div className="row" style={{ gap: 4, flexWrap: "nowrap", justifyContent: "flex-end" }}>
+                    {u.status !== "DELETED" && <Button size="sm" variant="ghost" icon="pen" aria-label={`Editar ${u.name}`} onClick={() => open(u)}>Editar</Button>}
                     {u.status === "DELETION_REQUESTED" && <Button size="sm" variant="ghost" icon="trash" onClick={() => setDelTarget(u)}>Eliminar dados</Button>}
                     {u.status === "INVITED" && <Button size="sm" variant="ghost" icon="refresh" onClick={async () => {
                       try { await post(`/admin/users/${u.id}/resend-invite`); toast({ tone: "pos", title: "Convite reenviado" }); }
                       catch (e) { toast({ tone: "neg", title: "Não foi possível reenviar", body: (e as Error).message }); }
                     }}>Reenviar convite</Button>}
                     {u.mfaEnabled && u.id !== me && <Button size="sm" variant="ghost" icon="shield" onClick={() => setMfaTarget(u)}>Repor 2.º factor</Button>}
+                    </div>
                   </td>
                 </tr>
               );
@@ -94,6 +96,7 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
       <Modal open={!!edit} onClose={() => setEdit(null)} title={`Editar ${edit?.name ?? ""}`}
         actions={<><Button variant="out" onClick={() => setEdit(null)}>Cancelar</Button><Button variant="pri" onClick={save}>Guardar</Button></>}>
         <div className="stack" style={{ color: "var(--text)" }}>
+          <p className="small muted mono" style={{ margin: 0 }}>{edit?.email}</p>
           <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0, gap: 4 }}>
             <legend className="small" style={{ fontWeight: 600, marginBottom: 6 }}>Perfis</legend>
             {ASSIGNABLE.map((r) => (
