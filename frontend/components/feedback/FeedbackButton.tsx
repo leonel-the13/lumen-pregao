@@ -58,7 +58,7 @@ export function FeedbackButton({ compact }: { compact?: boolean }) {
           <Button variant="pri" onClick={send} loading={busy}>Enviar</Button>
         </>}>
         <div className="stack" style={{ color: "var(--text)" }}>
-          <p className="muted small" style={{ margin: 0 }}>O que achas do Lúmen Pregão? Sugestões, erros e elogios ajudam-nos a melhorar.</p>
+          <p className="muted small" style={{ margin: 0 }}>O que achas do Lúmen Lab? Sugestões, erros e elogios ajudam-nos a melhorar.</p>
           <Field label="Tipo">
             {({ id }) => (
               <Select id={id} value={category} onChange={(e) => setCategory(e.target.value)}>

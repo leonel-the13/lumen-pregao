@@ -5,8 +5,16 @@ const PROTECTED = ["/inicio", "/trilhas", "/salas", "/simulacoes", "/exames", "/
   "/definicoes", "/autoria", "/juri", "/admin"];
 
 /** Conveniência de navegação: sem cookie de sessão, vai para /entrar. A segurança real está no backend. */
+/** Endereço antigo (antes de o produto se chamar Lúmen Lab): redirecciona para o novo, mantendo o caminho. */
+const OLD_HOSTS = ["pregao.lumenao.tech"];
+const CANONICAL_HOST = "lab.lumenao.tech";
+
 export function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
+  const host = req.headers.get("host")?.split(":")[0];
+  if (host && OLD_HOSTS.includes(host)) {
+    return NextResponse.redirect(`https://${CANONICAL_HOST}${pathname}${search}`, 308);
+  }
   if (PROTECTED.some((p) => pathname === p || pathname.startsWith(p + "/")) && !req.cookies.has("LP_SESSION")) {
     const url = req.nextUrl.clone();
     url.pathname = "/entrar";

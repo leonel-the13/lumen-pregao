@@ -10,25 +10,25 @@ const archivo = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--font-
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400", style: "italic", variable: "--font-instrument", display: "swap" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pregao.lumenao.tech";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lab.lumenao.tech";
 const DESCRIPTION = "Trilhas, salas práticas, exames e a Maratona de casos para os estudantes do ISPTEC. Iniciativa da Associação de Estudantes.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: "Lúmen Pregão · Aprender é saber aplicar", template: "%s · Lúmen Pregão" },
+  title: { default: "Lúmen Lab · Aprender é saber aplicar", template: "%s · Lúmen Lab" },
   description: DESCRIPTION,
-  applicationName: "Lúmen Pregão",
+  applicationName: "Lúmen Lab",
   keywords: ["ISPTEC", "contabilidade", "PGC", "IVA", "análise financeira", "exames", "Maratona de casos", "Associação de Estudantes"],
   openGraph: {
     type: "website",
     locale: "pt_PT",
     url: "/",
-    siteName: "Lúmen Pregão",
-    title: "Lúmen Pregão · Aprender é saber aplicar",
+    siteName: "Lúmen Lab",
+    title: "Lúmen Lab · Aprender é saber aplicar",
     description: DESCRIPTION,
   },
-  twitter: { card: "summary_large_image", title: "Lúmen Pregão · Aprender é saber aplicar", description: DESCRIPTION },
-  appleWebApp: { title: "Lúmen Pregão", statusBarStyle: "black-translucent" },
+  twitter: { card: "summary_large_image", title: "Lúmen Lab · Aprender é saber aplicar", description: DESCRIPTION },
+  appleWebApp: { title: "Lúmen Lab", statusBarStyle: "black-translucent" },
   formatDetection: { telephone: false },
 };
 

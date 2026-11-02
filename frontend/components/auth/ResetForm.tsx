@@ -36,7 +36,7 @@ export function ResetForm({ token, invite }: { token?: string; invite?: boolean 
       } finally { setBusy(false); }
     }}>
       <p className="muted">
-        {invite ? "Bem-vindo ao Lúmen Pregão. Escolhe a tua palavra-passe para activar a conta." : "Escolhe uma nova palavra-passe. As sessões abertas noutros dispositivos terminam."}
+        {invite ? "Bem-vindo ao Lúmen Lab. Escolhe a tua palavra-passe para activar a conta." : "Escolhe uma nova palavra-passe. As sessões abertas noutros dispositivos terminam."}
       </p>
       <Field label="Nova palavra-passe" hint="12+ caracteres. Evita palavras óbvias e o teu nome." error={error?.field === "password" ? error.message : undefined}>
         {({ id, describedBy, invalid }) => <Input id={id} aria-describedby={describedBy} invalid={invalid} type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} />}

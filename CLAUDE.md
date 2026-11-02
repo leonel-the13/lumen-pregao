@@ -1,7 +1,7 @@
-# CLAUDE.md — Lúmen Pregão
+# CLAUDE.md — Lúmen Lab
 
 Referência de trabalho para o Claude Code neste repositório.
-- **O que construir:** `docs/spec.md`. **O que vês:** o design aprovado (canvas «Lúmen Pregão — Design»: https://claude.ai/artifact/FrCErX1C4NuR7hTio4iWZS).
+- **O que construir:** `docs/spec.md`. **O que vês:** o design aprovado (canvas «Lúmen Pregão — Design»; o produto chama-se agora **Lúmen Lab**: https://claude.ai/artifact/FrCErX1C4NuR7hTio4iWZS).
 - **Em caso de conflito:** `spec.md` > design > este ficheiro. Se encontrares uma lacuna, pára e pergunta. Não inventes funcionalidades nem comportamentos.
 
 ---

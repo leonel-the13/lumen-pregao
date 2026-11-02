@@ -17,7 +17,7 @@ export function Topbar({ streak, points, theme }: { streak?: number; points?: nu
   const [q, setQ] = useState("");
   return (
     <header className="topbar app-top">
-      <Link href="/inicio" className="brand mobile-brand" aria-label="Lúmen Pregão — início"><i className="dot" aria-hidden="true" /><b>LÚMEN</b></Link>
+      <Link href="/inicio" className="brand mobile-brand" aria-label="Lúmen Lab — início"><i className="dot" aria-hidden="true" /><b>LÚMEN</b></Link>
       <Crumbs items={crumbs} />
       <div className="spacer" />
       <form role="search" className="money-wrap top-search" onSubmit={(e) => { e.preventDefault(); router.push(`/salas?q=${encodeURIComponent(q)}`); }}>

@@ -1,4 +1,4 @@
-# Lúmen Pregão
+# Lúmen Lab
 
 Laboratório digital de competências para o DCSA do ISPTEC: trilhas, salas práticas com correcção no servidor,
 exames, rankings e a Maratona de casos. Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC.

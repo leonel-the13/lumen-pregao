@@ -14,7 +14,7 @@ export default function Privacidade() {
         de Dados Pessoais) estão <Tbc />. Ver também os <Link href="/termos">termos e condições</Link>.</p>
 
       <h2 className="h2">Quem é responsável</h2>
-      <p>O Lúmen Pregão é uma iniciativa da Associação de Estudantes. Não é um canal oficial do ISPTEC e o ISPTEC não recebe os teus
+      <p>O Lúmen Lab é uma iniciativa da Associação de Estudantes. Não é um canal oficial do ISPTEC e o ISPTEC não recebe os teus
         dados através desta plataforma.</p>
 
       <h2 className="h2">Que dados guardamos</h2>

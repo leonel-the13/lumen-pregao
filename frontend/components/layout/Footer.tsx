@@ -9,7 +9,7 @@ export function Footer() {
         <Link href="/regras">Regras e fontes</Link>
         <Link href="/termos">Termos</Link>
         <Link href="/privacidade">Privacidade</Link>
-        <span>Lúmen Pregão · nome provisório</span>
+        <span>Lúmen Lab</span>
       </nav>
     </footer>
   );

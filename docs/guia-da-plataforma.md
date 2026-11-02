@@ -1,11 +1,11 @@
-# Lúmen Pregão: como a plataforma funciona
+# Lúmen Lab: como a plataforma funciona
 
 > Guia curto para a equipa da Associação de Estudantes. Estado a 02/11/2026 (MVP em teste).
 > Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC.
 
 ## 1. O que é
 
-O Lúmen Pregão é um **laboratório de prática** para os estudantes do ISPTEC. O foco está nas Ciências Sociais Aplicadas
+O Lúmen Lab é um **laboratório de prática** para os estudantes do ISPTEC. O foco está nas Ciências Sociais Aplicadas
 (Contabilidade, Economia e Gestão), mas **qualquer curso** pode participar. Os estudantes:
 
 - seguem **trilhas** (ex.: Contabilidade segundo o PGC, IVA, Análise financeira), divididas em módulos e **salas**;
@@ -20,7 +20,7 @@ Tudo usa **empresas fictícias**. Os pontos não contam para as notas do ISPTEC.
 
 | O quê | Onde |
 |---|---|
-| Plataforma (site) | `https://pregao.lumenao.tech` |
+| Plataforma (site) | `https://lab.lumenao.tech` |
 | Servidor (API) | `https://lumen-pregao-api.onrender.com` |
 | Código | repositório no GitHub (`main`) |
 

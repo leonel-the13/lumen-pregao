@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Lúmen Pregão",
-    short_name: "Lúmen Pregão",
+    name: "Lúmen Lab",
+    short_name: "Lúmen Lab",
     description: "Laboratório de competências para os estudantes do ISPTEC: trilhas, salas práticas, exames e a Maratona de casos.",
     lang: "pt-PT",
     start_url: "/inicio",

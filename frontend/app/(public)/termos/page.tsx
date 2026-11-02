@@ -10,10 +10,10 @@ export default function Termos() {
     <article className="content stack legal" style={{ maxWidth: 780, margin: "0 auto", gap: 14 }}>
       <div className="label">Termos e condições · versão de {UPDATED}</div>
       <h1 className="h1">Termos e condições de utilização</h1>
-      <p className="muted">Ao criar conta no Lúmen Pregão aceitas estes termos. Lê também a <Link href="/privacidade">política de privacidade</Link> e
+      <p className="muted">Ao criar conta no Lúmen Lab aceitas estes termos. Lê também a <Link href="/privacidade">política de privacidade</Link> e
         as <Link href="/regras">regras e fontes</Link>. Texto preparado pela equipa do projecto; a revisão jurídica final está <Tbc />.</p>
 
-      <h2 className="h2">1. O que é o Lúmen Pregão</h2>
+      <h2 className="h2">1. O que é o Lúmen Lab</h2>
       <p>Uma plataforma educativa gratuita, criada por estudantes como iniciativa da Associação de Estudantes, para praticar
         contabilidade, fiscalidade, análise financeira e outras competências através de salas, exames e competições.
         <b> Não é um canal oficial do ISPTEC</b>: as notas, pontos e conquistas não substituem nem alteram avaliações académicas.</p>

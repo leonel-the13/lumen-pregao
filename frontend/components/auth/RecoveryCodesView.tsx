@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 /** Mostra os códigos de recuperação uma única vez, com copiar e descarregar. */
 export function RecoveryCodesView({ codes }: { codes: string[] }) {
   const [copied, setCopied] = useState(false);
-  const text = `Lúmen Pregão — códigos de recuperação do 2.º factor\nCada código só funciona uma vez.\n\n${codes.join("\n")}\n`;
+  const text = `Lúmen Lab — códigos de recuperação do 2.º factor\nCada código só funciona uma vez.\n\n${codes.join("\n")}\n`;
   return (
     <div className="stack" style={{ gap: 12 }}>
       <Alert tone="info" title="Guarda estes códigos num local seguro">
@@ -23,7 +23,7 @@ export function RecoveryCodesView({ codes }: { codes: string[] }) {
         <Button variant="out" size="sm" icon="download" onClick={() => {
           const a = document.createElement("a");
           a.href = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
-          a.download = "lumen-pregao-codigos-recuperacao.txt";
+          a.download = "lumen-lab-codigos-recuperacao.txt";
           a.click();
           URL.revokeObjectURL(a.href);
         }}>Descarregar</Button>

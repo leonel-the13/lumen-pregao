@@ -145,7 +145,7 @@ public class AuthService {
         User u = t.getUser();
         if (u.getStatus() == UserStatus.PENDING_VERIFICATION) u.activate();
         audit.record(u.getId(), "EMAIL_VERIFIED", "User", u.getId(), null, null);
-        notifications.notify(u.getId(), "WELCOME", "Bem-vindo ao Lúmen Pregão",
+        notifications.notify(u.getId(), "WELCOME", "Bem-vindo ao Lúmen Lab",
                 "Começa pela trilha recomendada no teu painel. Cada tarefa é corrigida no servidor.", "/inicio");
         return u;
     }
@@ -196,7 +196,7 @@ public class AuthService {
             String secret = Totp.newSecret();
             sessions.startPendingMfa(req, new SessionManager.PendingMfa(u.getId(), r.remember(), now, cipher.encrypt(secret)));
             return Optional.of(new LoginStep("mfa_enrollment_required",
-                    Totp.otpauthUri("Lúmen Pregão", u.getEmail(), secret), secret));
+                    Totp.otpauthUri("Lúmen Lab", u.getEmail(), secret), secret));
         }
         complete(u, r.remember(), req, res, "LOGIN");
         return Optional.empty();

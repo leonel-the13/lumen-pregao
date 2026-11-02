@@ -1,4 +1,4 @@
-# O que falta — Lúmen Pregão
+# O que falta — Lúmen Lab
 
 > Estado a 01/11/2026 (actualizado depois da ronda «backend a 100 %»). Cada item diz **o que falta**, **porquê** e
 > **onde mexer**. Prioridades:

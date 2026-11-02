@@ -1,7 +1,8 @@
-# Lúmen Pregão — Especificação do produto (`spec.md`)
+# Lúmen Lab — Especificação do produto (`spec.md`)
 
 > **Estado:** v1.0 · derivada do design aprovado em 01/11/2026 (canvas «Lúmen Pregão — Design»).
-> **Nome do produto:** provisório («Lúmen Pregão»; alternativas: Lúmen Arena, Lúmen Case Lab).
+> **Nome do produto:** **Lúmen Lab** (decidido a 02/11/2026; antes «Lúmen Pregão»). Os identificadores técnicos
+> (pacote `ao.lumen.pregao`, serviços `lumen-pregao-*`, repositório) mantêm o nome antigo.
 > **Regra deste documento:** tudo o que não está decidido aparece como **«a confirmar»**. Não se inventa legislação, números de diplomas, estatísticas nem dados institucionais.
 
 ---

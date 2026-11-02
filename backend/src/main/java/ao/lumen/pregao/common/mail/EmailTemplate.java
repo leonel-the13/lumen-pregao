@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.web.util.HtmlUtils;
 
 /**
- * Email transaccional com a identidade do Lúmen Pregão (tabelas e estilos em linha, compatível com Gmail e Outlook).
+ * Email transaccional com a identidade do Lúmen Lab (tabelas e estilos em linha, compatível com Gmail e Outlook).
  * Todo o texto é escapado.
  */
 public final class EmailTemplate {
@@ -44,7 +44,7 @@ public final class EmailTemplate {
                 <tr><td style="background:#0A0A0A;padding:22px 28px">
                   <span style="display:inline-block;width:10px;height:10px;border-radius:50%%;background:#FFC20E;margin-right:8px;vertical-align:middle"></span>
                   <span style="font:900 17px Arial,Helvetica,sans-serif;letter-spacing:.06em;color:#FFFFFF;vertical-align:middle">LÚMEN</span>
-                  <span style="font:italic 18px Georgia,serif;color:#FFC20E;vertical-align:middle">Pregão</span>
+                  <span style="font:italic 18px Georgia,serif;color:#FFC20E;vertical-align:middle">Lab</span>
                 </td></tr>
                 <tr><td style="padding:30px 28px 26px">
                   <h1 style="margin:0 0 16px;font:800 22px Arial,Helvetica,sans-serif;color:#0A0A0A">%s</h1>
@@ -52,7 +52,7 @@ public final class EmailTemplate {
                 </td></tr>
                 <tr><td style="padding:18px 28px;border-top:1px solid #E2E2DE;font-size:12px;line-height:1.5;color:#6E6E6E">
                   Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC.<br>
-                  Recebeste este email porque há uma conta Lúmen Pregão associada a este endereço.
+                  Recebeste este email porque há uma conta Lúmen Lab associada a este endereço.
                 </td></tr></table></td></tr></table></body></html>
                 """.formatted(e(subject), e(preheader), e(greeting), body, button, noteHtml);
         return new Email(subject, text.toString(), html);

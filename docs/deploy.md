@@ -201,13 +201,13 @@ Domínio `lumenao.tech` (registador get.tech/Namify, DNS em `ns1–4.dns.host`; 
 
 | Registo | Host | Valor | Para quê |
 |---|---|---|---|
-| CNAME | `pregao` | `cname.vercel-dns.com` | site em `https://pregao.lumenao.tech` (Vercel) |
+| CNAME | `pregao` | `cname.vercel-dns.com` | site em `https://lab.lumenao.tech` (Vercel) |
 | CNAME | `rsend` | `rsend-euw1.forge.rmta.net` | envio pelo Resend (SPF) |
 | CNAME | `send` | `send.forge.rmta.net` | envio pelo Resend (SPF) |
 | TXT | `resend._domainkey` | chave DKIM mostrada no Resend | assinatura DKIM |
 | TXT | `_dmarc` | `v=DMARC1; p=none;` | política DMARC |
 
-No Render: `MAIL_FROM=Lúmen Pregão <nao-responder@lumenao.tech>` e `APP_BASE_URL=https://pregao.lumenao.tech`
+No Render: `MAIL_FROM=Lúmen Lab <nao-responder@lumenao.tech>` e `APP_BASE_URL=https://lab.lumenao.tech`
 (só depois de o domínio estar «Verified» no Resend). O domínio principal fica livre para outros projectos (outros subdomínios).
 
 ## 10. Carregar o conteúdo em produção

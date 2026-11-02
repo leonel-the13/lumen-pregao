@@ -22,7 +22,7 @@ interface PublicStats { tracks: number; rooms: number; exercises: number; studen
 const FAQ: [string, string][] = [
   ["Quem pode participar?", "Qualquer estudante do ISPTEC, de qualquer curso, com o email institucional de estudante (o que começa pelo número de 8 dígitos, ex.: 20221987@isptec.co.ao). O foco está nas Ciências Sociais Aplicadas, mas as salas de lógica contabilística, análise e casos são para todos."],
   ["Quanto custa?", "Nada. É uma iniciativa da Associação de Estudantes, feita por estudantes e para estudantes."],
-  ["Conta para a minha nota?", "Não. O Lúmen Pregão não é um canal oficial do ISPTEC: os pontos e as conquistas servem para praticar e mostrar competências, não substituem avaliações académicas."],
+  ["Conta para a minha nota?", "Não. O Lúmen Lab não é um canal oficial do ISPTEC: os pontos e as conquistas servem para praticar e mostrar competências, não substituem avaliações académicas."],
   ["Como é corrigido?", "No servidor, com valores próprios para cada estudante. A resposta certa nunca chega ao teu browser antes de submeteres, por isso copiar o colega não ajuda."],
   ["Os exercícios são fiáveis?", "Cada exercício passa por revisão antes de ser publicado e indica a norma e a versão aplicadas. O que ainda não foi confirmado aparece marcado como «a confirmar»."],
   ["E os meus dados?", "Guardamos só o necessário, não vendemos nada e podes exportar ou eliminar a tua conta a qualquer momento. Lê a política de privacidade."],
@@ -189,7 +189,7 @@ export default async function Landing() {
         <div className="stack" style={{ gap: 14 }}>
           <div className="label">Quem está por trás</div>
           <h2 className="d2">Estudantes a construir <span className="serif">para estudantes.</span></h2>
-          <p className="muted">O Lúmen Pregão é uma proposta do Movimento Lúmen (Chapa D) para a Associação de Estudantes do ISPTEC,
+          <p className="muted">O Lúmen Lab é uma proposta do Movimento Lúmen (Chapa D) para a Associação de Estudantes do ISPTEC,
             mandato 2026–2028: organizar os nossos talentos e treinar as equipas a tempo das competições.</p>
           <p className="small muted">Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC.</p>
         </div>

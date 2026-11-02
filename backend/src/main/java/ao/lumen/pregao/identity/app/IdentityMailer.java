@@ -29,9 +29,9 @@ public class IdentityMailer {
     @TransactionalEventListener
     public void onVerification(AuthEvents.VerificationRequested e) {
         String link = props.baseUrl() + "/verificar?token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
-        send(e.email(), EmailTemplate.build("Confirma o teu email · Lúmen Pregão", "Falta um passo para activares a tua conta.",
+        send(e.email(), EmailTemplate.build("Confirma o teu email · Lúmen Lab", "Falta um passo para activares a tua conta.",
                 "Olá, " + EmailTemplate.firstName(e.name()) + "!",
-                List.of("Obrigado por te juntares ao Lúmen Pregão, o laboratório de competências do DCSA: trilhas práticas, "
+                List.of("Obrigado por te juntares ao Lúmen Lab, o laboratório de competências do DCSA: trilhas práticas, "
                         + "exames e a Maratona de casos, com correcção no servidor.",
                         "Para activares a conta, confirma que este email é teu. Abre o link no mesmo dispositivo onde te registaste."),
                 "Confirmar o meu email", link,
@@ -40,17 +40,17 @@ public class IdentityMailer {
 
     @TransactionalEventListener(fallbackExecution = true)
     public void onDuplicate(AuthEvents.DuplicateRegistration e) {
-        send(e.email(), EmailTemplate.build("Já tens conta · Lúmen Pregão", "Alguém tentou criar uma conta com o teu email.",
+        send(e.email(), EmailTemplate.build("Já tens conta · Lúmen Lab", "Alguém tentou criar uma conta com o teu email.",
                 "Olá!",
-                List.of("Alguém tentou criar uma conta no Lúmen Pregão com este email, mas ela já existe.",
+                List.of("Alguém tentou criar uma conta no Lúmen Lab com este email, mas ela já existe.",
                         "Se foste tu, entra com a tua palavra-passe. Se não te lembras dela, usa «Esqueci-me» no ecrã de entrada."),
-                "Entrar no Lúmen Pregão", props.baseUrl() + "/entrar", "Se não foste tu, podes ignorar este email: a tua conta não foi alterada."));
+                "Entrar no Lúmen Lab", props.baseUrl() + "/entrar", "Se não foste tu, podes ignorar este email: a tua conta não foi alterada."));
     }
 
     @TransactionalEventListener
     public void onReset(AuthEvents.PasswordResetRequested e) {
         String link = props.baseUrl() + "/redefinir?token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
-        send(e.email(), EmailTemplate.build("Redefinir a palavra-passe · Lúmen Pregão", "Escolhe uma nova palavra-passe.",
+        send(e.email(), EmailTemplate.build("Redefinir a palavra-passe · Lúmen Lab", "Escolhe uma nova palavra-passe.",
                 "Olá, " + EmailTemplate.firstName(e.name()) + "!",
                 List.of("Recebemos um pedido para redefinir a palavra-passe da tua conta.",
                         "Ao definires a nova palavra-passe, as sessões abertas noutros dispositivos terminam."),
@@ -61,9 +61,9 @@ public class IdentityMailer {
     @TransactionalEventListener
     public void onInvite(AuthEvents.UserInvited e) {
         String link = props.baseUrl() + "/redefinir?convite=1&token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
-        send(e.email(), EmailTemplate.build("Convite para o Lúmen Pregão", e.invitedBy() + " convidou-te para a equipa da plataforma.",
+        send(e.email(), EmailTemplate.build("Convite para o Lúmen Lab", e.invitedBy() + " convidou-te para a equipa da plataforma.",
                 "Olá, " + EmailTemplate.firstName(e.name()) + "!",
-                List.of(e.invitedBy() + " criou uma conta para ti no Lúmen Pregão, a plataforma de prática do DCSA da Associação de Estudantes.",
+                List.of(e.invitedBy() + " criou uma conta para ti no Lúmen Lab, a plataforma de prática do DCSA da Associação de Estudantes.",
                         "Antes de entrares, define a tua palavra-passe. Se o teu perfil for de administração, revisão, júri ou organização, "
                                 + "vais configurar o segundo factor no primeiro login."),
                 "Activar a minha conta", link, "O link é válido durante 72 horas e só pode ser usado uma vez."));
