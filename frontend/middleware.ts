@@ -26,4 +26,6 @@ export function middleware(req: NextRequest) {
   return NextResponse.next({ request: { headers } });
 }
 
-export const config = { matcher: ["/((?!_next|favicon.ico).*)"] };
+export const config = {
+  matcher: ["/((?!_next|favicon.ico|icon.svg|apple-icon.png|opengraph-image|twitter-image|manifest.webmanifest|robots.txt|sitemap.xml|icon-|img/).*)"],
+};
