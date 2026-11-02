@@ -57,6 +57,18 @@ class IdentityIT extends IntegrationTest {
     }
 
     @Test
+    void registeringAgainBeforeVerifyingSendsANewVerificationLink() {
+        assertThat(api().post("/auth/register", registration("por.confirmar@exemplo.ao")).status()).isEqualTo(202);
+        String first = tokens.byEmail.get("por.confirmar@exemplo.ao");
+        redis.delete("rl:resend:por.confirmar@exemplo.ao");
+        resetLimitsNow();
+        assertThat(api().post("/auth/register", registration("por.confirmar@exemplo.ao")).status()).isEqualTo(202);
+        String second = tokens.byEmail.get("por.confirmar@exemplo.ao");
+        assertThat(second).isNotEqualTo(first);
+        assertThat(api().post("/auth/verify", Map.of("token", second)).status()).isEqualTo(200);
+    }
+
+    @Test
     void loginErrorIsGenericForUnknownEmailAndWrongPassword() {
         var unknown = api().login("ninguem@exemplo.ao", "qualquer-coisa-123");
         var wrong = api().login("joao.cassoma@exemplo.ao", "errada-errada-123");

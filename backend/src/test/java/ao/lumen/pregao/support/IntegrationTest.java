@@ -37,6 +37,11 @@ public abstract class IntegrationTest {
         if (keys != null && !keys.isEmpty()) redis.delete(keys);
     }
 
+    protected void resetLimitsNow() {
+        Set<String> keys = redis.keys("rl:*");
+        if (keys != null && !keys.isEmpty()) redis.delete(keys);
+    }
+
     protected Api api() {
         return new Api(port);
     }

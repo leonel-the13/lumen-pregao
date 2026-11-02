@@ -99,9 +99,15 @@ public class AuthService {
         Course course = courses.findById(r.courseId())
                 .orElseThrow(() -> DomainException.badRequest("COURSE_NOT_FOUND", "O curso escolhido não existe."));
 
-        if (users.existsByEmail(email)) {
-            // Não revela a existência da conta: responde igual e avisa o titular por email.
-            events.publishEvent(new AuthEvents.DuplicateRegistration(email));
+        Optional<User> existing = users.findByEmail(email);
+        if (existing.isPresent()) {
+            // Não revela a existência da conta: responde igual. Conta por confirmar → novo link de verificação;
+            // conta já activa → aviso ao titular com o link para entrar.
+            if (existing.get().getStatus() == UserStatus.PENDING_VERIFICATION) {
+                if (limiter.tryAcquire("resend:" + email, 1, Duration.ofSeconds(45))) issueVerification(existing.get(), clock.instant());
+            } else {
+                events.publishEvent(new AuthEvents.DuplicateRegistration(email));
+            }
             return;
         }
         Instant now = clock.instant();
