@@ -24,7 +24,7 @@
 | ✅ P7 | **Adaptador Cloudflare** | Faltam `@opennextjs/cloudflare`, `wrangler.jsonc` e os scripts `preview`/`deploy`. | `frontend/` (ver `deploy.md` §5) |
 | ✅ P8 | **Primeiro administrador** | Não há forma de criar o primeiro ADMIN pela interface. | Procedimento SQL documentado em `deploy.md` §7; opcional: comando de bootstrap com variável de ambiente |
 | ✅ P9 | **Domínio institucional** | `isptec.co.ao` + número de estudante de 8 dígitos. | `ALLOWED_EMAIL_DOMAIN`, `ALLOWED_EMAIL_LOCAL_PATTERN` |
-| P11 | **Domínio de envio verificado no Resend** | `onboarding@resend.dev` só entrega no email do dono da conta Resend: os estudantes `@isptec.co.ao` não recebem confirmação, convites nem recuperação. O domínio a verificar é o do **remetente** (um domínio da AE), não o `isptec.co.ao`. | Comprar/usar um domínio da AE, registos SPF/DKIM/DMARC no Resend, `MAIL_FROM` no Render |
+| ✅ P11 | **Domínio de envio verificado no Resend** (`lumenao.tech`, 02/11/2026) | `onboarding@resend.dev` só entrega no email do dono da conta Resend: os estudantes `@isptec.co.ao` não recebem confirmação, convites nem recuperação. O domínio a verificar é o do **remetente** (um domínio da AE), não o `isptec.co.ao`. | Comprar/usar um domínio da AE, registos SPF/DKIM/DMARC no Resend, `MAIL_FROM` no Render |
 | P10 | **Agendadores e Neon** | Os agendadores consultam a base a cada 1–5 s, por isso a Neon nunca suspende a computação. | Decidir o plano Neon, ou espaçar os agendadores fora das janelas de contest |
 
 ## 🟠 Falta para o MVP (spec / design)

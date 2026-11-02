@@ -196,6 +196,20 @@ Consequências:
 - Variáveis da Vercel ainda por definir: `BACKEND_INTERNAL_URL` (URL do Render) e `NEXT_PUBLIC_API_BASE=/api/v1`.
   As duas são lidas no build: mudar o URL do backend obriga a novo deploy do frontend.
 
+### Domínio próprio (02/11/2026)
+Domínio `lumenao.tech` (registador get.tech/Namify, DNS em `ns1–4.dns.host`; renovação automática a 29,99 USD/ano).
+
+| Registo | Host | Valor | Para quê |
+|---|---|---|---|
+| CNAME | `pregao` | `cname.vercel-dns.com` | site em `https://pregao.lumenao.tech` (Vercel) |
+| CNAME | `rsend` | `rsend-euw1.forge.rmta.net` | envio pelo Resend (SPF) |
+| CNAME | `send` | `send.forge.rmta.net` | envio pelo Resend (SPF) |
+| TXT | `resend._domainkey` | chave DKIM mostrada no Resend | assinatura DKIM |
+| TXT | `_dmarc` | `v=DMARC1; p=none;` | política DMARC |
+
+No Render: `MAIL_FROM=Lúmen Pregão <nao-responder@lumenao.tech>` e `APP_BASE_URL=https://pregao.lumenao.tech`
+(só depois de o domínio estar «Verified» no Resend). O domínio principal fica livre para outros projectos (outros subdomínios).
+
 ## 10. Carregar o conteúdo em produção
 1. Fazer deploy do backend no Render (aplica a migração V3).
 2. Entrar como administrador → **Administração → Conteúdos → Importar pacote**. Cria 3 trilhas publicadas, 26 salas, 3 exames

@@ -20,7 +20,7 @@ Tudo usa **empresas fictícias**. Os pontos não contam para as notas do ISPTEC.
 
 | O quê | Onde |
 |---|---|
-| Plataforma (site) | o endereço do Vercel (ou o domínio próprio, quando o tivermos) |
+| Plataforma (site) | `https://pregao.lumenao.tech` |
 | Servidor (API) | `https://lumen-pregao-api.onrender.com` |
 | Código | repositório no GitHub (`main`) |
 
@@ -111,10 +111,8 @@ carrega em **Eliminar dados** e escreve `ELIMINAR`. Nome, email e perfis são ap
 
 ## 9. O que ainda falta (importante para os testes)
 
-1. **Email para todos.** Hoje o remetente de teste do Resend só entrega no email do dono da conta. Para os estudantes
-   receberem a confirmação, é preciso **um domínio nosso verificado no Resend** (barato; ver a conversa sobre domínios).
-   Até lá, as contas de teste activam-se à mão na base de dados (Neon):
-   `UPDATE users SET status = 'ACTIVE' WHERE email = '…';`
+1. **Email para todos.** O domínio `lumenao.tech` foi configurado no Resend (registos SPF, DKIM e DMARC). Os emails saem de
+   `nao-responder@lumenao.tech`. Se algum email não chegar, vejam a pasta de spam e avisem pelo Feedback.
 2. Textos legais finais (privacidade, Lei n.º 22/11) e referências normativas por confirmar.
 3. Auditoria formal de acessibilidade e teste de carga antes de um contest grande.
 
