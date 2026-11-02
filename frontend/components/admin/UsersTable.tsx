@@ -14,7 +14,7 @@ export interface AdminUserRow { id: string; name: string; initials: string; emai
 
 export const ROLE_LABEL: Record<string, string> = { STUDENT: "Estudante", AUTHOR: "Autor", REVIEWER: "Revisor", JURY: "Júri", CONTEST_ORGANIZER: "Organizador", ADMIN: "Administrador", TEAM_CAPTAIN: "Capitão" };
 const STATUS_LABEL: Record<string, [string, "pos" | "neutral" | "neg" | "info"]> = {
-  ACTIVE: ["Activo", "pos"], INVITED: ["Convite pendente", "info"], PENDING_VERIFICATION: ["Por verificar", "info"], SUSPENDED: ["Suspenso", "neg"], DELETION_REQUESTED: ["Eliminação pedida", "neg"],
+  ACTIVE: ["Activo", "pos"], INVITED: ["Convite pendente", "info"], PENDING_VERIFICATION: ["Por verificar", "info"], SUSPENDED: ["Suspenso", "neg"], DELETION_REQUESTED: ["Eliminação pedida", "neg"], DELETED: ["Eliminada", "neutral"],
 };
 const ASSIGNABLE = ["STUDENT", "AUTHOR", "REVIEWER", "JURY", "CONTEST_ORGANIZER", "ADMIN"];
 
@@ -26,6 +26,8 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
   const [status, setStatus] = useState("ACTIVE");
   const [err, setErr] = useState<string | null>(null);
   const [mfaTarget, setMfaTarget] = useState<AdminUserRow | null>(null);
+  const [delTarget, setDelTarget] = useState<AdminUserRow | null>(null);
+  const [delBusy, setDelBusy] = useState(false);
   const open = (u: AdminUserRow) => { setEdit(u); setRoles(u.roles.filter((r) => r !== "TEAM_CAPTAIN")); setStatus(u.status); setErr(null); };
   const save = async () => {
     if (!edit) return;
@@ -54,7 +56,8 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
                   <td>{u.mfaEnabled ? "Sim" : "—"}</td>
                   <td className="small mono">{u.lastLoginAt ? formatDateTime(u.lastLoginAt) : "—"}</td>
                   <td className="row" style={{ gap: 4, flexWrap: "nowrap" }}>
-                    <Button size="sm" variant="ghost" icon="pen" onClick={() => open(u)}>Editar</Button>
+                    {u.status !== "DELETED" && <Button size="sm" variant="ghost" icon="pen" onClick={() => open(u)}>Editar</Button>}
+                    {u.status === "DELETION_REQUESTED" && <Button size="sm" variant="ghost" icon="trash" onClick={() => setDelTarget(u)}>Eliminar dados</Button>}
                     {u.status === "INVITED" && <Button size="sm" variant="ghost" icon="refresh" onClick={async () => {
                       try { await post(`/admin/users/${u.id}/resend-invite`); toast({ tone: "pos", title: "Convite reenviado" }); }
                       catch (e) { toast({ tone: "neg", title: "Não foi possível reenviar", body: (e as Error).message }); }
@@ -67,6 +70,17 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
           </tbody>
         </table>
       </div>
+      <ConfirmDialog open={!!delTarget} onCancel={() => setDelTarget(null)} confirmLabel="Eliminar definitivamente" destructive
+        typeToConfirm="ELIMINAR" busy={delBusy} title={`Eliminar os dados de ${delTarget?.name ?? ""}?`}
+        body="Executa o pedido de eliminação: nome, email, pseudónimo, perfis e 2.º factor são apagados e a conta sai dos rankings. Os pontos e a auditoria ficam ligados a uma conta anónima. Não é reversível."
+        onConfirm={async () => {
+          const u = delTarget;
+          if (!u) return;
+          setDelBusy(true);
+          try { await post(`/admin/users/${u.id}/anonymize`); toast({ tone: "pos", title: "Conta eliminada", body: "Os dados pessoais foram apagados." }); setDelTarget(null); router.refresh(); }
+          catch (e) { toast({ tone: "neg", title: "Não foi possível eliminar", body: (e as Error).message }); }
+          finally { setDelBusy(false); }
+        }} />
       <ConfirmDialog open={!!mfaTarget} onCancel={() => setMfaTarget(null)} confirmLabel="Repor 2.º factor"
         title={`Repor o 2.º factor de ${mfaTarget?.name ?? ""}?`}
         body="As sessões desta pessoa terminam e, no próximo login, terá de configurar de novo a aplicação de autenticação. Fica registado em auditoria."

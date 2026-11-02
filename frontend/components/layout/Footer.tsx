@@ -7,6 +7,7 @@ export function Footer() {
       <span>Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC</span>
       <nav aria-label="Informação" className="row" style={{ gap: 16 }}>
         <Link href="/regras">Regras e fontes</Link>
+        <Link href="/termos">Termos</Link>
         <Link href="/privacidade">Privacidade</Link>
         <span>Lúmen Pregão · nome provisório</span>
       </nav>

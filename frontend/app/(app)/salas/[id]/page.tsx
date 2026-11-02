@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SetCrumbs } from "@/components/layout/CrumbsContext";
 import { RoomWorkspace } from "@/components/task/RoomWorkspace";
+import { RoomRating } from "@/components/learning/RoomRating";
 import { Badge, Tbc } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
@@ -84,6 +85,7 @@ export default async function Sala({ params, searchParams }: { params: Promise<{
               </Card>
             )}
             {room.context && <Card className="small" style={{ padding: 16 }}><Markdown text={room.context} /></Card>}
+            <RoomRating roomId={room.id} canRate={room.tasks.some((t) => t.state !== "AVAILABLE" && t.state !== "UNAVAILABLE")} />
           </aside>
           <section aria-label="Área de trabalho">
             {current ? (

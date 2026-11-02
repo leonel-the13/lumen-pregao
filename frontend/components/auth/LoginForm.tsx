@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Field, Input } from "@/components/ui/Field";
 import { post } from "@/lib/api-client";
 import { isApiError } from "@/lib/errors";
+import { RecoveryCodesView } from "./RecoveryCodesView";
 
 type Step = { status: "mfa_required" } | { status: "mfa_enrollment_required"; otpauthUri: string; secret: string };
 
@@ -23,6 +24,8 @@ export function LoginForm({ next, expired, passwordSet }: { next?: string; expir
   const [step, setStep] = useState<Step | null>(null);
   const [error, setError] = useState<{ title: string; body: string } | null>(null);
   const [busy, setBusy] = useState(false);
+  const [useRecovery, setUseRecovery] = useState(false);
+  const [newCodes, setNewCodes] = useState<string[] | null>(null);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,7 +52,8 @@ export function LoginForm({ next, expired, passwordSet }: { next?: string; expir
     setBusy(true);
     setError(null);
     try {
-      await post("/auth/mfa", { code });
+      const r = await post<{ recoveryCodes?: string[] } | undefined>("/auth/mfa", { code });
+      if (r?.recoveryCodes?.length) { setNewCodes(r.recoveryCodes); return; }
       router.push(safeNext(next));
       router.refresh();
     } catch (err) {
@@ -59,6 +63,18 @@ export function LoginForm({ next, expired, passwordSet }: { next?: string; expir
       setBusy(false);
     }
   }
+
+  if (newCodes) {
+    return (
+      <div className="stack" style={{ gap: 16 }}>
+        <Alert tone="pos" title="Segundo factor configurado">A partir de agora, cada entrada pede o código da aplicação.</Alert>
+        <RecoveryCodesView codes={newCodes} />
+        <Button variant="pri" onClick={() => { router.push(safeNext(next)); router.refresh(); }}>Já guardei os códigos · Continuar</Button>
+      </div>
+    );
+  }
+
+  const codeValid = useRecovery ? /^[A-Za-z0-9]{4}-?[A-Za-z0-9]{4}$/.test(code.trim()) : code.length === 6;
 
   if (step) {
     return (
@@ -70,15 +86,24 @@ export function LoginForm({ next, expired, passwordSet }: { next?: string; expir
             <a className="small" href={step.otpauthUri}>Abrir na aplicação de autenticação</a>
           </Alert>
         ) : (
-          <p className="muted">Escreve o código de 6 dígitos da tua aplicação de autenticação.</p>
+          <p className="muted">{useRecovery ? "Escreve um dos teus códigos de recuperação (ex.: ABCD-EF23). Cada código só funciona uma vez."
+            : "Escreve o código de 6 dígitos da tua aplicação de autenticação."}</p>
         )}
-        <Field label="Código de verificação" error={error?.body}>
-          {({ id, describedBy, invalid }) => (
-            <Input id={id} aria-describedby={describedBy} invalid={invalid} inputMode="numeric" autoComplete="one-time-code"
+        <Field label={useRecovery ? "Código de recuperação" : "Código de verificação"} error={error?.body}>
+          {({ id, describedBy, invalid }) => useRecovery ? (
+            <Input key="rec" id={id} aria-describedby={describedBy} invalid={invalid} autoComplete="off" autoCapitalize="characters"
+              maxLength={9} value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} autoFocus className="mono" />
+          ) : (
+            <Input key="otp" id={id} aria-describedby={describedBy} invalid={invalid} inputMode="numeric" autoComplete="one-time-code"
               maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} autoFocus />
           )}
         </Field>
-        <Button variant="pri" type="submit" loading={busy} disabled={code.length !== 6}>Confirmar</Button>
+        <Button variant="pri" type="submit" loading={busy} disabled={!codeValid}>Confirmar</Button>
+        {step.status === "mfa_required" && (
+          <button type="button" className="btn ghost sm" onClick={() => { setUseRecovery((u) => !u); setCode(""); setError(null); }}>
+            {useRecovery ? "Usar o código da aplicação" : "Perdeste o telemóvel? Usa um código de recuperação"}
+          </button>
+        )}
       </form>
     );
   }

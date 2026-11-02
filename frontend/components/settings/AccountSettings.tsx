@@ -11,6 +11,8 @@ import { useToast } from "@/components/ui/Toast";
 import { patch, post } from "@/lib/api-client";
 import { THEME_COOKIE } from "@/lib/theme";
 import type { Me } from "@/lib/types";
+import { RecoveryCodesView } from "@/components/auth/RecoveryCodesView";
+import { Modal } from "@/components/ui/Modal";
 
 export function AccountSettings({ me }: { me: Me }) {
   const router = useRouter();
@@ -18,6 +20,8 @@ export function AccountSettings({ me }: { me: Me }) {
   const [theme, setTheme] = useState(me.theme);
   const [del, setDel] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [regen, setRegen] = useState(false);
+  const [codes, setCodes] = useState<string[] | null>(null);
   return (
     <div className="grid g2" style={{ alignItems: "start" }}>
       <Card className="stack">
@@ -28,6 +32,27 @@ export function AccountSettings({ me }: { me: Me }) {
           <div className="row"><dt className="muted" style={{ width: 140 }}>Curso e ano</dt><dd style={{ margin: 0 }}>{[me.course?.name, me.year && `${me.year}.º ano`].filter(Boolean).join(" · ") || "—"}</dd></div>
           <div className="row"><dt className="muted" style={{ width: 140 }}>2.º factor</dt><dd style={{ margin: 0 }}>{me.mfaEnabled ? <Badge tone="pos">Activo</Badge> : <Badge>Não configurado</Badge>}</dd></div>
         </dl>
+        {me.mfaEnabled && (
+          <div className="row" style={{ gap: 8 }}>
+            <Button variant="out" size="sm" icon="shield" onClick={() => setRegen(true)}>Gerar novos códigos de recuperação</Button>
+          </div>
+        )}
+        <ConfirmDialog open={regen} onCancel={() => setRegen(false)} busy={busy} title="Gerar novos códigos de recuperação?"
+          body="Os códigos anteriores deixam de funcionar. Os novos só são mostrados uma vez." confirmLabel="Gerar códigos"
+          onConfirm={async () => {
+            setBusy(true);
+            try {
+              const r = await post<{ recoveryCodes: string[] }>("/me/mfa/recovery-codes");
+              setCodes(r.recoveryCodes);
+              setRegen(false);
+            } catch {
+              toast({ tone: "neg", title: "Não foi possível gerar os códigos", body: "Tenta de novo dentro de momentos." });
+            } finally { setBusy(false); }
+          }} />
+        <Modal open={!!codes} onClose={() => setCodes(null)} title="Novos códigos de recuperação" labelledBy="codes-title"
+          actions={<Button variant="pri" onClick={() => setCodes(null)}>Já guardei</Button>}>
+          {codes && <div style={{ color: "var(--text)" }}><RecoveryCodesView codes={codes} /></div>}
+        </Modal>
       </Card>
       <Card className="stack">
         <CardHeader title="Aparência" />

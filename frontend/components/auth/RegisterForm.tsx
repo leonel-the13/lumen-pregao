@@ -20,10 +20,12 @@ export function RegisterForm({ courses }: { courses: { id: string; name: string 
     const e: Record<string, string> = {};
     if (form.name.trim().length < 2) e.name = "Indica o teu nome completo.";
     if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = "Indica um email institucional válido.";
+    else if (/@isptec\.co\.ao$/i.test(form.email.trim()) && !/^[0-9]{8}@/.test(form.email.trim()))
+      e.email = "Usa o email de estudante, que começa pelo teu número de 8 dígitos (ex.: 20221987@isptec.co.ao).";
     if (!form.courseId) e.courseId = "Escolhe o curso.";
     if (!form.year) e.year = "Escolhe o ano.";
     if (form.password.length < 12) e.password = "A palavra-passe tem de ter pelo menos 12 caracteres.";
-    if (!form.consent) e.consent = "Tens de aceitar a política de privacidade.";
+    if (!form.consent) e.consent = "Tens de aceitar os termos e a política de privacidade.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -38,7 +40,7 @@ export function RegisterForm({ courses }: { courses: { id: string; name: string 
       router.push(`/verificar?email=${encodeURIComponent(form.email)}`);
     } catch (err) {
       if (isApiError(err)) {
-        if (err.code === "EMAIL_DOMAIN_NOT_ALLOWED") setErrors({ email: err.message });
+        if (err.code === "EMAIL_DOMAIN_NOT_ALLOWED" || err.code === "EMAIL_NOT_STUDENT") setErrors({ email: err.message });
         else if (err.code === "PASSWORD_WEAK" || err.code === "PASSWORD_TOO_SHORT") setErrors({ password: err.message });
         else if (Object.keys(err.fields).length) setErrors(err.fields);
         else setGeneral(err.message);
@@ -53,7 +55,7 @@ export function RegisterForm({ courses }: { courses: { id: string; name: string 
       <Field label="Nome completo" error={errors.name}>
         {({ id, describedBy, invalid }) => <Input id={id} aria-describedby={describedBy} invalid={invalid} autoComplete="name" value={form.name} onChange={(e) => set("name")(e.target.value)} />}
       </Field>
-      <Field label="Email institucional" hint="Só aceitamos o domínio institucional do ISPTEC." error={errors.email}>
+      <Field label="Email institucional" hint="O teu email de estudante do ISPTEC, ex.: 20221987@isptec.co.ao. Aberto a todos os cursos." error={errors.email}>
         {({ id, describedBy, invalid }) => <Input id={id} aria-describedby={describedBy} invalid={invalid} type="email" autoComplete="email" value={form.email} onChange={(e) => set("email")(e.target.value)} />}
       </Field>
       <div className="grid" style={{ gridTemplateColumns: "2fr 1fr", gap: 12 }}>
@@ -79,7 +81,7 @@ export function RegisterForm({ courses }: { courses: { id: string; name: string 
       </Field>
       <label className="check">
         <input type="checkbox" checked={form.consent} onChange={(e) => set("consent")(e.target.checked)} aria-invalid={!!errors.consent} />
-        <span>Li a <Link href="/privacidade">política de privacidade</Link> e aceito o tratamento dos meus dados para usar a plataforma.</span>
+        <span>Li e aceito os <Link href="/termos">termos e condições</Link> e a <Link href="/privacidade">política de privacidade</Link>, incluindo o tratamento dos meus dados para usar a plataforma.</span>
       </label>
       {errors.consent && <span className="small" style={{ color: "var(--neg)" }} role="alert">{errors.consent}</span>}
       {general && <Alert tone="neg" title="Não foi possível criar a conta">{general}</Alert>}

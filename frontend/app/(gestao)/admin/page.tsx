@@ -4,6 +4,7 @@ import { ContestsAdmin, type AdminContestRow } from "@/components/admin/Contests
 import { ContentAdmin, type ExamAdmin, type TrackAdmin } from "@/components/admin/ContentAdmin";
 import { UsersTable, type AdminUserRow } from "@/components/admin/UsersTable";
 import { InviteUser } from "@/components/admin/InviteUser";
+import { FeedbackAdmin, type FeedbackRow } from "@/components/admin/FeedbackAdmin";
 import { Card } from "@/components/ui/Card";
 import { Tabs } from "@/components/ui/Tabs";
 import { AccessDenied, LaterPhase } from "@/components/ui/States";
@@ -23,7 +24,7 @@ const MATRIX: [string, string[]][] = [
   ["Utilizadores e perfis", ["—", "—", "—", "—", "—", "C E"]], ["Auditoria", ["—", "—", "—", "—", "—", "R"]],
 ];
 
-export default async function Admin({ searchParams }: { searchParams: Promise<{ tab?: string; q?: string; cursor?: string }> }) {
+export default async function Admin({ searchParams }: { searchParams: Promise<{ tab?: string; q?: string; cursor?: string; estado?: string }> }) {
   const sp = await searchParams;
   const me = await requireMe("/admin");
   const admin = hasAny(me, "ADMIN");
@@ -34,6 +35,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
     ...(admin ? [{ key: "utilizadores", label: "Utilizadores", href: "/admin?tab=utilizadores" }, { key: "perfis", label: "Perfis", href: "/admin?tab=perfis" }] : []),
     { key: "contests", label: "Contests", href: "/admin?tab=contests" },
     ...(admin ? [{ key: "auditoria", label: "Auditoria", href: "/admin?tab=auditoria" }, { key: "conteudos", label: "Conteúdos", href: "/admin?tab=conteudos" },
+      { key: "feedback", label: "Feedback", href: "/admin?tab=feedback" },
       { key: "configuracoes", label: "Configurações", href: "/admin?tab=configuracoes" }] : []),
   ];
   return (
@@ -55,6 +57,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
       {tab === "contests" && <Contests />}
       {tab === "auditoria" && admin && <Audit cursor={sp.cursor} />}
       {tab === "conteudos" && admin && <Content />}
+      {tab === "feedback" && admin && <Feedback estado={sp.estado} cursor={sp.cursor} />}
       {tab === "configuracoes" && admin && <LaterPhase title="Configurações gerais" body="Domínio institucional, limites de rate limiting e valores de pontuação estão em variáveis de ambiente e ficam a confirmar." />}
     </>
   );
@@ -98,6 +101,25 @@ async function Content() {
   ]);
   return <ContentAdmin tracks={tracks} exams={exams} inReview={exercises.filter((e) => e.status === "IN_REVIEW").length}
     exercises={exercises.map((e) => ({ versionId: e.latestVersionId, label: `${e.code} · ${e.title}`, status: e.status }))} />;
+}
+
+async function Feedback({ estado, cursor }: { estado?: string; cursor?: string }) {
+  const status = estado ?? "NEW";
+  const qs = new URLSearchParams({ limit: "30", ...(status !== "ALL" ? { status } : {}), ...(cursor ? { cursor } : {}) });
+  const page = await serverFetch<CursorPage<FeedbackRow>>(`/admin/feedback?${qs}`);
+  const filters = [["NEW", "Novos"], ["READ", "Lidos"], ["RESOLVED", "Resolvidos"], ["ALL", "Todos"]];
+  return (
+    <div className="stack">
+      <nav className="row" style={{ gap: 6 }} aria-label="Filtrar feedback">
+        {filters.map(([k, l]) => (
+          <Link key={k} className={`btn sm ${k === status ? "pri" : "ghost"}`} aria-current={k === status ? "page" : undefined}
+            href={`/admin?tab=feedback&estado=${k}`}>{l}</Link>
+        ))}
+      </nav>
+      <FeedbackAdmin rows={page.items} />
+      {page.nextCursor && <Link className="btn out" href={`/admin?tab=feedback&estado=${status}&cursor=${page.nextCursor}`}>Mais antigos</Link>}
+    </div>
+  );
 }
 
 async function Audit({ cursor }: { cursor?: string }) {

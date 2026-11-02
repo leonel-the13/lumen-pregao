@@ -78,7 +78,7 @@ public class ContentAdminService {
                 List<RoomAdmin> rs = roomsByModule.getOrDefault(m.getId(), List.of()).stream()
                         .sorted(Comparator.comparingInt(Room::getPosition))
                         .map(r -> new RoomAdmin(r.getId(), r.getPosition(), r.getTitle(), r.getStatus().name(), r.getDifficulty(),
-                                r.getEstMinutes(), r.getPrerequisites(), tasksByRoom.getOrDefault(r.getId(), List.of()).stream()
+                                r.getEstMinutes(), r.getPrerequisites(), r.getDescription(), r.getObjectives(), r.getContext(), tasksByRoom.getOrDefault(r.getId(), List.of()).stream()
                                 .sorted(Comparator.comparingInt(Task::getPosition))
                                 .map(k -> {
                                     var d = defs.get(k.getExerciseVersionId());
@@ -90,7 +90,8 @@ public class ContentAdminService {
                         .toList();
                 ms.add(new ModuleAdmin(m.getId(), m.getPosition(), m.getTitle(), m.getSummary(), rs));
             }
-            out.add(new TrackAdmin(t.getId(), t.getSlug(), t.getTitle(), t.getStatus().name(), t.getPosition(), ms));
+            out.add(new TrackAdmin(t.getId(), t.getSlug(), t.getTitle(), t.getStatus().name(), t.getPosition(), t.getSummary(),
+                    t.getDescription(), t.getDifficulty(), t.getTopic(), t.getEstHours(), ms));
         }
         return out;
     }

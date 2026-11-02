@@ -85,3 +85,15 @@ export function formatGrade(g: number | string | null | undefined) {
 }
 
 export const DIFFICULTY_LABEL: Record<number, string> = { 1: "Iniciação", 2: "Intermédio", 3: "Avançado", 4: "Avançado" };
+
+/** «há 5 min», «há 3 h», «ontem», ou a data (Africa/Luanda). */
+export function formatRelative(iso: string | Date, now: number = Date.now()): string {
+  const t = typeof iso === "string" ? new Date(iso).getTime() : iso.getTime();
+  const min = Math.round((now - t) / 60_000);
+  if (min < 1) return "agora";
+  if (min < 60) return `há ${min} min`;
+  const h = Math.round(min / 60);
+  if (h < 24) return `há ${h} h`;
+  if (h < 48) return "ontem";
+  return formatDate(iso, { day: "2-digit", month: "short" });
+}

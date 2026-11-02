@@ -22,6 +22,7 @@ export function TeamPanel({ c }: { c: ContestDetail }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState(false);
   const regOpen = c.state === "REGISTRATION";
   const run = async (fn: () => Promise<unknown>, ok?: string) => {
     setBusy(true); setErr(null);
@@ -96,7 +97,14 @@ export function TeamPanel({ c }: { c: ContestDetail }) {
           <div><Button variant="danger" size="sm" icon="trash" onClick={() => setConfirmDelete(true)}>Eliminar equipa</Button></div>
         </div>
       )}
+      {!t.captain && !t.locked && !t.individual && (
+        <div><Button variant="out" size="sm" icon="logout" onClick={() => setConfirmLeave(true)}>Sair da equipa</Button></div>
+      )}
       {err && <Alert tone="neg" title="Não foi possível concluir">{err}</Alert>}
+      <ConfirmDialog open={confirmLeave} onCancel={() => setConfirmLeave(false)} busy={busy}
+        title={`Sair da equipa «${t.name}»?`} body="Perdes a inscrição neste contest. O capitão é avisado e pode convidar outra pessoa."
+        confirmLabel="Sair da equipa"
+        onConfirm={() => run(async () => { await post(`/teams/${t.id}/leave`); setConfirmLeave(false); }, "Saíste da equipa")} />
       <ConfirmDialog open={confirmDelete} onCancel={() => setConfirmDelete(false)} destructive typeToConfirm="ELIMINAR" busy={busy}
         title={`Eliminar a equipa «${t.name}»?`} body="Os membros perdem a inscrição neste contest." confirmLabel="Eliminar equipa"
         onConfirm={() => run(async () => { await del(`/teams/${t.id}`, { confirmation: "ELIMINAR" }); setConfirmDelete(false); }, "Equipa eliminada")} />

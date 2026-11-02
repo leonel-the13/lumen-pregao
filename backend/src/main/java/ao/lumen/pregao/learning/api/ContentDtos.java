@@ -17,11 +17,13 @@ public final class ContentDtos {
                             String exerciseTitle, String exerciseType, String editorialStatus, long attempts) {}
 
     public record RoomAdmin(UUID id, int position, String title, String status, int difficulty, int estMinutes,
-                            List<UUID> prerequisites, List<TaskAdmin> tasks) {}
+                            List<UUID> prerequisites, String description, List<String> objectives, String context,
+                            List<TaskAdmin> tasks) {}
 
     public record ModuleAdmin(UUID id, int position, String title, String summary, List<RoomAdmin> rooms) {}
 
-    public record TrackAdmin(UUID id, String slug, String title, String status, int position, List<ModuleAdmin> modules) {}
+    public record TrackAdmin(UUID id, String slug, String title, String status, int position, String summary, String description,
+                             int difficulty, String topic, Integer estHours, List<ModuleAdmin> modules) {}
 
     public record TrackInput(
             @NotBlank @Pattern(regexp = "[a-z0-9-]{3,80}", message = "Usa minúsculas, números e -.") String slug,

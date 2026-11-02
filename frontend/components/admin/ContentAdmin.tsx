@@ -9,14 +9,14 @@ import { Card } from "@/components/ui/Card";
 import { Field, Input, Select, TextArea } from "@/components/ui/Field";
 import { ConfirmDialog, Modal } from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
-import { del, patch, post } from "@/lib/api-client";
+import { del, patch, post, put } from "@/lib/api-client";
 import { STATUS_LABEL, STATUS_TONE, type EditorialStatus } from "@/lib/authoring-types";
 import { isApiError } from "@/lib/errors";
 
-interface TaskAdmin { id: string; position: number; title: string; points: number; exerciseCode?: string; exerciseTitle?: string; exerciseType?: string; editorialStatus?: EditorialStatus; attempts: number }
-interface RoomAdmin { id: string; position: number; title: string; status: string; difficulty: number; estMinutes: number; tasks: TaskAdmin[] }
+interface TaskAdmin { id: string; position: number; title: string; points: number; exerciseVersionId: string; exerciseCode?: string; exerciseTitle?: string; exerciseType?: string; editorialStatus?: EditorialStatus; attempts: number }
+interface RoomAdmin { id: string; position: number; title: string; status: string; difficulty: number; estMinutes: number; description?: string; objectives?: string[]; context?: string; tasks: TaskAdmin[] }
 interface ModuleAdmin { id: string; position: number; title: string; summary?: string; rooms: RoomAdmin[] }
-export interface TrackAdmin { id: string; slug: string; title: string; status: string; modules: ModuleAdmin[] }
+export interface TrackAdmin { id: string; slug: string; title: string; status: string; summary?: string; description?: string; difficulty?: number; topic?: string; estHours?: number; modules: ModuleAdmin[] }
 export interface ExamAdmin { id: string; slug: string; title: string; durationMin: number; topic: string; count: number; passMark: number; status: string }
 export interface ExerciseOption { versionId: string; label: string; status: EditorialStatus }
 
@@ -24,7 +24,8 @@ const CONTENT_STATUS: Record<string, [string, "pos" | "neutral" | "info"]> = { P
 
 type Dialog =
   | { kind: "track" } | { kind: "module"; trackId: string } | { kind: "room"; moduleId: string }
-  | { kind: "task"; roomId: string } | { kind: "exam" } | { kind: "remove"; task: TaskAdmin } | null;
+  | { kind: "task"; roomId: string } | { kind: "exam" } | { kind: "remove"; task: TaskAdmin }
+  | { kind: "editTrack"; track: TrackAdmin } | { kind: "editRoom"; room: RoomAdmin } | { kind: "editTask"; task: TaskAdmin } | null;
 
 export function ContentAdmin({ tracks, exams, exercises, inReview }: { tracks: TrackAdmin[]; exams: ExamAdmin[]; exercises: ExerciseOption[]; inReview: number }) {
   const router = useRouter();
@@ -69,6 +70,29 @@ export function ContentAdmin({ tracks, exams, exercises, inReview }: { tracks: T
       {field("Título da tarefa", "title")}{field("Pontos", "points", "input", "number")}
       <p className="small muted">Só os exercícios publicados ficam visíveis aos estudantes.</p></>,
       submit: () => dialog?.kind === "task" && run(() => post(`/admin/content/rooms/${dialog.roomId}/tasks`, { ...form, points: Number(form.points || 40) }), "Tarefa acrescentada") },
+    editTrack: { title: "Editar trilha", body: <>{field("Título", "title")}{field("Resumo", "summary")}
+      {field("Descrição", "description", "textarea")}{field("Tema", "topic")}{field("Dificuldade (1–4)", "difficulty", "input", "number")}
+      {field("Horas estimadas", "estHours", "input", "number")}</>,
+      submit: () => dialog?.kind === "editTrack" && run(() => put(`/admin/content/tracks/${dialog.track.id}`, {
+        slug: dialog.track.slug, title: form.title, summary: form.summary, description: form.description, topic: form.topic,
+        difficulty: Number(form.difficulty || 1), estHours: form.estHours ? Number(form.estHours) : null }), "Trilha actualizada") },
+    editRoom: { title: "Editar sala", body: <>{field("Título", "title")}{field("Descrição curta", "description")}
+      {field("Objectivos (um por linha)", "objectives", "textarea")}{field("Contexto (markdown)", "context", "textarea")}
+      {field("Dificuldade (1–4)", "difficulty", "input", "number")}{field("Duração estimada (min)", "estMinutes", "input", "number")}</>,
+      submit: () => dialog?.kind === "editRoom" && run(() => put(`/admin/content/rooms/${dialog.room.id}`, {
+        title: form.title, description: form.description, context: form.context,
+        objectives: (form.objectives ?? "").split("\n").map((x) => x.trim()).filter(Boolean),
+        difficulty: Number(form.difficulty || 1), estMinutes: Number(form.estMinutes || 20) }), "Sala actualizada") },
+    editTask: { title: "Editar tarefa", body: <>
+      <Field label="Exercício (versão)">{({ id }) => (
+        <Select id={id} value={form.exerciseVersionId ?? ""} onChange={(e) => set("exerciseVersionId")(e.target.value)}>
+          {!exercises.some((x) => x.versionId === form.exerciseVersionId) && <option value={form.exerciseVersionId}>Versão actual</option>}
+          {exercises.map((x) => <option key={x.versionId} value={x.versionId}>{x.label} · {STATUS_LABEL[x.status]}</option>)}
+        </Select>)}</Field>
+      {field("Título da tarefa", "title")}{field("Pontos", "points", "input", "number")}
+      <p className="small muted">Mudar a versão só afecta as tentativas novas; as tentativas já feitas mantêm a versão com que foram resolvidas.</p></>,
+      submit: () => dialog?.kind === "editTask" && run(() => put(`/admin/content/tasks/${dialog.task.id}`, {
+        exerciseVersionId: form.exerciseVersionId, title: form.title, points: Number(form.points || 0) }), "Tarefa actualizada") },
     exam: { title: "Novo exame", body: <>{field("Título", "title")}{field("Identificador (minúsculas e -)", "slug")}
       {field("Tema das perguntas (prefixo, ex.: IVA, PGC, Análise)", "topic")}{field("Número de perguntas", "count", "input", "number")}
       {field("Duração (min)", "durationMin", "input", "number")}{field("Nota mínima (0–20)", "passMark", "input", "number")}
@@ -108,6 +132,8 @@ export function ContentAdmin({ tracks, exams, exercises, inReview }: { tracks: T
             <Select aria-label={`Estado da trilha ${t.title}`} style={{ width: 170 }} value={t.status} onChange={(e) => status(`/admin/content/tracks/${t.id}`, e.target.value)}>
               <option value="DRAFT">Rascunho</option><option value="PUBLISHED">Publicada</option><option value="COMING_SOON">Fase posterior</option>
             </Select>
+            <Button size="sm" variant="ghost" icon="pen" onClick={() => open({ kind: "editTrack", track: t }, { title: t.title, summary: t.summary ?? "",
+              description: t.description ?? "", topic: t.topic ?? "", difficulty: String(t.difficulty ?? 1), estHours: t.estHours != null ? String(t.estHours) : "" })}>Editar</Button>
             <Button size="sm" variant="ghost" icon="plus" onClick={() => open({ kind: "module", trackId: t.id })}>Módulo</Button>
           </div>
           {t.modules.map((m) => (
@@ -124,6 +150,9 @@ export function ContentAdmin({ tracks, exams, exercises, inReview }: { tracks: T
                       <Select aria-label={`Estado da sala ${r.title}`} style={{ width: 150 }} value={r.status} onChange={(e) => status(`/admin/content/rooms/${r.id}`, e.target.value)}>
                         <option value="DRAFT">Rascunho</option><option value="PUBLISHED">Publicada</option><option value="COMING_SOON">Fase posterior</option>
                       </Select>
+                      <Button size="sm" variant="ghost" icon="pen" aria-label={`Editar sala ${r.title}`} onClick={() => open({ kind: "editRoom", room: r }, {
+                        title: r.title, description: r.description ?? "", context: r.context ?? "", objectives: (r.objectives ?? []).join("\n"),
+                        difficulty: String(r.difficulty), estMinutes: String(r.estMinutes) })} />
                       <Button size="sm" variant="ghost" icon="plus" onClick={() => open({ kind: "task", roomId: r.id }, { points: "40" })}>Tarefa</Button>
                     </div>
                     <ul className="plain stack small" style={{ marginTop: 8, gap: 4 }}>
@@ -133,6 +162,8 @@ export function ContentAdmin({ tracks, exams, exercises, inReview }: { tracks: T
                           <span style={{ flex: 1 }}>{k.title} <span className="muted">· {k.exerciseCode} · tipo {k.exerciseType} · {k.points} pts</span></span>
                           {k.editorialStatus && <Badge tone={STATUS_TONE[k.editorialStatus]}>{STATUS_LABEL[k.editorialStatus]}</Badge>}
                           <span className="muted">{k.attempts} tentativas</span>
+                          <Button size="sm" variant="ghost" icon="pen" aria-label={`Editar tarefa ${k.title}`} onClick={() => open({ kind: "editTask", task: k },
+                            { title: k.title, points: String(k.points), exerciseVersionId: k.exerciseVersionId })} />
                           {k.attempts === 0 && <Button size="sm" variant="ghost" icon="trash" aria-label={`Remover tarefa ${k.title}`} onClick={() => setDialog({ kind: "remove", task: k })} />}
                         </li>
                       ))}

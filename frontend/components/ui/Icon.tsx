@@ -43,6 +43,8 @@ const PATHS: Record<string, string> = {
   refresh: '<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>',
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   loader: '<path d="M12 3a9 9 0 1 1-9 9"/>',
+  star: '<path d="M12 3l2.8 5.8 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 3 1.1-6.2L3 9.7l6.2-.9z"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4z"/>',
   spark: '<path d="M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/>',
 };
 

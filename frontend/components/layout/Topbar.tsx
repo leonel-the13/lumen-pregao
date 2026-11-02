@@ -8,6 +8,8 @@ import { formatPoints } from "@/lib/format";
 import type { ThemeAttr } from "@/lib/theme";
 import { useCrumbs } from "./CrumbsContext";
 import { ThemeToggle } from "./ThemeToggle";
+import { NotificationBell } from "./NotificationBell";
+import { FeedbackButton } from "@/components/feedback/FeedbackButton";
 
 export function Topbar({ streak, points, theme }: { streak?: number; points?: number; theme: ThemeAttr }) {
   const router = useRouter();
@@ -28,6 +30,8 @@ export function Topbar({ streak, points, theme }: { streak?: number; points?: nu
           <span className="badge acc" title="Sequência de dias de prática"><Icon name="flame" /><span className="mono">{streak} {streak === 1 ? "dia" : "dias"}</span></span>
         )}
         {points !== undefined && <span className="badge mono">{formatPoints(points)} pts</span>}
+        <FeedbackButton compact />
+        <NotificationBell />
         <ThemeToggle initial={theme} />
         <button type="button" className="btn ghost icon-btn" aria-label="Terminar sessão"
           onClick={async () => { try { await post("/auth/logout"); } finally { router.push("/entrar"); router.refresh(); } }}>
