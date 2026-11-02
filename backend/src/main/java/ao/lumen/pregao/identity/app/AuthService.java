@@ -239,6 +239,10 @@ public class AuthService {
                 ? cipher.decrypt(p.enrollmentSecretEnc()) : cipher.decrypt(u.getMfaSecretEnc());
         boolean recovery = p.enrollmentSecretEnc() == null && RecoveryCodes.looksLikeRecovery(code);
         boolean valid = recovery ? recoveryCodes.consume(u.getId(), code, now) : Totp.verify(secret, code, now);
+        // Um código de 6 dígitos só serve uma vez (impede reutilizar um código visto por cima do ombro ou interceptado).
+        if (valid && !recovery && !limiter.tryAcquire("totp-used:" + u.getId() + ":" + code, 1, Duration.ofSeconds(120))) {
+            valid = false;
+        }
         if (!valid) {
             limiter.increment(key, props.security().rateLimit().loginWindow());
             audit.recordStandalone(u.getId(), "MFA_FAILED", "User", u.getId(), null);

@@ -32,5 +32,10 @@
     "eslint-config-next": "15.5.28",
     "typescript": "~5.9.2",
     "wrangler": "^4.156.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "^8.5.23"
+    }
   }
 }

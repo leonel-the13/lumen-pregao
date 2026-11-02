@@ -65,6 +65,10 @@ public abstract class IntegrationTest {
         return a;
     }
 
+    protected static String secretOf(String email) {
+        return SECRETS.get(email);
+    }
+
     protected static void rememberSecret(String email, String secret) {
         SECRETS.put(email, secret);
     }

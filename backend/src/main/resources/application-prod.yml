@@ -11,3 +11,17 @@ logging:
       console: logstash
   level:
     root: INFO
+
+# Em produção: o contrato da API não é público (está em docs/openapi.json) e a saúde só diz UP/DOWN.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+management:
+  endpoint:
+    health:
+      show-components: never
+  info:
+    env:
+      enabled: false

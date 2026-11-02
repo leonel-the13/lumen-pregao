@@ -78,6 +78,19 @@ class IdentityIT extends IntegrationTest {
     }
 
     @Test
+    void aSecondFactorCodeWorksOnlyOnce() {
+        privileged("docente.p@exemplo.ao"); // garante o 2.º factor configurado
+        String code = Totp.generate(secretOf("docente.p@exemplo.ao"), clock.instant().getEpochSecond() / 30);
+        resetLimitsNow();
+        Api first = api();
+        first.login("docente.p@exemplo.ao", PASSWORD);
+        assertThat(first.post("/auth/mfa", Map.of("code", code)).status()).isEqualTo(204);
+        Api again = api();
+        again.login("docente.p@exemplo.ao", PASSWORD);
+        assertThat(again.post("/auth/mfa", Map.of("code", code)).code()).isEqualTo("MFA_INVALID");
+    }
+
+    @Test
     void registeringAgainBeforeVerifyingSendsANewVerificationLink() {
         assertThat(api().post("/auth/register", registration("por.confirmar@exemplo.ao")).status()).isEqualTo(202);
         String first = tokens.byEmail.get("por.confirmar@exemplo.ao");
