@@ -93,8 +93,7 @@ public class AuthService {
         }
         if (!localPartAllowed(props.identity().emailLocalPattern(), email)) {
             throw DomainException.rule("EMAIL_NOT_STUDENT",
-                    "Usa o teu email institucional de estudante, que começa pelo número de estudante (ex.: 20221987@"
-                            + props.identity().allowedEmailDomain() + ").");
+                    "Usa o teu email institucional de estudante, que começa pelo número de estudante (ex.: 20221987@isptec.co.ao).");
         }
         PasswordPolicy.check(r.password(), email, r.name());
         Course course = courses.findById(r.courseId())
@@ -292,10 +291,21 @@ public class AuthService {
     }
 
     private boolean domainAllowed(String email) {
-        String allowed = props.identity().allowedEmailDomain();
+        return domainAllowed(props.identity().allowedEmailDomain(), email);
+    }
+
+    /** Aceita «isptec.co.ao», «@isptec.co.ao», aspas, espaços e vários domínios separados por vírgula. */
+    static boolean domainAllowed(String allowed, String email) {
         if (allowed == null || allowed.isBlank()) return false;
         int at = email.lastIndexOf('@');
-        return at > 0 && email.substring(at + 1).equals(allowed.strip().toLowerCase(Locale.ROOT));
+        if (at <= 0) return false;
+        String domain = email.substring(at + 1).strip().toLowerCase(Locale.ROOT);
+        for (String d : allowed.split(",")) {
+            String clean = d.strip().replace("\"", "").replace("'", "").toLowerCase(Locale.ROOT);
+            if (clean.startsWith("@")) clean = clean.substring(1);
+            if (!clean.isEmpty() && clean.equals(domain)) return true;
+        }
+        return false;
     }
 
     /** A parte local do email (antes de @) tem de seguir o padrão; padrão vazio = sem regra. */

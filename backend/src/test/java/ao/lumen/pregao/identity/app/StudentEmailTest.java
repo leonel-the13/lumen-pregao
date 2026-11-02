@@ -15,4 +15,13 @@ class StudentEmailTest {
         assertThat(AuthService.localPartAllowed(PATTERN, "joao.silva@isptec.co.ao")).isFalse();
         assertThat(AuthService.localPartAllowed("", "joao.silva@isptec.co.ao")).isTrue();
     }
+
+    @Test
+    void domainSettingToleratesCommonFormats() {
+        for (String setting : new String[] {"isptec.co.ao", "@isptec.co.ao", " isptec.co.ao ", "\"isptec.co.ao\"", "ISPTEC.co.ao", "exemplo.ao, isptec.co.ao"}) {
+            assertThat(AuthService.domainAllowed(setting, "20221987@isptec.co.ao")).as(setting).isTrue();
+        }
+        assertThat(AuthService.domainAllowed("isptec.co.ao", "20221987@gmail.com")).isFalse();
+        assertThat(AuthService.domainAllowed("", "20221987@isptec.co.ao")).isFalse();
+    }
 }
