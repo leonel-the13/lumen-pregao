@@ -9,6 +9,8 @@ export interface Me {
   course?: { id: string; code: string; name: string }; year?: number; roles: Role[];
   pseudonym?: string; rankingVisibility: "NAME" | "PSEUDONYM" | "HIDDEN"; theme: Theme;
   portfolioPublic: boolean; portfolioHandle: string; mfaEnabled: boolean; status: string;
+  /** Emails de notificações, lembretes e da administração (os de segurança chegam sempre). */
+  emailOptIn: boolean;
 }
 
 export interface ReferenceView { title: string; identifier: string; version: string; articles?: string; confirmed: boolean }

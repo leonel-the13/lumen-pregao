@@ -14,7 +14,7 @@ public final class MeDtos {
     public record MeResponse(UUID id, String name, String shortName, String initials, String email, CourseRef course,
                              Integer year, Set<String> roles, String pseudonym, RankingVisibility rankingVisibility,
                              Theme theme, boolean portfolioPublic, String portfolioHandle, boolean mfaEnabled,
-                             String status) {}
+                             String status, boolean emailOptIn) {}
 
     /** Campos nulos não mudam. Pseudónimo vazio remove-o. */
     public record PatchMe(
@@ -22,5 +22,7 @@ public final class MeDtos {
                     message = "O pseudónimo tem 3 a 24 caracteres: letras minúsculas, números e _.") String pseudonym,
             RankingVisibility rankingVisibility,
             Theme theme,
-            Boolean portfolioPublic) {}
+            Boolean portfolioPublic,
+            /** Emails de notificações, lembretes e da administração (os de segurança chegam sempre). */
+            Boolean emailOptIn) {}
 }

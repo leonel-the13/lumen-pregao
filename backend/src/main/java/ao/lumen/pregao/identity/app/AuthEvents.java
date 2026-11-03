@@ -5,7 +5,11 @@ import java.util.UUID;
 public final class AuthEvents {
     private AuthEvents() {}
 
-    public record VerificationRequested(UUID userId, String email, String name, String token) {}
+    /** {@code reminder}: lembrete de uma conta que ainda não foi confirmada (texto diferente, mesmo link). */
+    public record VerificationRequested(UUID userId, String email, String name, String token, boolean reminder) {}
+
+    /** Estudante sem actividade há {@code days} dias (lembrete leve, respeita a preferência de emails). */
+    public record InactivityReminder(UUID userId, String email, String name, long days) {}
 
     public record DuplicateRegistration(String email) {}
 

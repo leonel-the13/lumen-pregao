@@ -126,6 +126,18 @@ app:
   authoring:
     # UNPUBLISH: exercícios ligados saem de publicação; WARN: ficam publicados com aviso (a confirmar)
     legal-change-policy: UNPUBLISH
+  mail:
+    # espaço mínimo entre envios (o Resend aceita 2 pedidos por segundo)
+    min-interval: 600ms
+    # lembretes automáticos às 10:00 de Luanda (desligar: MAIL_REMINDERS_ENABLED=false)
+    reminders-enabled: ${MAIL_REMINDERS_ENABLED:true}
+    reminders-cron: "0 0 10 * * *"
+    verify-after: 3d
+    verify-every: 7d
+    verify-max: 2
+    inactive-after: 14d
+    inactive-every: 30d
+    campaign-poll-ms: 5000
   contest:
     scheduler-interval-ms: 1000
     sse-clock-interval-ms: 5000
