@@ -73,14 +73,17 @@ async function Users({ q, cursor, me }: { q?: string; cursor?: string; me: strin
   ]);
   return (
     <div className="stack">
-      <form className="row" role="search">
-        <input type="hidden" name="tab" value="utilizadores" />
-        <label className="sr-only" htmlFor="uq">Pesquisar utilizadores</label>
-        <input id="uq" name="q" className="input" style={{ maxWidth: 360 }} placeholder="Nome ou email" defaultValue={q} />
-        <button className="btn out" type="submit">Pesquisar</button>
+      {/* O convite fica fora do <form> da pesquisa: o modal dele também seria parte do formulário. */}
+      <div className="row">
+        <form className="row" role="search">
+          <input type="hidden" name="tab" value="utilizadores" />
+          <label className="sr-only" htmlFor="uq">Pesquisar utilizadores</label>
+          <input id="uq" name="q" className="input" style={{ maxWidth: 360 }} placeholder="Nome ou email" defaultValue={q} />
+          <button className="btn out" type="submit">Pesquisar</button>
+        </form>
         <div className="spacer" />
         <InviteUser courses={courses} />
-      </form>
+      </div>
       <UsersTable rows={page.items} me={me} />
       {page.nextCursor && <div className="row"><div className="spacer" /><Link className="btn sm out" href={`/admin?tab=utilizadores&cursor=${page.nextCursor}${q ? `&q=${q}` : ""}`}>Seguinte</Link></div>}
     </div>
