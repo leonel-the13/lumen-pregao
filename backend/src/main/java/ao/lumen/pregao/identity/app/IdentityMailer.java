@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ao.lumen.pregao.common.mail.EmailSender;
+import ao.lumen.pregao.common.mail.MailQueue;
 import ao.lumen.pregao.common.mail.EmailTemplate;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -16,11 +16,11 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 public class IdentityMailer {
     private static final Logger log = LoggerFactory.getLogger(IdentityMailer.class);
-    private final EmailSender mail;
+    private final MailQueue mail;
     private final AppProperties props;
     private final ExecutorService executor;
 
-    public IdentityMailer(EmailSender mail, AppProperties props, ExecutorService gradingExecutor) {
+    public IdentityMailer(MailQueue mail, AppProperties props, ExecutorService gradingExecutor) {
         this.mail = mail;
         this.props = props;
         this.executor = gradingExecutor;
@@ -29,13 +29,36 @@ public class IdentityMailer {
     @TransactionalEventListener
     public void onVerification(AuthEvents.VerificationRequested e) {
         String link = props.baseUrl() + "/verificar?token=" + URLEncoder.encode(e.token(), StandardCharsets.UTF_8);
+        String validity = "O link é válido durante " + props.identity().verificationTtl().toHours() + " horas.";
+        if (e.reminder()) {
+            send(e.email(), EmailTemplate.build("A tua conta ainda está à espera · Lúmen Lab",
+                    "Falta só confirmar o email para começares.",
+                    "Olá, " + EmailTemplate.firstName(e.name()) + "!",
+                    List.of("Criaste uma conta no Lúmen Lab mas ainda não confirmaste o teu email. Está tudo guardado: "
+                                    + "falta só um clique para entrares nas trilhas, nos exames e na Maratona de casos.",
+                            "O link do email anterior pode já ter expirado, por isso enviamos-te um novo."),
+                    "Confirmar o meu email", link,
+                    validity + " Se não criaste esta conta, ignora este email: sem confirmação, a conta não fica activa."));
+            return;
+        }
         send(e.email(), EmailTemplate.build("Confirma o teu email · Lúmen Lab", "Falta um passo para activares a tua conta.",
                 "Olá, " + EmailTemplate.firstName(e.name()) + "!",
                 List.of("Obrigado por te juntares ao Lúmen Lab, o laboratório de competências do DCSA: trilhas práticas, "
                         + "exames e a Maratona de casos, com correcção no servidor.",
                         "Para activares a conta, confirma que este email é teu. Abre o link no mesmo dispositivo onde te registaste."),
                 "Confirmar o meu email", link,
-                "O link é válido durante " + props.identity().verificationTtl().toHours() + " horas. Se não criaste esta conta, ignora este email."));
+                validity + " Se não criaste esta conta, ignora este email."));
+    }
+
+    @TransactionalEventListener
+    public void onInactive(AuthEvents.InactivityReminder e) {
+        send(e.email(), EmailTemplate.build("Os teus lançamentos estão à tua espera · Lúmen Lab",
+                "Há " + e.days() + " dias que não passas pelo Lúmen Lab.",
+                "Olá, " + EmailTemplate.firstName(e.name()) + "!",
+                List.of("Já lá vão " + e.days() + " dias sem passares pelo Lúmen Lab. O Débito e o Crédito continuam "
+                                + "equilibrados, mas as tuas trilhas ficaram a meio.",
+                        "Dez minutos chegam para uma sala. Cada tarefa certa soma pontos e mantém a tua sequência viva."),
+                "Voltar ao Lúmen Lab", props.baseUrl() + "/inicio", null, props.baseUrl() + "/definicoes"));
     }
 
     @TransactionalEventListener(fallbackExecution = true)
@@ -72,7 +95,7 @@ public class IdentityMailer {
     private void send(String to, EmailTemplate.Email email) {
         executor.submit(() -> {
             try {
-                mail.send(to, email);
+                mail.sendNow(to, email);
             } catch (RuntimeException ex) {
                 log.warn("Falha ao enviar email «{}»: {}", email.subject(), ex.getMessage());
             }

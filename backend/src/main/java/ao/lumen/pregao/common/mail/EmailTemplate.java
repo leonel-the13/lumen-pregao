@@ -14,11 +14,20 @@ public final class EmailTemplate {
 
     public static Email build(String subject, String preheader, String greeting, List<String> paragraphs,
                               String ctaLabel, String ctaUrl, String note) {
+        return build(subject, preheader, greeting, paragraphs, ctaLabel, ctaUrl, note, null);
+    }
+
+    /** Com {@code preferencesUrl}, o rodapé diz como deixar de receber estes emails (lembretes, notificações, campanhas). */
+    public static Email build(String subject, String preheader, String greeting, List<String> paragraphs,
+                              String ctaLabel, String ctaUrl, String note, String preferencesUrl) {
         StringBuilder text = new StringBuilder(greeting).append("\n\n");
         paragraphs.forEach(p -> text.append(p).append("\n\n"));
         if (ctaUrl != null) text.append(ctaLabel).append(": ").append(ctaUrl).append("\n\n");
         if (note != null) text.append(note).append("\n\n");
+        if (preferencesUrl != null) text.append("Não queres receber estes emails? Desliga-os nas definições: ").append(preferencesUrl).append("\n\n");
         text.append("Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC\n");
+        String prefsHtml = preferencesUrl == null ? "" : "<br>Não queres receber estes emails? <a href=\"" + e(preferencesUrl)
+                + "\" style=\"color:#7A5A00\">Desliga-os nas definições</a>.";
 
         StringBuilder body = new StringBuilder();
         for (String p : paragraphs) {
@@ -52,9 +61,9 @@ public final class EmailTemplate {
                 </td></tr>
                 <tr><td style="padding:18px 28px;border-top:1px solid #E2E2DE;font-size:12px;line-height:1.5;color:#6E6E6E">
                   Iniciativa da Associação de Estudantes · Não é um canal oficial do ISPTEC.<br>
-                  Recebeste este email porque há uma conta Lúmen Lab associada a este endereço.
+                  Recebeste este email porque há uma conta Lúmen Lab associada a este endereço.%s
                 </td></tr></table></td></tr></table></body></html>
-                """.formatted(e(subject), e(preheader), e(greeting), body, button, noteHtml);
+                """.formatted(e(subject), e(preheader), e(greeting), body, button, noteHtml, prefsHtml);
         return new Email(subject, text.toString(), html);
     }
 

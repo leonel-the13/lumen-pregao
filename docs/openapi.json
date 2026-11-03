@@ -249,6 +249,52 @@
         },
         "type" : "object"
       },
+      "AudienceCount" : {
+        "properties" : {
+          "label" : {
+            "type" : "string"
+          },
+          "optedOut" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "recipients" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "AudienceIn" : {
+        "properties" : {
+          "audience" : {
+            "enum" : [ "ALL_STUDENTS", "COURSE", "INACTIVE", "USER" ],
+            "type" : "string"
+          },
+          "courseId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "inactiveDays" : {
+            "format" : "int32",
+            "maximum" : 365,
+            "minimum" : 1,
+            "type" : "integer"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "year" : {
+            "format" : "int32",
+            "maximum" : 5,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        },
+        "required" : [ "audience" ],
+        "type" : "object"
+      },
       "AuditRow" : {
         "properties" : {
           "action" : {
@@ -384,6 +430,67 @@
         "required" : [ "to", "versionIds" ],
         "type" : "object"
       },
+      "CampaignIn" : {
+        "properties" : {
+          "audience" : {
+            "$ref" : "#/components/schemas/AudienceIn"
+          },
+          "content" : {
+            "$ref" : "#/components/schemas/ContentIn"
+          },
+          "templateId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "audience", "content" ],
+        "type" : "object"
+      },
+      "CampaignRow" : {
+        "properties" : {
+          "audience" : {
+            "type" : "string"
+          },
+          "audienceLabel" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "createdBy" : {
+            "type" : "string"
+          },
+          "failed" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "pending" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "sent" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "skipped" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "subject" : {
+            "type" : "string"
+          },
+          "total" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
       "Competency" : {
         "properties" : {
           "rooms" : {
@@ -394,6 +501,37 @@
             "type" : "string"
           }
         },
+        "type" : "object"
+      },
+      "ContentIn" : {
+        "properties" : {
+          "body" : {
+            "maxLength" : 5000,
+            "minLength" : 0,
+            "type" : "string"
+          },
+          "ctaLabel" : {
+            "maxLength" : 40,
+            "minLength" : 0,
+            "type" : "string"
+          },
+          "ctaPath" : {
+            "maxLength" : 200,
+            "minLength" : 0,
+            "type" : "string"
+          },
+          "subject" : {
+            "maxLength" : 120,
+            "minLength" : 0,
+            "type" : "string"
+          },
+          "title" : {
+            "maxLength" : 120,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        },
+        "required" : [ "body", "subject" ],
         "type" : "object"
       },
       "ContestCard" : {
@@ -704,6 +842,20 @@
           "items" : {
             "items" : {
               "$ref" : "#/components/schemas/AuditRow"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "CursorPageCampaignRow" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CampaignRow"
             },
             "type" : "array"
           },
@@ -1398,6 +1550,9 @@
           "email" : {
             "type" : "string"
           },
+          "emailOptIn" : {
+            "type" : "boolean"
+          },
           "id" : {
             "format" : "uuid",
             "type" : "string"
@@ -1633,6 +1788,9 @@
       },
       "PatchMe" : {
         "properties" : {
+          "emailOptIn" : {
+            "type" : "boolean"
+          },
           "portfolioPublic" : {
             "type" : "boolean"
           },
@@ -1717,6 +1875,15 @@
         },
         "type" : "object"
       },
+      "PreviewIn" : {
+        "properties" : {
+          "content" : {
+            "$ref" : "#/components/schemas/ContentIn"
+          }
+        },
+        "required" : [ "content" ],
+        "type" : "object"
+      },
       "PreviewResponse" : {
         "properties" : {
           "expectedAnswer" : {
@@ -1736,6 +1903,20 @@
           },
           "statementSegments" : {
             "$ref" : "#/components/schemas/JsonNode"
+          }
+        },
+        "type" : "object"
+      },
+      "PreviewView" : {
+        "properties" : {
+          "html" : {
+            "type" : "string"
+          },
+          "subject" : {
+            "type" : "string"
+          },
+          "text" : {
+            "type" : "string"
           }
         },
         "type" : "object"
@@ -2037,6 +2218,43 @@
         },
         "type" : "object"
       },
+      "ReminderResult" : {
+        "properties" : {
+          "sent" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "ReminderStats" : {
+        "properties" : {
+          "automatic" : {
+            "type" : "boolean"
+          },
+          "dueVerification" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "inactive" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "inactiveDays" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "oldestUnverifiedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "unverified" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
       "Report" : {
         "properties" : {
           "autoSubmitted" : {
@@ -2131,6 +2349,15 @@
           }
         },
         "required" : [ "password", "token" ],
+        "type" : "object"
+      },
+      "RetryResult" : {
+        "properties" : {
+          "requeued" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
         "type" : "object"
       },
       "RolesUpdate" : {
@@ -2752,6 +2979,54 @@
         },
         "type" : "object"
       },
+      "TemplateIn" : {
+        "properties" : {
+          "content" : {
+            "$ref" : "#/components/schemas/ContentIn"
+          },
+          "name" : {
+            "maxLength" : 80,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        },
+        "required" : [ "content", "name" ],
+        "type" : "object"
+      },
+      "TemplateView" : {
+        "properties" : {
+          "body" : {
+            "type" : "string"
+          },
+          "builtIn" : {
+            "type" : "boolean"
+          },
+          "ctaLabel" : {
+            "type" : "string"
+          },
+          "ctaPath" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "subject" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "TopicResult" : {
         "properties" : {
           "correct" : {
@@ -3007,6 +3282,17 @@
           }
         },
         "required" : [ "to" ],
+        "type" : "object"
+      },
+      "VariableView" : {
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          }
+        },
         "type" : "object"
       },
       "VerifyRequest" : {
@@ -3752,7 +4038,7 @@
     },
     "/api/v1/admin/contests" : {
       "get" : {
-        "operationId" : "list_2",
+        "operationId" : "list_3",
         "responses" : {
           "200" : {
             "content" : {
@@ -3915,9 +4201,358 @@
         "tags" : [ "contest-admin-controller" ]
       }
     },
+    "/api/v1/admin/email-templates" : {
+      "get" : {
+        "operationId" : "templates",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/TemplateView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      },
+      "post" : {
+        "operationId" : "createTemplate",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TemplateIn"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TemplateView"
+                }
+              }
+            },
+            "description" : "Created"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      }
+    },
+    "/api/v1/admin/email-templates/{id}" : {
+      "delete" : {
+        "operationId" : "deleteTemplate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      },
+      "put" : {
+        "operationId" : "updateTemplate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TemplateIn"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TemplateView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/audience" : {
+      "post" : {
+        "operationId" : "audience",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AudienceIn"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AudienceCount"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/campaigns" : {
+      "get" : {
+        "operationId" : "list_2",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CursorPageCampaignRow"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      },
+      "post" : {
+        "operationId" : "send",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CampaignIn"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "202" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CampaignRow"
+                }
+              }
+            },
+            "description" : "Accepted"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/campaigns/{id}/retry" : {
+      "post" : {
+        "operationId" : "retry",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RetryResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/preview" : {
+      "post" : {
+        "operationId" : "preview_1",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PreviewIn"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PreviewView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/reminders" : {
+      "get" : {
+        "operationId" : "stats_1",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReminderStats"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-reminder-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/reminders/inactive" : {
+      "post" : {
+        "operationId" : "remindInactive",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReminderResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-reminder-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/reminders/unverified" : {
+      "post" : {
+        "operationId" : "remindUnverified",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReminderResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-reminder-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/test" : {
+      "post" : {
+        "operationId" : "test",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PreviewIn"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "202" : {
+            "description" : "Accepted"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      }
+    },
+    "/api/v1/admin/emails/variables" : {
+      "get" : {
+        "operationId" : "variables",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/VariableView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-email-controller" ]
+      }
+    },
     "/api/v1/admin/feedback" : {
       "get" : {
-        "operationId" : "list_7",
+        "operationId" : "list_8",
         "parameters" : [ {
           "in" : "query",
           "name" : "status",
@@ -4010,7 +4645,7 @@
     },
     "/api/v1/admin/users" : {
       "get" : {
-        "operationId" : "list_6",
+        "operationId" : "list_7",
         "parameters" : [ {
           "in" : "query",
           "name" : "q",
@@ -4146,6 +4781,33 @@
           }
         },
         "tags" : [ "admin-user-controller" ]
+      }
+    },
+    "/api/v1/admin/users/{id}/remind-verification" : {
+      "post" : {
+        "operationId" : "remindOne",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReminderResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-reminder-controller" ]
       }
     },
     "/api/v1/admin/users/{id}/resend-invite" : {
@@ -4897,7 +5559,7 @@
     },
     "/api/v1/contests" : {
       "get" : {
-        "operationId" : "list_5",
+        "operationId" : "list_6",
         "responses" : {
           "200" : {
             "content" : {
@@ -5291,7 +5953,7 @@
     },
     "/api/v1/exams" : {
       "get" : {
-        "operationId" : "list_4",
+        "operationId" : "list_5",
         "responses" : {
           "200" : {
             "content" : {
@@ -5597,7 +6259,7 @@
     },
     "/api/v1/me/notifications" : {
       "get" : {
-        "operationId" : "list_3",
+        "operationId" : "list_4",
         "parameters" : [ {
           "in" : "query",
           "name" : "cursor",

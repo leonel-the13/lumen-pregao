@@ -661,3 +661,35 @@ pela equipa; o contrato completo está em `docs/openapi.json` (verificado no CI)
   e apaga o token. A página «Confirma o teu email» consulta-o a cada 3 s e quando volta a ficar visível.
 - `resendInSeconds` vem do limite do servidor (45 s): a contagem do «Reenviar email» não recomeça com o refresh.
 - Registar de novo uma conta ainda por confirmar envia um novo link de verificação (antes enviava «Já tens conta»).
+
+### B.7 Emails da administração, lembretes e notificações por email (03/11/2026)
+- **Preferência:** `users.email_opt_in` (V5), em `PATCH /me` (`emailOptIn`) e em Definições → Emails. Desligada, a pessoa
+  deixa de receber notificações por email, lembretes de inactividade e emails a segmentos. Os avisos de segurança e as
+  mensagens individuais da administração chegam sempre. Os emails que se podem desligar levam no rodapé a ligação para `/definicoes`.
+- **Notificações por email:** segurança, convites de equipa, contests e resultados, exame corrigido e fluxo editorial
+  (incluindo alertas legais). Boas-vindas, conquistas, saídas de equipa e feedback ficam só no sino.
+- **Última actividade:** `users.last_seen_at`, actualizado no máximo uma vez por hora em `GET /me` e em cada login.
+- **Lembretes automáticos** (todos os dias às 10:00 de Luanda; `MAIL_REMINDERS_ENABLED=false` desliga-os):
+  - conta por confirmar há 3 dias: novo link de verificação, repetido 7 dias depois, no máximo 2 automáticos;
+  - estudante activo sem actividade há 14 dias e com emails ligados: lembrete leve, no máximo um por 30 dias.
+- **Lembretes manuais:** `GET /admin/emails/reminders` (contagens), `POST /admin/emails/reminders/unverified` (quem não foi
+  lembrado na última hora), `POST /admin/emails/reminders/inactive` (quem não foi lembrado na última semana),
+  `POST /admin/users/{id}/remind-verification` (`NOT_PENDING_VERIFICATION`, `REMINDER_TOO_SOON`). Todos auditados.
+- **Modelos:** `GET/POST /admin/email-templates`, `PUT/DELETE /admin/email-templates/{id}` (nome único, `TEMPLATE_NAME_TAKEN`).
+  V5 traz 6 modelos originais de partida, editáveis.
+- **Conteúdo:** assunto (≤ 120), título (≤ 120, por defeito «Olá, {nome}!»), mensagem em texto simples (≤ 5000; cada
+  linha é um parágrafo; sempre escapada) e botão opcional que só abre páginas da plataforma (`/…`; `CTA_PATH_INVALID`,
+  `CTA_INCOMPLETE`). Variáveis: `{nome}`, `{nome_completo}`, `{curso}`, `{ano}`, `{dias_sem_entrar}`; outra dá `UNKNOWN_VARIABLE`.
+  `GET /admin/emails/variables` lista-as.
+- **Envio:** `POST /admin/emails/audience` (contagem e quantos desligaram os emails), `POST /admin/emails/preview`
+  (com os dados de quem escreve), `POST /admin/emails/test` (só para quem escreve; 20 por hora),
+  `POST /admin/emails/campaigns` (`Idempotency-Key` obrigatório; 202; 10 por hora por administrador; `NO_RECIPIENTS`).
+  Segmentos: `ALL_STUDENTS`, `COURSE` (+ ano opcional), `INACTIVE` (1–365 dias), `USER` (uma conta activa; para contas
+  por confirmar usa-se o lembrete). A campanha e uma entrega por destinatário (`email_deliveries`, PENDING) ficam
+  persistidas antes do envio; o envio é feito em segundo plano, um email de cada vez (cerca de 100 por minuto), e marca
+  cada entrega SENT, FAILED ou SKIPPED (conta inactiva ou emails desligados entretanto).
+  `GET /admin/emails/campaigns` (cursor) mostra o histórico com contagens; `POST /admin/emails/campaigns/{id}/retry`
+  volta a pôr na fila as que falharam (ex.: limite diário do fornecedor).
+- **Interface:** separador Administração → Emails (lembretes, compositor, modelos, enviados); na tabela de utilizadores,
+  «Enviar email» (contas activas) e «Lembrar confirmação» (contas por verificar).
+

@@ -52,6 +52,16 @@ public class User extends BaseEntity {
     private Instant deletionRequestedAt;
     @Column(name = "deleted_at")
     private Instant deletedAt;
+    @Column(name = "email_opt_in")
+    private boolean emailOptIn = true;
+    @Column(name = "last_seen_at")
+    private Instant lastSeenAt;
+    @Column(name = "verify_reminders")
+    private int verifyReminders;
+    @Column(name = "last_verify_reminder_at")
+    private Instant lastVerifyReminderAt;
+    @Column(name = "last_inactive_reminder_at")
+    private Instant lastInactiveReminderAt;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
@@ -97,6 +107,7 @@ public class User extends BaseEntity {
         this.course = null;
         this.year = null;
         this.status = UserStatus.DELETED;
+        this.emailOptIn = false;
         this.deletedAt = at;
     }
 
@@ -109,7 +120,16 @@ public class User extends BaseEntity {
         this.mfaSecretEnc = secretEnc;
         this.mfaEnabled = true;
     }
-    public void loggedIn(Instant at) { this.lastLoginAt = at; }
+    public void loggedIn(Instant at) {
+        this.lastLoginAt = at;
+        this.lastSeenAt = at;
+    }
+    public void setEmailOptIn(boolean emailOptIn) { this.emailOptIn = emailOptIn; }
+    public void verificationReminded(Instant at) {
+        this.verifyReminders++;
+        this.lastVerifyReminderAt = at;
+    }
+    public void inactivityReminded(Instant at) { this.lastInactiveReminderAt = at; }
     public void setPseudonym(String pseudonym) { this.pseudonym = pseudonym; }
     public void setRankingVisibility(RankingVisibility v) { this.rankingVisibility = v; }
     public void setTheme(Theme theme) { this.theme = theme; }
@@ -133,4 +153,16 @@ public class User extends BaseEntity {
     public Instant getConsentAt() { return consentAt; }
     public Instant getLastLoginAt() { return lastLoginAt; }
     public Instant getDeletionRequestedAt() { return deletionRequestedAt; }
+    public boolean isEmailOptIn() { return emailOptIn; }
+    public Instant getLastSeenAt() { return lastSeenAt; }
+    public int getVerifyReminders() { return verifyReminders; }
+    public Instant getLastVerifyReminderAt() { return lastVerifyReminderAt; }
+    public Instant getLastInactiveReminderAt() { return lastInactiveReminderAt; }
+
+    /** Última actividade conhecida: visita, login ou, sem nenhum dos dois, a criação da conta. */
+    public Instant lastActivity() {
+        Instant a = lastSeenAt != null ? lastSeenAt : lastLoginAt;
+        if (lastLoginAt != null && a != null && lastLoginAt.isAfter(a)) a = lastLoginAt;
+        return a != null ? a : getCreatedAt();
+    }
 }

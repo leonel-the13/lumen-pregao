@@ -18,6 +18,7 @@ export function AccountSettings({ me }: { me: Me }) {
   const router = useRouter();
   const toast = useToast();
   const [theme, setTheme] = useState(me.theme);
+  const [emails, setEmails] = useState(me.emailOptIn);
   const [del, setDel] = useState(false);
   const [busy, setBusy] = useState(false);
   const [regen, setRegen] = useState(false);
@@ -64,6 +65,22 @@ export function AccountSettings({ me }: { me: Me }) {
             document.documentElement.dataset.theme = attr;
             document.cookie = `${THEME_COOKIE}=${attr}; path=/; max-age=31536000; samesite=lax`;
             try { await patch("/me", { theme: t }); } catch { toast({ tone: "neg", title: "Não foi possível guardar o tema no perfil" }); }
+          }} />
+      </Card>
+      <Card className="stack">
+        <CardHeader title="Emails" />
+        <p className="small muted" style={{ margin: 0 }}>
+          Notificações importantes (convites de equipa, contests e resultados, exames corrigidos, revisão editorial), lembretes e
+          novidades da Associação de Estudantes. Os avisos de segurança chegam sempre.
+        </p>
+        <Seg label="Receber emails" value={emails ? "ON" : "OFF"} options={[{ value: "ON", label: "Ligados" }, { value: "OFF", label: "Desligados" }]}
+          onChange={async (v) => {
+            const on = v === "ON";
+            setEmails(on);
+            try {
+              await patch("/me", { emailOptIn: on });
+              toast({ tone: "pos", title: on ? "Emails ligados" : "Emails desligados", body: on ? undefined : "Continuas a ver tudo no sino de notificações." });
+            } catch { setEmails(!on); toast({ tone: "neg", title: "Não foi possível guardar a preferência", body: "Tenta de novo dentro de momentos." }); }
           }} />
       </Card>
       <Card className="stack">

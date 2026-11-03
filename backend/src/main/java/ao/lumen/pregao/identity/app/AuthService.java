@@ -167,11 +167,16 @@ public class AuthService {
     }
 
     private void issueVerification(User u, Instant now) {
+        issueVerification(u, now, false);
+    }
+
+    /** Novo link de verificação (o anterior continua válido até expirar). Usado também pelos lembretes. */
+    void issueVerification(User u, Instant now, boolean reminder) {
         byte[] raw = new byte[32];
         RANDOM.nextBytes(raw);
         String token = Base64.getUrlEncoder().withoutPadding().encodeToString(raw);
         tokens.save(new EmailVerificationToken(u, sha256(token), now.plus(props.identity().verificationTtl())));
-        events.publishEvent(new AuthEvents.VerificationRequested(u.getId(), u.getEmail(), u.getName(), token));
+        events.publishEvent(new AuthEvents.VerificationRequested(u.getId(), u.getEmail(), u.getName(), token, reminder));
     }
 
     // ───────────────────────── login e 2.º factor ─────────────────────────

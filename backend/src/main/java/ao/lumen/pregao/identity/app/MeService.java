@@ -39,8 +39,11 @@ public class MeService {
         this.clock = clock;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public MeResponse get(UUID id) {
+        // Última actividade: no máximo uma escrita por hora (o layout pede /me em cada página).
+        var now = clock.instant();
+        users.touchSeen(id, now, now.minus(java.time.Duration.ofHours(1)));
         return toDto(load(id));
     }
 
@@ -71,6 +74,7 @@ public class MeService {
         }
         if (p.theme() != null) u.setTheme(p.theme());
         if (p.portfolioPublic() != null) u.setPortfolioPublic(p.portfolioPublic());
+        if (p.emailOptIn() != null) u.setEmailOptIn(p.emailOptIn());
         audit.record(id, "PROFILE_UPDATED", "User", id, before, snapshot(u));
         return toDto(u);
     }
@@ -89,10 +93,12 @@ public class MeService {
         account.put("rankingVisibility", u.getRankingVisibility());
         account.put("theme", u.getTheme());
         account.put("portfolioPublic", u.isPortfolioPublic());
+        account.put("emailOptIn", u.isEmailOptIn());
         account.put("roles", u.roleCodes());
         account.put("consentAt", u.getConsentAt());
         account.put("createdAt", u.getCreatedAt());
         account.put("lastLoginAt", u.getLastLoginAt());
+        account.put("lastSeenAt", u.getLastSeenAt());
         out.put("exportedAt", clock.instant());
         out.put("account", account);
         for (PersonalDataContributor c : contributors) out.put(c.section(), c.export(id));
@@ -119,6 +125,7 @@ public class MeService {
         m.put("rankingVisibility", u.getRankingVisibility());
         m.put("theme", u.getTheme());
         m.put("portfolioPublic", u.isPortfolioPublic());
+        m.put("emailOptIn", u.isEmailOptIn());
         return m;
     }
 
@@ -127,6 +134,6 @@ public class MeService {
         return new MeResponse(u.getId(), u.getName(), DisplayNames.shortName(u.getName()), DisplayNames.initials(u.getName()),
                 u.getEmail(), c == null ? null : new CourseRef(c.getId(), c.getCode(), c.getName()), u.getYear(),
                 u.roleCodes(), u.getPseudonym(), u.getRankingVisibility(), u.getTheme(), u.isPortfolioPublic(),
-                u.getPortfolioHandle(), u.isMfaEnabled(), u.getStatus().name());
+                u.getPortfolioHandle(), u.isMfaEnabled(), u.getStatus().name(), u.isEmailOptIn());
     }
 }

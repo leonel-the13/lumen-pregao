@@ -1,5 +1,5 @@
 "use client";
-import { useId, useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import { useId, useState, type InputHTMLAttributes, type Ref, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 import { Icon } from "./Icon";
 
 interface FieldProps {
@@ -41,7 +41,7 @@ export function Select({ invalid, className, children, ...props }: SelectHTMLAtt
   );
 }
 
-export function TextArea({ invalid, className, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }) {
+export function TextArea({ invalid, className, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean; ref?: Ref<HTMLTextAreaElement> }) {
   return <textarea className={["input", invalid && "is-err", className].filter(Boolean).join(" ")} aria-invalid={invalid || undefined} {...props} />;
 }
 

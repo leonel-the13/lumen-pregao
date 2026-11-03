@@ -33,6 +33,28 @@ public class TestInfra {
     }
 
     @Bean
+    @Primary
+    SentMail sentMail() {
+        return new SentMail();
+    }
+
+    /** Emails «enviados» durante os testes (nenhum sai para a rede). */
+    public static class SentMail implements ao.lumen.pregao.common.mail.EmailSender {
+        public record Sent(String to, ao.lumen.pregao.common.mail.EmailTemplate.Email email) {}
+
+        public final java.util.concurrent.CopyOnWriteArrayList<Sent> all = new java.util.concurrent.CopyOnWriteArrayList<>();
+
+        @Override
+        public void send(String to, ao.lumen.pregao.common.mail.EmailTemplate.Email email) {
+            all.add(new Sent(to, email));
+        }
+
+        public java.util.List<Sent> to(String email) {
+            return all.stream().filter(s -> s.to().equals(email)).toList();
+        }
+    }
+
+    @Bean
     TokenCapture tokenCapture() {
         return new TokenCapture();
     }

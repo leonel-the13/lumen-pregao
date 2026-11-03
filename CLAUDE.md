@@ -56,6 +56,8 @@ Referência de trabalho para o Claude Code neste repositório.
 │  │  ├─ contest/              # contests, equipas, scoreboard, agendador, SSE
 │  │  ├─ ranking/              # PointEvent, projecção Redis
 │  │  ├─ portfolio/            # perfil, conquistas, certificados
+│  │  ├─ notification/         # notificações do sino
+│  │  ├─ messaging/            # emails da administração (modelos, campanhas), notificações por email
 │  │  └─ simulation/           # [posterior] empresa, mercado
 │  ├─ src/main/resources/
 │  │  ├─ application.yml
@@ -178,7 +180,8 @@ O gestor de pacotes e o wrapper Maven são os indicados acima. Se mudarem, actua
   - `MFA_ENC_KEY` (as sessões ficam no Redis com Spring Session; não há `SESSION_SECRET`);
   - `ALLOWED_EMAIL_LOCAL_PATTERN` (parte local do email de estudante; por defeito `^[0-9]{8}$`);
   - `ALLOWED_EMAIL_DOMAIN` (**a confirmar**);
-  - `APP_BASE_URL`.
+  - `APP_BASE_URL`;
+  - `MAIL_REMINDERS_ENABLED` (lembretes automáticos por email; por defeito `true`).
 - **`.env.example`:** documenta todas as variáveis, sem valores reais. `.env*` está no `.gitignore`.
 - **Frontend:** só `NEXT_PUBLIC_*` para valores públicos (ex.: `NEXT_PUBLIC_API_BASE`); nada secreto no bundle.
 - **CI:** o gitleaks falha o build se encontrar segredos.

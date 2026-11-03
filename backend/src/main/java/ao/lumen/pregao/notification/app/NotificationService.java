@@ -18,10 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class NotificationService {
     private final NotificationRepository repo;
     private final Clock clock;
+    private final org.springframework.context.ApplicationEventPublisher events;
 
-    public NotificationService(NotificationRepository repo, Clock clock) {
+    public NotificationService(NotificationRepository repo, Clock clock, org.springframework.context.ApplicationEventPublisher events) {
         this.repo = repo;
         this.clock = clock;
+        this.events = events;
     }
 
     public record NotificationView(UUID id, String kind, String title, String body, String link, boolean read, Instant at) {}
@@ -30,7 +32,8 @@ public class NotificationService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void notify(UUID userId, String kind, String title, String body, String link) {
         if (userId == null) return;
-        repo.save(new Notification(userId, kind, cut(title, 160), cut(body, 500), link));
+        Notification n = repo.save(new Notification(userId, kind, cut(title, 160), cut(body, 500), link));
+        events.publishEvent(new NotificationCreated(n.getId(), userId, kind, n.getTitle(), n.getBody(), link));
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

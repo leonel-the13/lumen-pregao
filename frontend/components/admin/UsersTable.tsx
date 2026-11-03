@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { Button, LinkButton } from "@/components/ui/Button";
 import { Field, Select } from "@/components/ui/Field";
 import { ConfirmDialog, Modal } from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
@@ -63,6 +63,12 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
                       try { await post(`/admin/users/${u.id}/resend-invite`); toast({ tone: "pos", title: "Convite reenviado" }); }
                       catch (e) { toast({ tone: "neg", title: "Não foi possível reenviar", body: (e as Error).message }); }
                     }}>Reenviar convite</Button>}
+                    {u.status === "ACTIVE" && u.id !== me && <LinkButton size="sm" variant="ghost" icon="mail"
+                      href={`/admin?tab=emails&para=${u.id}&nome=${encodeURIComponent(u.name)}`} aria-label={`Enviar email a ${u.name}`}>Enviar email</LinkButton>}
+                    {u.status === "PENDING_VERIFICATION" && <Button size="sm" variant="ghost" icon="mail" onClick={async () => {
+                      try { await post(`/admin/users/${u.id}/remind-verification`); toast({ tone: "pos", title: "Lembrete enviado", body: `${u.email} recebe um link de confirmação novo.` }); }
+                      catch (e) { toast({ tone: "neg", title: "Não foi possível lembrar", body: (e as Error).message }); }
+                    }}>Lembrar confirmação</Button>}
                     {u.mfaEnabled && u.id !== me && <Button size="sm" variant="ghost" icon="shield" onClick={() => setMfaTarget(u)}>Repor 2.º factor</Button>}
                     </div>
                   </td>
