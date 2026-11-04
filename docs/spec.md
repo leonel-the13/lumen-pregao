@@ -591,6 +591,7 @@ pela equipa; o contrato completo está em `docs/openapi.json` (verificado no CI)
 | POST | `/admin/rankings/rebuild` | Reconstruir a projecção a partir de PostgreSQL | admin |
 | POST | `/admin/contests/{id}/publish` · `/close` | Abrir inscrições · encerrar | organizador |
 | PATCH | `/admin/users/{id}` | Estado da conta | admin |
+| PATCH | `/admin/users/{id}/email` | Trocar o email da conta | admin |
 | GET | `/authoring/exercises` · `/authoring/exercises/{id}` · `/authoring/review-queue` | Listas e detalhe | autor/revisor |
 | POST | `/authoring/exercises/{id}/versions` | Nova versão a partir da mais recente | autor (próprio) |
 | GET | `/legal-sources/alerts` · `/admin/audit/export` | Alertas legais · exportação CSV | revisor · admin |
@@ -612,6 +613,10 @@ pela equipa; o contrato completo está em `docs/openapi.json` (verificado no CI)
 - **Estado `INVITED`:** a administração cria contas por convite (`POST /admin/users/invite`, com perfis). A pessoa recebe um
   email e só entra depois de definir a palavra-passe pelo link (72 h, uso único). Perfis privilegiados configuram o 2.º factor
   no primeiro login. Acções: `POST /admin/users/{id}/resend-invite`, `POST /admin/users/{id}/reset-mfa`.
+- **Convite com email provisório (04/11/2026):** o convite não exige o domínio institucional. Os estudantes do 1.º ano, que ainda
+  não têm email do ISPTEC, são convidados com o email pessoal (ex.: Gmail). Quando recebem o institucional, a administração troca-o
+  em «Editar» (`PATCH /admin/users/{id}/email`, `EMAIL_TAKEN` se já existir): palavra-passe, pontos e progresso mantêm-se, as sessões
+  terminam e os dois emails recebem um aviso; com o convite ainda pendente, o convite segue para o email novo. Auditado (`EMAIL_CHANGED`).
 - **«Esqueci-me»:** `POST /auth/password/forgot` (resposta sempre igual) e `POST /auth/password/reset` (link de 1 h, uso único;
   termina todas as sessões). Tokens guardados só como hash (`password_tokens`, migração V3).
 - **Gestão de conteúdo (admin):** `GET/POST /admin/content/tracks`, `PATCH /admin/content/tracks/{id}`,

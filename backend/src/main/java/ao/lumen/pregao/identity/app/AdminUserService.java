@@ -113,6 +113,31 @@ public class AdminUserService {
         return row(u);
     }
 
+    /**
+     * Troca o email da conta (ex.: estudante do 1.º ano convidado com o Gmail que passa a ter o email institucional).
+     * Mantém palavra-passe, pontos e progresso; termina as sessões. Convite pendente → o convite segue para o email novo.
+     */
+    @Transactional
+    public AdminUserRow changeEmail(UUID actor, String actorName, UUID userId, String rawEmail) {
+        User u = users.findWithRolesById(userId)
+                .orElseThrow(() -> DomainException.notFound("USER_NOT_FOUND", "O utilizador não existe."));
+        if (u.getStatus() == UserStatus.DELETED) {
+            throw DomainException.conflict("ACCOUNT_DELETED", "Esta conta foi eliminada.");
+        }
+        String email = rawEmail.strip().toLowerCase(java.util.Locale.ROOT);
+        String before = u.getEmail();
+        if (email.equals(before)) return row(u);
+        if (users.existsByEmail(email)) {
+            throw DomainException.conflict("EMAIL_TAKEN", "Já existe uma conta com este email.");
+        }
+        u.changeEmail(email);
+        audit.record(actor, "EMAIL_CHANGED", "User", userId, Map.of("email", before), Map.of("email", email));
+        revocation.revokeAll(userId, clock.instant());
+        if (u.getStatus() == UserStatus.INVITED) passwords.sendInvite(u, actorName);
+        else events.publishEvent(new AuthEvents.EmailChanged(before, email, u.getName(), actorName));
+        return row(u);
+    }
+
     /** Executa um pedido de eliminação: anonimiza a conta (irreversível) e termina as sessões. */
     @Transactional
     public AdminUserRow anonymize(UUID actor, UUID userId) {

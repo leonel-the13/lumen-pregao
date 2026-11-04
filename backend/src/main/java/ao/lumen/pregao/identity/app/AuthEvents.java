@@ -18,5 +18,8 @@ public final class AuthEvents {
     /** Conta anonimizada: os módulos retiram-na das projecções (rankings). */
     public record AccountDeleted(java.util.UUID userId) {}
 
+    /** A administração trocou o email da conta (ex.: Gmail provisório → email institucional). */
+    public record EmailChanged(String oldEmail, String newEmail, String name, String changedBy) {}
+
     public record UserInvited(String email, String name, String invitedBy, String token) {}
 }

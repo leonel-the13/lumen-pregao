@@ -63,6 +63,12 @@ public class AdminUserController {
         return service.updateRoles(me.id(), id, body.roles());
     }
 
+    @PatchMapping("/{id}/email")
+    public AdminUserRow email(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id,
+                              @Valid @RequestBody AdminUserDtos.EmailUpdate body) {
+        return service.changeEmail(me.id(), me.name(), id, body.email());
+    }
+
     @PatchMapping("/{id}")
     public AdminUserRow status(@AuthenticationPrincipal SessionUser me, @PathVariable UUID id,
                                @Valid @RequestBody StatusUpdate body) {

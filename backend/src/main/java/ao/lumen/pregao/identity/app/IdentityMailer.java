@@ -92,6 +92,17 @@ public class IdentityMailer {
                 "Activar a minha conta", link, "O link é válido durante 72 horas e só pode ser usado uma vez."));
     }
 
+    @TransactionalEventListener
+    public void onEmailChanged(AuthEvents.EmailChanged e) {
+        var lines = List.of(e.changedBy() + " mudou o email da tua conta no Lúmen Lab de " + e.oldEmail() + " para " + e.newEmail() + ".",
+                "A partir de agora entras com " + e.newEmail() + ". A palavra-passe, os pontos e o progresso continuam iguais.");
+        String footer = "Se não pediste esta mudança, responde a este email ou contacta a administração da Associação de Estudantes.";
+        for (String to : List.of(e.newEmail(), e.oldEmail())) {
+            send(to, EmailTemplate.build("O email da tua conta mudou · Lúmen Lab", "Passas a entrar com " + e.newEmail() + ".",
+                    "Olá, " + EmailTemplate.firstName(e.name()) + "!", lines, "Entrar no Lúmen Lab", props.baseUrl() + "/entrar", footer));
+        }
+    }
+
     private void send(String to, EmailTemplate.Email email) {
         executor.submit(() -> {
             try {

@@ -18,11 +18,14 @@ function cls(variant: Variant, size: string, extra?: string, iconOnly?: boolean)
   return ["btn", variant !== "sec" && variant, size === "sm" && "sm", iconOnly && "icon-btn", extra].filter(Boolean).join(" ");
 }
 
-/** Botão do design: primário (1 por área), secundário, contorno, fantasma, destrutivo (pede confirmação). */
-export function Button({ variant = "sec", size = "md", icon, iconRight, loading, children, className, disabled, ...rest }:
+/**
+ * Botão do design: primário (1 por área), secundário, contorno, fantasma, destrutivo (pede confirmação).
+ * Por defeito é `type="button"`: dentro de um <form> não o envia sem querer. Para enviar, passar `type="submit"`.
+ */
+export function Button({ variant = "sec", size = "md", icon, iconRight, loading, children, className, disabled, type = "button", ...rest }:
   Common & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <button className={cls(variant, size, className, !children)} disabled={disabled || loading} aria-busy={loading || undefined} {...rest}>
+    <button type={type} className={cls(variant, size, className, !children)} disabled={disabled || loading} aria-busy={loading || undefined} {...rest}>
       {loading ? <Icon name="loader" className="icon spin" /> : icon && <Icon name={icon} />}
       {children}
       {iconRight && <Icon name={iconRight} />}

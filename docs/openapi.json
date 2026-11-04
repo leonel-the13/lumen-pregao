@@ -976,6 +976,17 @@
         "required" : [ "confirmation" ],
         "type" : "object"
       },
+      "EmailUpdate" : {
+        "properties" : {
+          "email" : {
+            "maxLength" : 254,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        },
+        "required" : [ "email" ],
+        "type" : "object"
+      },
       "Entry" : {
         "properties" : {
           "course" : {
@@ -4768,6 +4779,43 @@
             "type" : "string"
           }
         } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdminUserRow"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "admin-user-controller" ]
+      }
+    },
+    "/api/v1/admin/users/{id}/email" : {
+      "patch" : {
+        "operationId" : "email",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EmailUpdate"
+              }
+            }
+          },
+          "required" : true
+        },
         "responses" : {
           "200" : {
             "content" : {
