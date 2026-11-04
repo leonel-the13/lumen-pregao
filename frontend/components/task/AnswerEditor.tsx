@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Field, TextArea } from "@/components/ui/Field";
 import { MoneyInput } from "@/components/ui/MoneyInput";
 import { parseAmount } from "@/lib/format";
+import { useT } from "@/lib/i18n/client";
+import type { T } from "@/lib/i18n/translate";
 
 export type TaskType = "A" | "B" | "C" | "D" | "E" | "F" | "G";
 
@@ -28,19 +30,19 @@ type Presentation = Record<string, unknown> & {
 };
 
 /** Validação de formato no cliente (a correcção é sempre no servidor). */
-export function validateAnswer(type: TaskType, p: Presentation, a: AnswerState): string | null {
+export function validateAnswer(type: TaskType, p: Presentation, a: AnswerState, t: T): string | null {
   switch (type) {
-    case "A": return a.selected.length ? null : "Escolhe uma opção.";
-    case "B": return validNumber(a.value) ? null : "Indica um valor numérico.";
-    case "C": return validateJournal(a.lines);
-    case "D": return Object.values(a.items).some((v) => v) ? null : "Preenche as rubricas da demonstração.";
-    case "E": return Object.values(a.steps).some((v) => v) ? null : "Preenche o passo actual.";
+    case "A": return a.selected.length ? null : t("task.validate.choose");
+    case "B": return validNumber(a.value) ? null : t("task.validate.number");
+    case "C": return validateJournal(a.lines, t);
+    case "D": return Object.values(a.items).some((v) => v) ? null : t("task.validate.statement");
+    case "E": return Object.values(a.steps).some((v) => v) ? null : t("task.validate.step");
     case "F": {
-      if (!validNumber(a.value)) return "Indica o valor do rácio.";
+      if (!validNumber(a.value)) return t("task.validate.ratio");
       const min = p.justification?.minLength ?? 0;
-      return a.justification.trim().length < min ? `A justificação precisa de pelo menos ${min} caracteres.` : null;
+      return a.justification.trim().length < min ? t("task.validate.justificationMin", { n: min }) : null;
     }
-    default: return "Este tipo de tarefa é corrigido por júri (fase posterior).";
+    default: return t("task.validate.jury");
   }
 }
 
@@ -76,13 +78,14 @@ export function AnswerEditor({ type, presentation, state, onChange, result, disa
   { type: TaskType; presentation: Presentation; state: AnswerState; onChange: (a: AnswerState) => void; result?: ResultView;
     disabled?: boolean; pgcVersion?: string; company?: string }) {
   const id = useId();
+  const t = useT();
   const d = result?.details ?? {};
   switch (type) {
     case "A": {
       const multiple = !!presentation.multiple;
       return (
         <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0, gap: 8 }}>
-          <legend className="label" style={{ marginBottom: 8 }}>{multiple ? "Escolhe todas as que se aplicam" : "Escolhe uma opção"}</legend>
+          <legend className="label" style={{ marginBottom: 8 }}>{multiple ? t("task.answer.chooseAll") : t("task.answer.chooseOne")}</legend>
           {(presentation.options ?? []).map((o) => {
             const on = state.selected.includes(o.key);
             return (
@@ -98,7 +101,7 @@ export function AnswerEditor({ type, presentation, state, onChange, result, disa
     }
     case "B":
       return (
-        <Field label="Resposta" hint={`Tolerância definida no exercício · ${presentation.unit || "valor"}`}>
+        <Field label={t("task.answer.answer")} hint={t("task.answer.tolerance", { unit: presentation.unit || t("task.answer.value") })}>
           {({ id: fid, describedBy }) => (
             <div style={{ maxWidth: 320 }}>
               <MoneyInput id={fid} aria-describedby={describedBy} unit={(presentation.unit as string) ?? ""} value={state.value} disabled={disabled}
@@ -116,10 +119,10 @@ export function AnswerEditor({ type, presentation, state, onChange, result, disa
         <div className="stmt-grid">
           <div className="stack">
             {presentation.ledger && <LedgerTable rows={presentation.ledger} />}
-            <p className="small muted">Valores fictícios gerados para esta tentativa.</p>
+            <p className="small muted">{t("task.answer.fictionalValues")}</p>
             {Array.isArray(presentation.relations) && (
               <div className="card flat stack" style={{ padding: 14 }}>
-                <b className="small">Relações validadas</b>
+                <b className="small">{t("task.answer.relations")}</b>
                 {(presentation.relations as { label: string }[]).map((r) => <span key={r.label} className="small muted">{r.label}</span>)}
               </div>
             )}
@@ -139,7 +142,7 @@ export function AnswerEditor({ type, presentation, state, onChange, result, disa
       const min = presentation.justification?.minLength ?? 0;
       return (
         <div className="stack">
-          <Field label="Valor do rácio" hint="Duas casas decimais.">
+          <Field label={t("task.answer.ratio")} hint={t("task.answer.twoDecimals")}>
             {({ id: fid, describedBy }) => (
               <div style={{ maxWidth: 240 }}>
                 <MoneyInput id={fid} aria-describedby={describedBy} unit="" value={state.value} disabled={disabled}
@@ -147,8 +150,8 @@ export function AnswerEditor({ type, presentation, state, onChange, result, disa
               </div>
             )}
           </Field>
-          <Field label="Interpretação" hint={`${state.justification.trim().length} / ${min} caracteres no mínimo`}
-            error={d.justification === "TOO_SHORT" ? "A justificação é demasiado curta." : d.justification === "MISSING_TERMS" ? "A justificação não interpreta o rácio." : undefined}>
+          <Field label={t("task.answer.interpretation")} hint={t("task.answer.minChars", { n: state.justification.trim().length, min })}
+            error={d.justification === "TOO_SHORT" ? t("task.answer.tooShort") : d.justification === "MISSING_TERMS" ? t("task.answer.missingTerms") : undefined}>
             {({ id: fid, describedBy, invalid }) => (
               <TextArea id={fid} aria-describedby={describedBy} invalid={invalid} value={state.justification} disabled={disabled} maxLength={4000}
                 onChange={(e) => onChange({ ...state, justification: e.target.value })} />
@@ -158,6 +161,6 @@ export function AnswerEditor({ type, presentation, state, onChange, result, disa
       );
     }
     default:
-      return <Badge>Caso aberto · avaliação por júri (fase posterior)</Badge>;
+      return <Badge>{t("task.answer.openCase")}</Badge>;
   }
 }

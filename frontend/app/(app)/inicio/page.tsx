@@ -11,20 +11,18 @@ import { CountUp } from "@/components/ui/CountUp";
 import { serverFetchOrLogin } from "@/lib/api-server";
 import { formatLongDate, formatPoints } from "@/lib/format";
 import type { Activity, Dashboard } from "@/lib/types";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata = { title: "Início" };
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("learn.home.title") };
+}
 
-const ACTIVITY: Record<Activity["kind"], { tone: "pos" | "neg" | "info" | "acc" | "neutral"; label: string }> = {
-  CORRECT: { tone: "pos", label: "Correcta" },
-  INCORRECT: { tone: "neg", label: "Incorrecta" },
-  STEP: { tone: "info", label: "Passo certo" },
-  REJECTED: { tone: "neg", label: "Rejeitada" },
-  PENDING: { tone: "info", label: "Em processamento" },
+const ACTIVITY_TONE: Record<Activity["kind"], "pos" | "neg" | "info" | "acc" | "neutral"> = {
+  CORRECT: "pos", INCORRECT: "neg", STEP: "info", REJECTED: "neg", PENDING: "info",
 };
 
-const CONTEST_STATE: Record<string, string> = {
-  REGISTRATION: "Inscrições abertas", WAITING_ROOM: "Sala de espera", RUNNING: "Em curso", FROZEN: "Em curso · congelado",
-};
+const CONTEST_STATES = ["REGISTRATION", "WAITING_ROOM", "RUNNING", "FROZEN"] as const;
 
 function movement(m?: number) {
   if (m === undefined || m === null || m === 0) return null;
@@ -32,51 +30,51 @@ function movement(m?: number) {
 }
 
 export default async function Inicio() {
-  const d = await serverFetchOrLogin<Dashboard>("/me/dashboard", "/inicio");
+  const [d, { t, locale }] = await Promise.all([serverFetchOrLogin<Dashboard>("/me/dashboard", "/inicio"), getI18n()]);
   const c = d.nextContest;
   const isNew = d.points === 0 && d.activity.length === 0;
   return (
     <>
-      <SetCrumbs items={[{ label: "Início" }]} />
+      <SetCrumbs items={[{ label: t("learn.home.title") }]} />
       <div className="row" style={{ justifyContent: "space-between", alignItems: "flex-end" }}>
         <div className="stack" style={{ gap: 6 }}>
-          <div className="label">{formatLongDate(d.serverNow)}</div>
-          <h1 className="d2">{isNew ? "Bem-vindo" : "Bom regresso"}, <span className="serif">{d.firstName}.</span></h1>
+          <div className="label">{formatLongDate(d.serverNow, locale)}</div>
+          <h1 className="d2">{isNew ? t("learn.home.welcome") : t("learn.home.welcomeBack")}, <span className="serif">{d.firstName}.</span></h1>
         </div>
         {d.continueRoomId && (
           <Link className="btn pri" href={`/salas/${d.continueRoomId}`}>
-            {isNew ? "Começar" : "Continuar"} «{d.continueRoomTitle}» <Icon name="arrowRight" />
+            {isNew ? t("learn.home.start") : t("learn.home.continue")} «{d.continueRoomTitle}» <Icon name="arrowRight" />
           </Link>
         )}
       </div>
 
       <div className="grid g4">
-        <Kpi label="Pontuação" value={<CountUp value={d.points} />} detail={<><span className="move-up">▲ {formatPoints(d.weekPoints)}</span> esta semana</>} />
-        <Kpi label="Sequência" value={`${d.streak} ${d.streak === 1 ? "dia" : "dias"}`} accent
-          detail={d.practicedToday ? "Já praticaste hoje" : "Pratica hoje para manter"} />
-        <Kpi label={`Ranking · ${d.courseName ?? "Geral"}`} value={d.coursePosition.position ? `#${d.coursePosition.position}` : "—"}
-          detail={movement(d.coursePosition.movement) ?? (d.coursePosition.position ? "sem alteração desde segunda" : "Resolve uma tarefa para entrar")} />
-        <Kpi label="Salas concluídas" value={d.roomsCompleted} detail={d.roomsInActiveTrack ? `de ${d.roomsInActiveTrack} na trilha activa` : undefined} />
+        <Kpi label={t("learn.home.score")} value={<CountUp value={d.points} />} detail={<><span className="move-up">▲ {formatPoints(d.weekPoints)}</span> {t("learn.home.thisWeek")}</>} />
+        <Kpi label={t("learn.home.streak")} value={t(d.streak === 1 ? "common.day" : "common.days", { n: d.streak })} accent
+          detail={d.practicedToday ? t("learn.home.practicedToday") : t("learn.home.practiceToday")} />
+        <Kpi label={t("learn.home.ranking", { scope: d.courseName ?? t("learn.home.general") })} value={d.coursePosition.position ? `#${d.coursePosition.position}` : "—"}
+          detail={movement(d.coursePosition.movement) ?? (d.coursePosition.position ? t("learn.home.noChange") : t("learn.home.solveToEnter"))} />
+        <Kpi label={t("learn.home.roomsDone")} value={d.roomsCompleted} detail={d.roomsInActiveTrack ? t("learn.home.ofActiveTrack", { n: d.roomsInActiveTrack }) : undefined} />
       </div>
 
       {isNew && (
-        <EmptyState title="Começa pela tua primeira sala" icon="route"
-          body="Ainda não tens actividade. Escolhe uma trilha recomendada e resolve a primeira tarefa: a correcção é feita no servidor."
-          action={<Link className="btn out" href="/trilhas">Ver trilhas</Link>} />
+        <EmptyState title={t("learn.home.firstRoom")} icon="route"
+          body={t("learn.home.firstRoomBody")}
+          action={<Link className="btn out" href="/trilhas">{t("learn.home.seeTracks")}</Link>} />
       )}
 
       <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,520px),1fr))" }}>
         <Card>
-          <CardHeader title="Trilhas em curso"><Link className="btn sm ghost" href="/trilhas">Ver todas</Link></CardHeader>
-          {d.tracksInProgress.length === 0 ? <p className="small muted">Ainda não começaste nenhuma trilha.</p> : (
+          <CardHeader title={t("learn.home.tracksInProgress")}><Link className="btn sm ghost" href="/trilhas">{t("learn.home.seeAll")}</Link></CardHeader>
+          {d.tracksInProgress.length === 0 ? <p className="small muted">{t("learn.home.noTracks")}</p> : (
             <div className="stack" style={{ gap: 16 }}>
-              {d.tracksInProgress.map((t, i) => (
-                <div key={t.slug} className="stack" style={{ gap: 16 }}>
+              {d.tracksInProgress.map((tr, i) => (
+                <div key={tr.slug} className="stack" style={{ gap: 16 }}>
                   {i > 0 && <hr className="divider" />}
                   <div className="row" style={{ gap: 16 }}>
-                    <Ring value={t.percent} label={t.title} />
-                    <div style={{ flex: 1, minWidth: 200 }}><div className="h3">{t.title}</div><div className="small muted">{t.summary}</div></div>
-                    <Link className="btn sm out" href={`/trilhas/${t.slug}`}>Abrir</Link>
+                    <Ring value={tr.percent} label={tr.title} />
+                    <div style={{ flex: 1, minWidth: 200 }}><div className="h3">{tr.title}</div><div className="small muted">{tr.summary}</div></div>
+                    <Link className="btn sm out" href={`/trilhas/${tr.slug}`}>{t("learn.home.open")}</Link>
                   </div>
                 </div>
               ))}
@@ -84,23 +82,23 @@ export default async function Inicio() {
           )}
         </Card>
         <Card>
-          <CardHeader title="Próximo contest">{c && <Badge tone="acc">{CONTEST_STATE[c.state] ?? c.state}</Badge>}</CardHeader>
+          <CardHeader title={t("learn.home.nextContest")}>{c && <Badge tone="acc">{(CONTEST_STATES as readonly string[]).includes(c.state) ? t(`learn.home.contestState.${c.state as (typeof CONTEST_STATES)[number]}`) : c.state}</Badge>}</CardHeader>
           {!c ? (
-            <EmptyState title="Ainda não participaste em competições" body="A próxima Maratona abre inscrições em breve."
-              action={<Link className="btn out" href="/competicoes">Ver competições</Link>} />
+            <EmptyState title={t("learn.home.noContests")} body={t("learn.home.noContestsBody")}
+              action={<Link className="btn out" href="/competicoes">{t("learn.home.seeContests")}</Link>} />
           ) : (
             <>
               <div className="h3">{c.title}</div>
               <p className="small muted" style={{ margin: "4px 0 14px" }}>
-                {c.mode === "TEAM" ? `Equipas de ${c.minTeam} a ${c.maxTeam}` : "Individual"} · casos com empresas fictícias
+                {c.mode === "TEAM" ? t("learn.home.teamsOf", { min: c.minTeam, max: c.maxTeam }) : t("learn.home.individual")} · {t("learn.home.fictional")}
               </p>
               <div className="row">
                 <ServerCountdown target={c.state === "REGISTRATION" || c.state === "WAITING_ROOM" ? c.startsAt : c.endsAt} serverNow={d.serverNow} />
                 <div className="spacer" />
-                <Link className="btn pri" href={`/competicoes/${c.id}`}>{c.myTeamName ? "Abrir" : c.mode === "TEAM" ? "Inscrever equipa" : "Inscrever-me"}</Link>
+                <Link className="btn pri" href={`/competicoes/${c.id}`}>{c.myTeamName ? t("learn.home.open") : c.mode === "TEAM" ? t("learn.home.registerTeam") : t("learn.home.registerMe")}</Link>
               </div>
               {c.myTeamName && c.mode === "TEAM" && (
-                <p className="small muted" style={{ margin: "12px 0 0" }}>A tua equipa <b>{c.myTeamName}</b>: {c.myTeamConfirmed} de {c.maxTeam} membros confirmados.</p>
+                <p className="small muted" style={{ margin: "12px 0 0" }}>{t("learn.home.yourTeam", { team: c.myTeamName, n: c.myTeamConfirmed ?? 0, max: c.maxTeam })}</p>
               )}
             </>
           )}
@@ -109,17 +107,17 @@ export default async function Inicio() {
 
       <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,520px),1fr))" }}>
         <Card>
-          <CardHeader title="Salas recomendadas"><span className="small muted">com base no teu progresso</span></CardHeader>
-          {d.recommended.length === 0 ? <p className="small muted">Sem recomendações por agora.</p>
+          <CardHeader title={t("learn.home.recommended")}><span className="small muted">{t("learn.home.basedOnProgress")}</span></CardHeader>
+          {d.recommended.length === 0 ? <p className="small muted">{t("learn.home.noRecommendations")}</p>
             : <div className="stack" style={{ gap: 4 }}>{d.recommended.map((r) => <RoomLink key={r.id} r={r} />)}</div>}
         </Card>
         <Card>
-          <CardHeader title="Actividade recente" />
-          {d.activity.length === 0 ? <p className="small muted">Ainda sem actividade.</p> : (
+          <CardHeader title={t("learn.home.recentActivity")} />
+          {d.activity.length === 0 ? <p className="small muted">{t("learn.home.noActivity")}</p> : (
             <ul className="plain stack" style={{ gap: 12 }}>
               {d.activity.map((a, i) => (
                 <li key={i} className="row" style={{ gap: 12 }}>
-                  <Badge tone={ACTIVITY[a.kind].tone}>{ACTIVITY[a.kind].label}</Badge>
+                  <Badge tone={ACTIVITY_TONE[a.kind]}>{t(`learn.home.activity.${a.kind}`)}</Badge>
                   <span className="small" style={{ flex: 1 }}>{a.label}</span>
                   <span className={["mono small", a.points ? "accent" : "muted"].join(" ")}>{a.points ? `+${a.points}` : "0"}</span>
                 </li>

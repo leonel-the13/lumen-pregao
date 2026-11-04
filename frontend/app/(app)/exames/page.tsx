@@ -7,24 +7,28 @@ import { EmptyState } from "@/components/ui/States";
 import { serverFetchOrLogin } from "@/lib/api-server";
 import { formatGrade } from "@/lib/format";
 import type { ExamCard } from "@/lib/types";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata = { title: "Exames" };
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("exam.list.title") };
+}
 
 export default async function Exames() {
-  const exams = await serverFetchOrLogin<ExamCard[]>("/exams", "/exames");
+  const [exams, { t }] = await Promise.all([serverFetchOrLogin<ExamCard[]>("/exams", "/exames"), getI18n()]);
   return (
     <>
-      <SetCrumbs items={[{ label: "Aprender" }, { label: "Exames" }]} />
-      <div className="stack" style={{ gap: 6 }}><div className="label">Exames</div><h1 className="h1">Exames de módulo</h1></div>
-      <p className="muted">Modo concentração, sem navegação lateral. O início e o fim oficiais são do servidor; as respostas são guardadas a cada alteração.</p>
-      {exams.length === 0 ? <EmptyState title="Ainda não há exames disponíveis" body="Os exames aparecem quando o revisor publicar as perguntas." action={<Link className="btn out" href="/trilhas">Ver trilhas</Link>} /> : (
+      <SetCrumbs items={[{ label: t("shell.nav.groups.learn") }, { label: t("exam.list.title") }]} />
+      <div className="stack" style={{ gap: 6 }}><div className="label">{t("exam.list.title")}</div><h1 className="h1">{t("exam.list.heading")}</h1></div>
+      <p className="muted">{t("exam.list.intro")}</p>
+      {exams.length === 0 ? <EmptyState title={t("exam.list.empty")} body={t("exam.list.emptyBody")} action={<Link className="btn out" href="/trilhas">{t("learn.home.seeTracks")}</Link>} /> : (
         <div className="grid g2">
           {exams.map((e) => (
             <Card key={e.id} className="stack">
               <div className="row"><h2 className="h3">{e.title}</h2><div className="spacer" />
-                {e.bestGrade !== undefined && e.bestGrade !== null && <Badge tone={e.bestGrade >= e.passMark ? "pos" : "neg"}>Melhor nota {formatGrade(e.bestGrade)}</Badge>}
+                {e.bestGrade !== undefined && e.bestGrade !== null && <Badge tone={e.bestGrade >= e.passMark ? "pos" : "neg"}>{t("exam.list.best", { grade: formatGrade(e.bestGrade) })}</Badge>}
               </div>
-              <p className="small muted">{e.questions} perguntas · {e.durationMin} min · aprovação ≥ {formatGrade(e.passMark)}</p>
+              <p className="small muted">{t("exam.list.meta", { n: e.questions, min: e.durationMin, pass: formatGrade(e.passMark) })}</p>
               <div className="row"><div className="spacer" /><StartExamButton examId={e.id} durationMin={e.durationMin} resumeId={e.openSessionId} /></div>
             </Card>
           ))}

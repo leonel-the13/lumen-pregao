@@ -86,8 +86,6 @@ export function formatGrade(g: number | string | null | undefined) {
   return `${formatNumber(Number(g), Number(g) % 1 === 0 ? 0 : 1)}/20`;
 }
 
-export const DIFFICULTY_LABEL: Record<number, string> = { 1: "Iniciação", 2: "Intermédio", 3: "Avançado", 4: "Avançado" };
-
 /** «há 5 min», «há 3 h», «ontem», ou a data (Africa/Luanda), na língua da interface. */
 export function formatRelative(iso: string | Date, now: number = Date.now(), locale: Locale = "pt"): string {
   const t = typeof iso === "string" ? new Date(iso).getTime() : iso.getTime();

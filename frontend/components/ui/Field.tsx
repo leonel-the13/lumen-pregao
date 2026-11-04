@@ -1,5 +1,6 @@
 "use client";
 import { useId, useState, type InputHTMLAttributes, type Ref, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import { useT } from "@/lib/i18n/client";
 import { Icon } from "./Icon";
 
 interface FieldProps {
@@ -47,13 +48,14 @@ export function TextArea({ invalid, className, ...props }: TextareaHTMLAttribute
 
 /** Campo de palavra-passe com botão para mostrar/esconder (o texto não sai do campo; o leitor de ecrã anuncia o estado). */
 export function PasswordInput({ invalid, className, ...props }: Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & { invalid?: boolean }) {
+  const t = useT();
   const [visible, setVisible] = useState(false);
   return (
     <div className="password-wrap">
       <Input {...props} invalid={invalid} className={["password-input", className].filter(Boolean).join(" ")}
         type={visible ? "text" : "password"} autoCapitalize="none" spellCheck={false} />
       <button type="button" className="password-toggle" aria-pressed={visible}
-        aria-label={visible ? "Esconder a palavra-passe" : "Mostrar a palavra-passe"} onClick={() => setVisible((v) => !v)}>
+        aria-label={visible ? t("common.hidePassword") : t("common.showPassword")} onClick={() => setVisible((v) => !v)}>
         <Icon name={visible ? "eyeOff" : "eye"} />
       </button>
     </div>

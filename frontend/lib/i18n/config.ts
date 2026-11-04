@@ -21,3 +21,10 @@ export function fromAcceptLanguage(header: string | null | undefined): Locale {
   }
   return DEFAULT_LOCALE;
 }
+
+/** No browser, fora de componentes (ex.: cliente da API): a língua com que o servidor desenhou a página (<html lang>). */
+export function cookieLocale(): Locale {
+  if (typeof document === "undefined") return DEFAULT_LOCALE;
+  const lang = document.documentElement.lang.slice(0, 2);
+  return isLocale(lang) ? lang : DEFAULT_LOCALE;
+}

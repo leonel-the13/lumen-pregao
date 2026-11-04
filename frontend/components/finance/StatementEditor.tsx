@@ -3,6 +3,7 @@ import { Alert } from "@/components/ui/Alert";
 import { Badge } from "@/components/ui/Badge";
 import { MoneyInput } from "@/components/ui/MoneyInput";
 import { formatKz, formatNumber, parseAmount } from "@/lib/format";
+import { useT } from "@/lib/i18n/client";
 
 interface Item { key: string; label: string }
 interface Group { title: string; items: Item[] }
@@ -29,17 +30,18 @@ export function toStatementPayload(sections: Section[], values: Values) {
 
 export function StatementEditor({ sections, values, onChange, results, disabled, company, kind }:
   { sections: Section[]; values: Values; onChange: (v: Values) => void; results?: Record<string, string>; disabled?: boolean; company?: string; kind?: string }) {
+  const t = useT();
   const totals = sections.map((s) => sectionTotal(s, values));
   const diff = sections.length === 2 ? Math.abs(totals[0] - totals[1]) : 0;
   const filled = Object.values(values).some((v) => v);
   return (
     <div className="stack">
-      <div className="row"><h3 className="h3">{kind === "income" ? "Demonstração de resultados" : "Balanço"}{company ? ` · ${company}` : ""}</h3><span className="tbc">fictícia</span><div className="spacer" /><span className="label">Kz</span></div>
+      <div className="row"><h3 className="h3">{kind === "income" ? t("task.statement.income") : t("task.statement.balance")}{company ? ` · ${company}` : ""}</h3><span className="tbc">{t("task.statement.fictional")}</span><div className="spacer" /><span className="label">Kz</span></div>
       <div className="grid" style={{ alignItems: "start", gridTemplateColumns: `repeat(auto-fit,minmax(min(100%,${sections.length > 2 ? 300 : 360}px),1fr))` }}>
         {sections.map((s, si) => (
           <div key={s.key} className="tbl-wrap">
             <table className="tbl" style={{ minWidth: 0 }}>
-              <thead><tr><th>{s.title}</th><th className="num">Valor</th></tr></thead>
+              <thead><tr><th>{s.title}</th><th className="num">{t("task.statement.value")}</th></tr></thead>
               <tbody>
                 {s.groups.map((g) => [
                   <tr key={g.title}><td colSpan={2} className="label" style={{ background: "var(--surface-2)" }}>{g.title}</td></tr>,
@@ -49,8 +51,8 @@ export function StatementEditor({ sections, values, onChange, results, disabled,
                       <tr key={i.key}>
                         <td>
                           {i.label}
-                          {r && r !== "OK" && <> <Badge tone="neg">{r === "MISSING" ? "Em falta" : "Incorrecto"}</Badge></>}
-                          {r === "OK" && <> <Badge tone="pos">Certo</Badge></>}
+                          {r && r !== "OK" && <> <Badge tone="neg">{r === "MISSING" ? t("task.statement.missing") : t("task.statement.wrong")}</Badge></>}
+                          {r === "OK" && <> <Badge tone="pos">{t("task.statement.right")}</Badge></>}
                         </td>
                         <td style={{ width: 200 }}>
                           <MoneyInput aria-label={i.label} unit="" value={values[i.key] ?? ""} disabled={disabled}
@@ -67,8 +69,8 @@ export function StatementEditor({ sections, values, onChange, results, disabled,
         ))}
       </div>
       {filled && sections.length === 2 && (diff > 0.005
-        ? <Alert tone="neg" title={`O balanço não fecha: diferença de ${formatKz(diff)}`}>Revê as rubricas: o Activo tem de ser igual ao Capital próprio + Passivo.</Alert>
-        : <Alert tone="pos" title="O balanço fecha">Activo = Capital próprio + Passivo. A correcção das rubricas é feita no servidor.</Alert>)}
+        ? <Alert tone="neg" title={t("task.statement.notClosing", { diff: formatKz(diff) })}>{t("task.statement.notClosingBody")}</Alert>
+        : <Alert tone="pos" title={t("task.statement.closes")}>{t("task.statement.closesBody")}</Alert>)}
     </div>
   );
 }

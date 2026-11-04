@@ -2,25 +2,25 @@ import { SetCrumbs } from "@/components/layout/CrumbsContext";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Icon } from "@/components/ui/Icon";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata = { title: "Simulações" };
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("learn.sims.title") };
+}
 
-const ITEMS = [
-  ["Simulação de empresa", "Um balancete inicial e um mês de operações: compras, vendas, IVA, salários e fecho do período."],
-  ["Mercado simulado", "Empresas fictícias com relatórios trimestrais e uma carteira virtual, com decisões justificadas."],
-  ["Processo selectivo", "Casos com tempo limite e avaliação por critérios, ao estilo dos processos da banca e das Big 4."],
-  ["Laboratório de dados", "Explorar datasets de empresas fictícias, construir gráficos e interpretar indicadores."],
-];
+const ITEMS = ["company", "market", "hiring", "data"] as const;
 
-export default function Simulacoes() {
+export default async function Simulacoes() {
+  const { t } = await getI18n();
   return (
     <>
-      <SetCrumbs items={[{ label: "Aprender" }, { label: "Simulações" }]} />
-      <div className="stack" style={{ gap: 6 }}><div className="label">Simulações</div><h1 className="h1">Simulações <span className="serif">em preparação</span></h1></div>
-      <div className="sim-ribbon"><Icon name="building" />Simulação educativa · empresas fictícias · sem dinheiro real</div>
+      <SetCrumbs items={[{ label: t("shell.nav.groups.learn") }, { label: t("learn.sims.title") }]} />
+      <div className="stack" style={{ gap: 6 }}><div className="label">{t("learn.sims.title")}</div><h1 className="h1">{t("learn.sims.heading")}<span className="serif">{t("learn.sims.headingEm")}</span></h1></div>
+      <div className="sim-ribbon"><Icon name="building" />{t("learn.sims.ribbon")}</div>
       <div className="grid g2">
-        {ITEMS.map(([t, b]) => (
-          <Card key={t} className="stack"><div className="row"><h2 className="h3">{t}</h2><div className="spacer" /><Badge>Fase posterior</Badge></div><p className="small muted">{b}</p></Card>
+        {ITEMS.map((k) => (
+          <Card key={k} className="stack"><div className="row"><h2 className="h3">{t(`learn.sims.${k}`)}</h2><div className="spacer" /><Badge>{t("learn.sims.later")}</Badge></div><p className="small muted">{t(`learn.sims.${k}Body`)}</p></Card>
         ))}
       </div>
     </>
