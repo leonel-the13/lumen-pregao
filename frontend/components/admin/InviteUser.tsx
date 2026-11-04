@@ -16,7 +16,7 @@ export function InviteUser({ courses }: { courses: { id: string; name: string }[
   const router = useRouter();
   const toast = useToast();
   const [open, setOpen] = useState(false);
-  const [f, setF] = useState({ name: "", email: "", roles: ["ADMIN"] as string[], courseId: "", year: "" });
+  const [f, setF] = useState({ name: "", email: "", roles: ["STUDENT"] as string[], courseId: "", year: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const submit = async () => {
@@ -25,7 +25,7 @@ export function InviteUser({ courses }: { courses: { id: string; name: string }[
       await post("/admin/users/invite", { name: f.name, email: f.email, roles: f.roles, courseId: f.courseId || null, year: f.year ? Number(f.year) : null });
       toast({ tone: "pos", title: "Convite enviado", body: `${f.email} recebe um email para definir a palavra-passe (válido 72 h).` });
       setOpen(false);
-      setF({ name: "", email: "", roles: ["ADMIN"], courseId: "", year: "" });
+      setF({ name: "", email: "", roles: ["STUDENT"], courseId: "", year: "" });
       router.refresh();
     } catch (e) {
       if (isApiError(e)) setErrors(Object.keys(e.fields).length ? e.fields : { general: e.message });

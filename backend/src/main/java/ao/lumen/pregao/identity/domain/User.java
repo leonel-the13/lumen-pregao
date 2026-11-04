@@ -88,6 +88,7 @@ public class User extends BaseEntity {
 
     public void activate() { this.status = UserStatus.ACTIVE; }
     public void setStatus(UserStatus status) { this.status = status; }
+    public void changeEmail(String email) { this.email = email.toLowerCase(Locale.ROOT); }
     public void requestDeletion(Instant at) {
         this.status = UserStatus.DELETION_REQUESTED;
         this.deletionRequestedAt = at;

@@ -22,5 +22,8 @@ public final class AdminUserDtos {
             UUID courseId,
             @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(5) Integer year) {}
 
+    public record EmailUpdate(
+            @jakarta.validation.constraints.NotBlank(message = "Indica o email.") @jakarta.validation.constraints.Email(message = "Email inválido.") @Size(max = 254, message = "O email é demasiado longo.") String email) {}
+
     public record StatusUpdate(@NotNull UserStatus status) {}
 }

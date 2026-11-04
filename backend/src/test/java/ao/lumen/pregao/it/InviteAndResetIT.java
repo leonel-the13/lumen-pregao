@@ -37,6 +37,27 @@ class InviteAndResetIT extends IntegrationTest {
     }
 
     @Test
+    void adminSwapsProvisionalEmailForInstitutionalOne() {
+        Api admin = privileged("admin@exemplo.ao");
+        var invited = admin.post("/admin/users/invite", Map.of("name", "Caloira Gmail", "email", "caloira.lumen@gmail.com",
+                "roles", List.of("STUDENT")));
+        assertThat(invited.status()).isEqualTo(201);
+        String id = invited.body().path("id").asText();
+        assertThat(api().post("/auth/password/reset", Map.of("token", tokens.passwordLinks.get("caloira.lumen@gmail.com"),
+                "password", "Balanco#Ativo-2026")).status()).isEqualTo(200);
+        assertThat(api().login("caloira.lumen@gmail.com", "Balanco#Ativo-2026").status()).isEqualTo(204);
+
+        assertThat(admin.patch("/admin/users/" + id + "/email", Map.of("email", "ana.lopes@exemplo.ao")).code()).isEqualTo("EMAIL_TAKEN");
+        var changed = admin.patch("/admin/users/" + id + "/email", Map.of("email", "20261234@ISPTEC.co.ao"));
+        assertThat(changed.status()).isEqualTo(200);
+        assertThat(changed.body().path("email").asText()).isEqualTo("20261234@isptec.co.ao");
+        assertThat(api().login("caloira.lumen@gmail.com", "Balanco#Ativo-2026").status()).isEqualTo(401);
+        assertThat(api().login("20261234@isptec.co.ao", "Balanco#Ativo-2026").status()).isEqualTo(204);
+        assertThat(student("kiala.afonso@exemplo.ao").patch("/admin/users/" + id + "/email", Map.of("email", "x@y.ao")).status())
+                .isEqualTo(403);
+    }
+
+    @Test
     void forgotPasswordIsGenericAndResetWorks() {
         var unknown = api().post("/auth/password/forgot", Map.of("email", "nao.existe@exemplo.ao"));
         var known = api().post("/auth/password/forgot", Map.of("email", "ana.lopes@exemplo.ao"));

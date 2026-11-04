@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Button, LinkButton } from "@/components/ui/Button";
-import { Field, Select } from "@/components/ui/Field";
+import { Field, Input, Select } from "@/components/ui/Field";
 import { ConfirmDialog, Modal } from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
 import { patch, post } from "@/lib/api-client";
@@ -24,18 +24,25 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
   const [edit, setEdit] = useState<AdminUserRow | null>(null);
   const [roles, setRoles] = useState<string[]>([]);
   const [status, setStatus] = useState("ACTIVE");
+  const [email, setEmail] = useState("");
   const [err, setErr] = useState<string | null>(null);
   const [mfaTarget, setMfaTarget] = useState<AdminUserRow | null>(null);
   const [delTarget, setDelTarget] = useState<AdminUserRow | null>(null);
   const [delBusy, setDelBusy] = useState(false);
-  const open = (u: AdminUserRow) => { setEdit(u); setRoles(u.roles.filter((r) => r !== "TEAM_CAPTAIN")); setStatus(u.status); setErr(null); };
+  const open = (u: AdminUserRow) => { setEdit(u); setRoles(u.roles.filter((r) => r !== "TEAM_CAPTAIN")); setStatus(u.status); setEmail(u.email); setErr(null); };
   const save = async () => {
     if (!edit) return;
     setErr(null);
+    const newEmail = email.trim().toLowerCase();
+    const emailChanged = newEmail !== edit.email;
     try {
+      // O email vai primeiro: se já estiver em uso, nada mais muda.
+      if (emailChanged) await patch(`/admin/users/${edit.id}/email`, { email: newEmail });
       await patch(`/admin/users/${edit.id}/roles`, { roles });
       if (status !== edit.status) await patch(`/admin/users/${edit.id}`, { status });
-      toast({ tone: "pos", title: `${edit.name} actualizado`, body: `${edit.email} · as sessões activas desta pessoa foram terminadas.` });
+      toast({ tone: "pos", title: `${edit.name} actualizado`, body: emailChanged
+        ? `Passa a entrar com ${newEmail}${edit.status === "INVITED" ? " · o convite foi reenviado para este email" : " · enviámos um aviso aos dois emails"}.`
+        : `${edit.email} · as sessões activas desta pessoa foram terminadas.` });
       setEdit(null);
       router.refresh();
     } catch (e) { setErr((e as Error).message); }
@@ -102,7 +109,8 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
       <Modal open={!!edit} onClose={() => setEdit(null)} title={`Editar ${edit?.name ?? ""}`}
         actions={<><Button variant="out" onClick={() => setEdit(null)}>Cancelar</Button><Button variant="pri" onClick={save}>Guardar</Button></>}>
         <div className="stack" style={{ color: "var(--text)" }}>
-          <p className="small muted mono" style={{ margin: 0 }}>{edit?.email}</p>
+          <Field label="Email" hint="Ex.: troca o Gmail provisório pelo email institucional. Palavra-passe e progresso mantêm-se.">{({ id }) => (
+            <Input id={id} type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="off" />)}</Field>
           <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0, gap: 4 }}>
             <legend className="small" style={{ fontWeight: 600, marginBottom: 6 }}>Perfis</legend>
             {ASSIGNABLE.map((r) => (
