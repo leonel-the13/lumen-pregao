@@ -1,13 +1,17 @@
 import { AuthCard } from "@/components/auth/AuthCard";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { serverFetch } from "@/lib/api-server";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata = { title: "Criar conta" };
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("auth.pages.signUp") };
+}
 
 export default async function Registo() {
-  const courses = await serverFetch<{ id: string; name: string }[]>("/courses").catch(() => []);
+  const [courses, { t }] = await Promise.all([serverFetch<{ id: string; name: string }[]>("/courses").catch(() => []), getI18n()]);
   return (
-    <AuthCard step="Criar conta" title="Cria a tua conta">
+    <AuthCard step={t("auth.pages.signUp")} title={t("auth.pages.createYours")}>
       <RegisterForm courses={courses} />
     </AuthCard>
   );

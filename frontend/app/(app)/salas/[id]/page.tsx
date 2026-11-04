@@ -9,15 +9,13 @@ import { Icon } from "@/components/ui/Icon";
 import { Markdown } from "@/components/ui/Markdown";
 import { serverFetchOrLogin } from "@/lib/api-server";
 import { ApiError } from "@/lib/errors";
-import type { RoomDetail, TaskView } from "@/lib/types";
-
-const TASK_STATE_LABEL: Record<TaskView["state"], string> = {
-  AVAILABLE: "Por resolver", IN_PROGRESS: "Em curso", PASSED: "Resolvida", FAILED: "Tentativas esgotadas", UNAVAILABLE: "Em revisão",
-};
+import type { RoomDetail } from "@/lib/types";
+import { getI18n } from "@/lib/i18n/server";
 
 export default async function Sala({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ tarefa?: string }> }) {
   const { id } = await params;
   const { tarefa } = await searchParams;
+  const { t: tr } = await getI18n();
   let room: RoomDetail;
   try {
     room = await serverFetchOrLogin<RoomDetail>(`/rooms/${id}`, `/salas/${id}`);
@@ -32,11 +30,11 @@ export default async function Sala({ params, searchParams }: { params: Promise<{
 
   return (
     <>
-      <SetCrumbs items={[{ label: "Trilhas", href: "/trilhas" }, { label: b.trackTitle, href: `/trilhas/${b.trackSlug}` },
-        { label: `Módulo ${b.modulePosition}` }, { label: room.title }]} />
+      <SetCrumbs items={[{ label: tr("learn.tracks.title"), href: "/trilhas" }, { label: b.trackTitle, href: `/trilhas/${b.trackSlug}` },
+        { label: tr("learn.rooms.module", { n: b.modulePosition }) }, { label: room.title }]} />
       <div className="row" style={{ alignItems: "flex-end" }}>
         <div className="stack" style={{ gap: 6 }}>
-          <div className="label">{b.trackTitle} · Módulo {b.modulePosition} · Sala {b.roomPosition} · ≈ {room.estMinutes} min</div>
+          <div className="label">{tr("learn.rooms.header", { track: b.trackTitle, module: b.modulePosition, room: b.roomPosition, min: room.estMinutes })}</div>
           <h1 className="h1">{room.title}</h1>
         </div>
         <div className="spacer" />
@@ -45,15 +43,15 @@ export default async function Sala({ params, searchParams }: { params: Promise<{
 
       {room.state === "LOCKED" ? (
         <Card className="state-box">
-          <div className="row" style={{ gap: 10 }}><Icon name="lock" /><h2 className="h3">Sala bloqueada</h2></div>
-          <p className="small muted">{room.lockedReason ?? "Requer a sala anterior."}</p>
-          <Link className="btn out" href={`/trilhas/${b.trackSlug}`}>Ver a trilha</Link>
+          <div className="row" style={{ gap: 10 }}><Icon name="lock" /><h2 className="h3">{tr("learn.rooms.locked")}</h2></div>
+          <p className="small muted">{room.lockedReason ?? tr("learn.rooms.needsPrevious")}</p>
+          <Link className="btn out" href={`/trilhas/${b.trackSlug}`}>{tr("learn.rooms.seeTrack")}</Link>
         </Card>
       ) : (
         <div className="room-grid">
-          <aside className="stack" style={{ gap: 16 }} aria-label="Tarefas da sala">
+          <aside className="stack" style={{ gap: 16 }} aria-label={tr("learn.rooms.tasksLabel")}>
             <Card className="stack" style={{ gap: 6, padding: 14 }}>
-              <div className="row" style={{ padding: "0 4px 6px" }}><b>Tarefas</b><div className="spacer" /><span className="mono small muted">{done}/{room.tasks.length}</span></div>
+              <div className="row" style={{ padding: "0 4px 6px" }}><b>{tr("learn.rooms.tasks")}</b><div className="spacer" /><span className="mono small muted">{done}/{room.tasks.length}</span></div>
               <ol className="plain stack" style={{ gap: 2 }}>
                 {room.tasks.map((t) => {
                   const on = t.id === current?.id;
@@ -62,7 +60,7 @@ export default async function Sala({ params, searchParams }: { params: Promise<{
                     <li key={t.id}>
                       <Link className={cls} href={`/salas/${room.id}?tarefa=${t.position}`} aria-current={on ? "step" : undefined}>
                         <span className="st" aria-hidden="true">{t.state === "PASSED" ? <Icon name="check" /> : t.state === "FAILED" ? <Icon name="x" /> : t.position}</span>
-                        <span style={{ flex: 1 }}>{t.title}<span className="sr-only"> · {TASK_STATE_LABEL[t.state]}</span></span>
+                        <span style={{ flex: 1 }}>{t.title}<span className="sr-only"> · {tr(`learn.rooms.taskState.${t.state}`)}</span></span>
                         <span className="mono small muted">{t.state === "PASSED" ? t.score : t.points}</span>
                       </Link>
                     </li>
@@ -72,27 +70,27 @@ export default async function Sala({ params, searchParams }: { params: Promise<{
             </Card>
             {room.objectives.length > 0 && (
               <Card className="stack" style={{ padding: 16 }}>
-                <b>Objectivos</b>
+                <b>{tr("learn.rooms.objectives")}</b>
                 <ul className="plain stack small">{room.objectives.map((o) => <li key={o} className="row" style={{ gap: 8 }}><Icon name="check" />{o}</li>)}</ul>
               </Card>
             )}
             {room.references.length > 0 && (
               <Card className="stack" style={{ padding: 16 }}>
-                <b>Referências</b>
+                <b>{tr("learn.rooms.references")}</b>
                 <ul className="plain stack small">
-                  {room.references.map((r) => <li key={r.title + r.identifier}>{r.title} · {r.identifier}{!r.confirmed && <Tbc>versão a confirmar</Tbc>}</li>)}
+                  {room.references.map((r) => <li key={r.title + r.identifier}>{r.title} · {r.identifier}{!r.confirmed && <Tbc>{tr("learn.rooms.versionTbc")}</Tbc>}</li>)}
                 </ul>
               </Card>
             )}
             {room.context && <Card className="small" style={{ padding: 16 }}><Markdown text={room.context} /></Card>}
             <RoomRating roomId={room.id} />
           </aside>
-          <section aria-label="Área de trabalho">
+          <section aria-label={tr("learn.rooms.workspace")}>
             {current ? (
               current.state === "UNAVAILABLE"
-                ? <Card className="state-box"><Badge>Em revisão</Badge><p className="small muted">Esta tarefa voltou a revisão editorial e está temporariamente indisponível.</p></Card>
+                ? <Card className="state-box"><Badge>{tr("learn.rooms.inReview")}</Badge><p className="small muted">{tr("learn.rooms.inReviewBody")}</p></Card>
                 : <RoomWorkspace key={current.id} task={current} context={room.context} references={room.references} />
-            ) : <Card className="state-box"><p className="muted">Esta sala ainda não tem tarefas publicadas.</p></Card>}
+            ) : <Card className="state-box"><p className="muted">{tr("learn.rooms.noTasks")}</p></Card>}
           </section>
         </div>
       )}

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Button } from "./Button";
+import { useT } from "@/lib/i18n/client";
 import { Field, Input } from "./Field";
 
 /** Modal acessível (dialog nativo: foco preso, Esc fecha). */
@@ -30,19 +31,20 @@ export function Modal({ open, onClose, title, children, actions, labelledBy }:
 export function ConfirmDialog({ open, onCancel, onConfirm, title, body, confirmLabel, destructive, typeToConfirm, busy }:
   { open: boolean; onCancel: () => void; onConfirm: () => void; title: string; body: ReactNode; confirmLabel: string;
     destructive?: boolean; typeToConfirm?: string; busy?: boolean }) {
+  const t = useT();
   const [typed, setTyped] = useState("");
   useEffect(() => { if (!open) setTyped(""); }, [open]);
   const blocked = !!typeToConfirm && typed !== typeToConfirm;
   return (
     <Modal open={open} onClose={onCancel} title={title}
       actions={<>
-        <Button variant="out" onClick={onCancel}>Cancelar</Button>
+        <Button variant="out" onClick={onCancel}>{t("common.cancel")}</Button>
         <Button variant={destructive ? "danger" : "pri"} onClick={onConfirm} disabled={blocked} loading={busy}>{confirmLabel}</Button>
       </>}>
       <div className="stack">
         <div>{body}</div>
         {typeToConfirm && (
-          <Field label={`Escreve ${typeToConfirm} para confirmar`}>
+          <Field label={t("common.typeToConfirm", { word: typeToConfirm })}>
             {({ id }) => <Input id={id} value={typed} onChange={(e) => setTyped(e.target.value)} autoComplete="off" />}
           </Field>
         )}

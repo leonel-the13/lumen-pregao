@@ -1,6 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/Badge";
 import { MoneyInput } from "@/components/ui/MoneyInput";
+import { useT } from "@/lib/i18n/client";
 
 export interface Step { key: string; label: string; formula?: string; help?: string }
 export type StepStatus = "OK" | "WRONG" | "PENDING" | "LOCKED";
@@ -8,6 +9,7 @@ export type StepStatus = "OK" | "WRONG" | "PENDING" | "LOCKED";
 /** Calculadora fiscal passo a passo: cada passo é corrigido no servidor antes de desbloquear o seguinte. */
 export function TaxStepper({ steps, values, onChange, statuses, disabled }:
   { steps: Step[]; values: Record<string, string>; onChange: (v: Record<string, string>) => void; statuses: Record<string, StepStatus>; disabled?: boolean }) {
+  const t = useT();
   const firstOpen = steps.findIndex((s) => statuses[s.key] !== "OK");
   return (
     <ol className="plain stack" style={{ gap: 12 }}>
@@ -27,8 +29,8 @@ export function TaxStepper({ steps, values, onChange, statuses, disabled }:
                     onChange={(v) => onChange({ ...values, [s.key]: v })} invalid={st === "WRONG"} ok={st === "OK"} />
                 </div>
               </div>
-              {st === "OK" ? <Badge tone="pos">Correcto</Badge> : st === "WRONG" ? <Badge tone="neg">Incorrecto</Badge>
-                : current ? <Badge tone="acc">A preencher</Badge> : <Badge icon="lock">Seguinte</Badge>}
+              {st === "OK" ? <Badge tone="pos">{t("task.tax.correct")}</Badge> : st === "WRONG" ? <Badge tone="neg">{t("task.tax.wrong")}</Badge>
+                : current ? <Badge tone="acc">{t("task.tax.filling")}</Badge> : <Badge icon="lock">{t("task.tax.next")}</Badge>}
             </div>
           </li>
         );

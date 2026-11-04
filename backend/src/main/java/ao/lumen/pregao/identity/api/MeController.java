@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class MeController {
     private final MeService me;
     private final SessionManager sessions;
+    private final ao.lumen.pregao.identity.app.PasswordService passwords;
 
-    public MeController(MeService me, SessionManager sessions) {
+    public MeController(MeService me, SessionManager sessions, ao.lumen.pregao.identity.app.PasswordService passwords) {
+        this.passwords = passwords;
         this.me = me;
         this.sessions = sessions;
     }
@@ -39,6 +41,15 @@ public class MeController {
     @PatchMapping
     public MeResponse patch(@AuthenticationPrincipal SessionUser user, @Valid @RequestBody PatchMe body) {
         return me.patch(user.id(), body);
+    }
+
+    /** Muda a palavra-passe; a sessão actual também termina. */
+    @PostMapping("/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void password(@AuthenticationPrincipal SessionUser user, @Valid @RequestBody MeDtos.ChangePassword body,
+                         HttpServletRequest req) {
+        passwords.change(user.id(), body.currentPassword(), body.newPassword());
+        sessions.terminate(req);
     }
 
     @GetMapping("/export")

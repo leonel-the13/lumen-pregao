@@ -2,11 +2,13 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { get } from "@/lib/api-client";
+import { useT } from "@/lib/i18n/client";
 
 export interface Account { code: string; name: string; classCode: string; className: string; placeholder: boolean }
 
 /** Pesquisa de contas do PGC por código ou designação, com sugestões (combobox acessível). */
-export function AccountSearch({ version, onPick, label = "Adicionar conta do PGC" }: { version?: string; onPick: (a: Account) => void; label?: string }) {
+export function AccountSearch({ version, onPick, label }: { version?: string; onPick: (a: Account) => void; label?: string }) {
+  const t = useT();
   const id = useId();
   const [q, setQ] = useState("");
   const [items, setItems] = useState<Account[]>([]);
@@ -30,10 +32,10 @@ export function AccountSearch({ version, onPick, label = "Adicionar conta do PGC
 
   return (
     <div className="field" style={{ position: "relative" }}>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{label ?? t("task.search.label")}</label>
       <span className="money-wrap">
         <span className="cur" style={{ left: 12 }} aria-hidden="true"><Icon name="search" /></span>
-        <input id={id} className="input" style={{ paddingLeft: 40 }} value={q} placeholder="Código ou designação (ex.: 32 ou fornecedores)"
+        <input id={id} className="input" style={{ paddingLeft: 40 }} value={q} placeholder={t("task.search.placeholder")}
           role="combobox" aria-expanded={open && items.length > 0} aria-controls={`${id}-list`} aria-autocomplete="list"
           aria-activedescendant={open && items[active] ? `${id}-o${active}` : undefined}
           onChange={(e) => setQ(e.target.value)} onFocus={() => items.length && setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 150)}
@@ -44,17 +46,17 @@ export function AccountSearch({ version, onPick, label = "Adicionar conta do PGC
             if (e.key === "Escape") setOpen(false);
           }} />
       </span>
-      {error && <span className="err">Não foi possível pesquisar contas. Tenta de novo.</span>}
+      {error && <span className="err">{t("task.search.failed")}</span>}
       {open && q && (
         <ul id={`${id}-list`} role="listbox" className="card" style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 20, padding: 6, marginTop: 4, listStyle: "none", boxShadow: "var(--shadow-2)" }}>
-          {items.length === 0 && <li className="small muted" style={{ padding: 10 }}>Nenhuma conta corresponde a «{q}».</li>}
+          {items.length === 0 && <li className="small muted" style={{ padding: 10 }}>{t("task.search.noMatch", { q })}</li>}
           {items.map((a, i) => (
             <li key={a.code} id={`${id}-o${i}`} role="option" aria-selected={i === active}
               className={["task", i === active && "cur"].filter(Boolean).join(" ")} style={{ cursor: "pointer" }}
               onMouseDown={(e) => { e.preventDefault(); pick(a); }}>
               <span className="acct" style={{ minWidth: 56 }}>{a.code}</span>
-              <span style={{ flex: 1 }}>{a.name}{a.placeholder && <span className="tbc">subconta a confirmar</span>}</span>
-              <span className="small muted">Classe {a.classCode} · {a.className}</span>
+              <span style={{ flex: 1 }}>{a.name}{a.placeholder && <span className="tbc">{t("task.search.subTbc")}</span>}</span>
+              <span className="small muted">{t("task.search.class", { code: a.classCode, name: a.className })}</span>
             </li>
           ))}
         </ul>

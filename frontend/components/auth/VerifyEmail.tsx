@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { get, post } from "@/lib/api-client";
 import { isApiError } from "@/lib/errors";
+import { useT } from "@/lib/i18n/client";
 
 export function VerifyEmail({ token, email }: { token?: string; email?: string }) {
   const router = useRouter();
+  const t = useT();
   const [state, setState] = useState<"waiting" | "verifying" | "ok" | "expired" | "invalid">(token ? "verifying" : "waiting");
   const [message, setMessage] = useState("");
   const [cooldown, setCooldown] = useState(0);
@@ -26,9 +28,9 @@ export function VerifyEmail({ token, email }: { token?: string; email?: string }
       })
       .catch((e) => {
         setState(isApiError(e) && e.code === "TOKEN_EXPIRED" ? "expired" : "invalid");
-        setMessage(isApiError(e) ? e.message : "O link é inválido.");
+        setMessage(isApiError(e) ? e.message : t("auth.verify.invalid"));
       });
-  }, [token, router]);
+  }, [token, router, t]);
 
   // Este browser fez o registo: pergunta ao servidor se a conta já foi confirmada (pode ser noutro dispositivo).
   // Quando foi, entra sozinho. A contagem do «Reenviar» também vem do servidor, por isso não recomeça com o refresh.
@@ -62,23 +64,22 @@ export function VerifyEmail({ token, email }: { token?: string; email?: string }
     return () => clearTimeout(id);
   }, [state, cooldown]);
 
-  if (state === "verifying") return <p className="muted" aria-live="polite">A verificar o teu email…</p>;
-  if (state === "ok") return <Alert tone="pos" title="Email verificado">A entrar na plataforma…</Alert>;
+  if (state === "verifying") return <p className="muted" aria-live="polite">{t("auth.verify.verifying")}</p>;
+  if (state === "ok") return <Alert tone="pos" title={t("auth.verify.ok")}>{t("auth.verify.entering")}</Alert>;
   if (state === "expired" || state === "invalid") {
     return (
       <div className="stack">
-        <Alert tone="neg" title={state === "expired" ? "Link expirado" : "Link inválido"}>{message}</Alert>
-        <Link className="btn out" href="/verificar">Pedir um novo link</Link>
+        <Alert tone="neg" title={state === "expired" ? t("auth.verify.expired") : t("auth.verify.invalidTitle")}>{message}</Alert>
+        <Link className="btn out" href="/verificar">{t("auth.verify.newLink")}</Link>
       </div>
     );
   }
   return (
     <div className="stack" style={{ gap: 16 }}>
       <p className="muted">
-        Enviámos um link para <b>{email ?? "o teu email institucional"}</b>. Podes abri-lo em qualquer dispositivo, por exemplo
-        no telemóvel: esta página continua sozinha quando confirmares. O link vale 24 horas.
+        {t("auth.verify.sentPre")}<b>{email ?? t("auth.verify.yourEmail")}</b>{t("auth.verify.sentPost")}
       </p>
-      <p className="small muted row" style={{ gap: 8 }} aria-live="polite"><Icon name="loader" className="icon spin" />À espera da confirmação…</p>
+      <p className="small muted row" style={{ gap: 8 }} aria-live="polite"><Icon name="loader" className="icon spin" />{t("auth.verify.waiting")}</p>
       {email && (
         <Button variant="out" disabled={cooldown > 0}
           onClick={async () => {
@@ -86,12 +87,12 @@ export function VerifyEmail({ token, email }: { token?: string; email?: string }
             setResendNote(null);
             try {
               await post("/auth/resend-verification", { email });
-              setResendNote("Enviámos um novo link. Vê também a pasta de spam.");
+              setResendNote(t("auth.verify.resent"));
             } catch (e) {
-              setResendNote(isApiError(e) ? e.message : "Não foi possível reenviar. Tenta de novo.");
+              setResendNote(isApiError(e) ? e.message : t("auth.verify.resendFailed"));
             }
           }}>
-          {cooldown > 0 ? `Reenviar email (00:${String(cooldown).padStart(2, "0")})` : "Reenviar email"}
+          {cooldown > 0 ? t("auth.verify.resendIn", { time: `00:${String(cooldown).padStart(2, "0")}` }) : t("auth.verify.resend")}
         </Button>
       )}
       {resendNote && <p className="small muted" role="status">{resendNote}</p>}

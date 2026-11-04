@@ -1,4 +1,5 @@
-import { DIFFICULTY_LABEL } from "@/lib/format";
+"use client";
+import { useT } from "@/lib/i18n/client";
 
 export function Bar({ value, label, thin }: { value: number; label: string; thin?: boolean }) {
   const v = Math.max(0, Math.min(100, Math.round(value)));
@@ -28,10 +29,12 @@ export function Steps({ total, done, current }: { total: number; done: number; c
 
 /** Dificuldade 1–4 em barras, com texto para leitores de ecrã. */
 export function Difficulty({ level }: { level: number }) {
+  const t = useT();
+  const label = level >= 1 && level <= 4 ? t(`learn.difficulty.${level as 1 | 2 | 3 | 4}`) : String(level);
   return (
-    <span className="diff" title={`Dificuldade · ${DIFFICULTY_LABEL[level] ?? level}`}>
+    <span className="diff" title={t("learn.difficulty.title", { label })}>
       {[1, 2, 3, 4].map((i) => <i key={i} className={i <= level ? "on" : undefined} aria-hidden="true" />)}
-      <span className="sr-only">Dificuldade {level} de 4 · {DIFFICULTY_LABEL[level]}</span>
+      <span className="sr-only">{t("learn.difficulty.sr", { n: level, label })}</span>
     </span>
   );
 }

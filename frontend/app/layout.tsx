@@ -3,6 +3,10 @@ import { Archivo, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import type { ReactNode } from "react";
 import { ToastProvider } from "@/components/ui/Toast";
+import { HTML_LANG } from "@/lib/i18n/config";
+import { MESSAGES } from "@/lib/i18n";
+import { I18nProvider } from "@/lib/i18n/client";
+import { getI18n } from "@/lib/i18n/server";
 import { THEME_COOKIE, toAttr } from "@/lib/theme";
 import "@/styles/tokens.css";
 
@@ -11,36 +15,41 @@ const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400", style: 
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lab.lumenao.tech";
-const DESCRIPTION = "Trilhas, salas práticas, exames e a Maratona de casos para os estudantes do ISPTEC. Iniciativa da Associação de Estudantes.";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: { default: "Lúmen Lab · Aprender é saber aplicar", template: "%s · Lúmen Lab" },
-  description: DESCRIPTION,
-  applicationName: "Lúmen Lab",
-  keywords: ["ISPTEC", "contabilidade", "PGC", "IVA", "análise financeira", "exames", "Maratona de casos", "Associação de Estudantes"],
-  openGraph: {
-    type: "website",
-    locale: "pt_PT",
-    url: "/",
-    siteName: "Lúmen Lab",
-    title: "Lúmen Lab · Aprender é saber aplicar",
-    description: DESCRIPTION,
-  },
-  twitter: { card: "summary_large_image", title: "Lúmen Lab · Aprender é saber aplicar", description: DESCRIPTION },
-  appleWebApp: { title: "Lúmen Lab", statusBarStyle: "black-translucent" },
-  formatDetection: { telephone: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t, locale } = await getI18n();
+  const title = t("pages.meta.title");
+  const description = t("pages.meta.description");
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: title, template: "%s · Lúmen Lab" },
+    description,
+    applicationName: "Lúmen Lab",
+    keywords: ["ISPTEC", "contabilidade", "PGC", "IVA", "análise financeira", "exames", "Maratona de casos", "Associação de Estudantes"],
+    openGraph: {
+      type: "website",
+      locale: HTML_LANG[locale].replace("-", "_"),
+      url: "/",
+      siteName: "Lúmen Lab",
+      title,
+      description,
+    },
+    twitter: { card: "summary_large_image", title, description },
+    appleWebApp: { title: "Lúmen Lab", statusBarStyle: "black-translucent" },
+    formatDetection: { telephone: false },
+  };
+}
 
 export const viewport: Viewport = { themeColor: "#0A0A0A", width: "device-width", initialScale: 1 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const theme = toAttr((await cookies()).get(THEME_COOKIE)?.value);
+  const { locale, t } = await getI18n();
   return (
-    <html lang="pt-PT" data-theme={theme} className={`${archivo.variable} ${instrument.variable} ${jetbrains.variable}`}>
+    <html lang={HTML_LANG[locale]} data-theme={theme} className={`${archivo.variable} ${instrument.variable} ${jetbrains.variable}`}>
       <body className="lp">
-        <a className="skip-link" href="#conteudo">Saltar para o conteúdo</a>
-        <ToastProvider>{children}</ToastProvider>
+        <a className="skip-link" href="#conteudo">{t("common.skipToContent")}</a>
+        <I18nProvider locale={locale} messages={MESSAGES[locale]}><ToastProvider>{children}</ToastProvider></I18nProvider>
       </body>
     </html>
   );

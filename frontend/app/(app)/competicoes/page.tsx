@@ -6,33 +6,38 @@ import { EmptyState } from "@/components/ui/States";
 import { serverFetchOrLogin } from "@/lib/api-server";
 import { formatDateTime } from "@/lib/format";
 import type { ContestCard } from "@/lib/types";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata = { title: "Competições" };
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("compete.list.title") };
+}
 
-const STATE: Record<string, [string, "acc" | "info" | "neutral" | "pos"]> = {
-  REGISTRATION: ["Inscrições abertas", "acc"], WAITING_ROOM: ["Sala de espera", "info"], RUNNING: ["Ao vivo", "acc"], FROZEN: ["Ao vivo · congelado", "acc"],
-  SUBMISSIONS_CLOSED: ["Submissões encerradas", "neutral"], FINAL_EVALUATION: ["Avaliação final", "neutral"], RESULTS_PUBLISHED: ["Resultados", "pos"], CLOSED: ["Encerrado", "neutral"],
+const TONE: Record<string, "acc" | "info" | "neutral" | "pos"> = {
+  REGISTRATION: "acc", WAITING_ROOM: "info", RUNNING: "acc", FROZEN: "acc",
+  SUBMISSIONS_CLOSED: "neutral", FINAL_EVALUATION: "neutral", RESULTS_PUBLISHED: "pos", CLOSED: "neutral",
 };
 
 export default async function Competicoes() {
-  const list = await serverFetchOrLogin<ContestCard[]>("/contests", "/competicoes");
+  const [list, { t, locale }] = await Promise.all([serverFetchOrLogin<ContestCard[]>("/contests", "/competicoes"), getI18n()]);
   return (
     <>
-      <SetCrumbs items={[{ label: "Competir" }, { label: "Competições" }]} />
-      <div className="stack" style={{ gap: 6 }}><div className="label">Competir</div><h1 className="h1">Competições</h1></div>
+      <SetCrumbs items={[{ label: t("compete.list.group") }, { label: t("compete.list.title") }]} />
+      <div className="stack" style={{ gap: 6 }}><div className="label">{t("compete.list.group")}</div><h1 className="h1">{t("compete.list.title")}</h1></div>
       {list.length === 0 ? (
-        <EmptyState title="Ainda não participaste em competições" body="A próxima Maratona abre inscrições em breve." />
+        <EmptyState title={t("compete.list.empty")} body={t("compete.list.emptyBody")} />
       ) : (
         <div className="grid g2">
           {list.map((c) => {
-            const [label, tone] = STATE[c.state] ?? [c.state, "neutral"];
+            const tone = TONE[c.state] ?? "neutral";
+            const label = c.state in TONE ? t(`compete.state.${c.state as "REGISTRATION" | "WAITING_ROOM" | "RUNNING" | "FROZEN" | "SUBMISSIONS_CLOSED" | "FINAL_EVALUATION" | "RESULTS_PUBLISHED" | "CLOSED"}`) : c.state;
             return (
               <Card key={c.id} className="stack">
-                <div className="row" style={{ gap: 8 }}><Badge tone={tone}>{label}</Badge><Badge>{c.mode === "TEAM" ? `Equipas de ${c.minTeam} a ${c.maxTeam}` : "Individual"}</Badge></div>
+                <div className="row" style={{ gap: 8 }}><Badge tone={tone}>{label}</Badge><Badge>{c.mode === "TEAM" ? t("compete.list.teamsOf", { min: c.minTeam, max: c.maxTeam }) : t("compete.list.individual")}</Badge></div>
                 <h2 className="h2">{c.title}</h2>
-                <p className="small muted">Início {formatDateTime(c.startsAt)} · fim {formatDateTime(c.endsAt)} (hora de Luanda)</p>
-                {c.myTeamName && <p className="small">{c.mode === "TEAM" ? <>Equipa <b>{c.myTeamName}</b> · {c.myTeamConfirmed} de {c.maxTeam} confirmados</> : "Inscrição confirmada"}</p>}
-                <div className="row"><div className="spacer" /><Link className="btn pri" href={`/competicoes/${c.id}`}>Abrir</Link></div>
+                <p className="small muted">{t("compete.list.when", { start: formatDateTime(c.startsAt, locale), end: formatDateTime(c.endsAt, locale) })}</p>
+                {c.myTeamName && <p className="small">{c.mode === "TEAM" ? <>{t("compete.list.team")} <b>{c.myTeamName}</b> · {t("compete.list.confirmedOf", { n: c.myTeamConfirmed ?? 0, max: c.maxTeam })}</> : t("compete.list.registered")}</p>}
+                <div className="row"><div className="spacer" /><Link className="btn pri" href={`/competicoes/${c.id}`}>{t("compete.list.open")}</Link></div>
               </Card>
             );
           })}

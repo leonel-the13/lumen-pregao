@@ -1,9 +1,13 @@
 import { notFound } from "next/navigation";
 import { PortfolioView } from "@/components/portfolio/PortfolioView";
 import { serverFetchOptional } from "@/lib/api-server";
+import { getI18n } from "@/lib/i18n/server";
 import type { Portfolio } from "@/lib/types";
 
-export const metadata = { title: "Portefólio", robots: { index: false } };
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("pages.meta.portfolio"), robots: { index: false } };
+}
 
 export default async function PublicPortfolio({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;

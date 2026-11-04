@@ -1,14 +1,17 @@
+"use client";
 import { formatNumber } from "@/lib/format";
+import { useT } from "@/lib/i18n/client";
 
 export interface LedgerRow { account: string; label: string; value: { value: number; display: string } | number; side: "D" | "C" }
 
 /** Balancete (excerto): contas e saldos D/C, valores alinhados à direita. */
-export function LedgerTable({ rows, caption = "Balancete final (excerto)" }: { rows: LedgerRow[]; caption?: string }) {
+export function LedgerTable({ rows, caption }: { rows: LedgerRow[]; caption?: string }) {
+  const t = useT();
   return (
     <div className="tbl-wrap">
       <table className="tbl" style={{ minWidth: 0 }}>
-        <caption className="sr-only">{caption}</caption>
-        <thead><tr><th>Conta</th><th className="num">Saldo</th></tr></thead>
+        <caption className="sr-only">{caption ?? t("task.ledger.caption")}</caption>
+        <thead><tr><th>{t("task.ledger.account")}</th><th className="num">{t("task.ledger.balance")}</th></tr></thead>
         <tbody>
           {rows.map((r) => {
             const v = typeof r.value === "number" ? r.value : r.value.value;

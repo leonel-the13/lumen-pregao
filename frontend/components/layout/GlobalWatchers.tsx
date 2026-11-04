@@ -2,9 +2,11 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { useT } from "@/lib/i18n/client";
 
 /** Falha de ligação e sessão expirada (estados globais). Os rascunhos ficam guardados antes do redireccionamento. */
 export function GlobalWatchers() {
+  const t = useT();
   const [online, setOnline] = useState(true);
   const router = useRouter();
   const path = usePathname();
@@ -26,7 +28,7 @@ export function GlobalWatchers() {
   return (
     <div className="offline-banner" role="status">
       <Icon name="wifiOff" />
-      Sem ligação. As tuas respostas ficam guardadas localmente e são enviadas quando voltar.
+      {t("shell.offline")}
     </div>
   );
 }

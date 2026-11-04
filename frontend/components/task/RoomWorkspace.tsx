@@ -11,13 +11,12 @@ import { Tabs } from "@/components/ui/Tabs";
 import { useToast } from "@/components/ui/Toast";
 import { post, put } from "@/lib/api-client";
 import { ApiError } from "@/lib/errors";
+import { useT } from "@/lib/i18n/client";
 import type { AttemptView, ReferenceView, TaskView } from "@/lib/types";
 import { useSubmission } from "@/lib/use-submission";
 import { AnswerEditor, buildPayload, emptyAnswer, validateAnswer, type AnswerState, type TaskType } from "./AnswerEditor";
 import { StatementText } from "./StatementText";
 import { SubmissionPanel } from "./SubmissionPanel";
-
-const SUBMIT_LABEL: Record<string, string> = { A: "Submeter resposta", B: "Submeter resposta", C: "Submeter lançamento", D: "Submeter balanço", E: "Verificar passo", F: "Submeter análise" };
 
 function draftKey(attemptId: string) {
   return `lp:draft:${attemptId}`;
@@ -26,6 +25,7 @@ function draftKey(attemptId: string) {
 export function RoomWorkspace({ task, context, references }: { task: TaskView; context?: string; references: ReferenceView[] }) {
   const router = useRouter();
   const toast = useToast();
+  const t = useT();
   const [attempt, setAttempt] = useState<AttemptView | null>(null);
   const [loadError, setLoadError] = useState<ApiError | null>(null);
   const [answer, setAnswer] = useState<AnswerState>(emptyAnswer);
@@ -53,7 +53,7 @@ export function RoomWorkspace({ task, context, references }: { task: TaskView; c
     const a = await load();
     router.refresh();
     if (s.correct) {
-      toast({ tone: "pos", title: `Tarefa ${task.position} concluída${s.points ? ` · +${s.points} pts` : ""}` });
+      toast({ tone: "pos", title: `${t("task.done", { n: task.position })}${s.points ? ` · +${s.points} pts` : ""}` });
       if (a) localStorage.removeItem(draftKey(a.attemptId));
     }
   });
@@ -75,10 +75,10 @@ export function RoomWorkspace({ task, context, references }: { task: TaskView; c
 
   if (loadError) {
     return loadError.code === "ROOM_LOCKED" || loadError.code === "CONTENT_UNAVAILABLE"
-      ? <ErrorState title="Tarefa indisponível" body={loadError.message} />
-      : <ErrorState title="Não foi possível carregar a tarefa" code={loadError.code} action={<Button variant="out" onClick={() => { setLoadError(null); load(); }}>Tentar novamente</Button>} />;
+      ? <ErrorState title={t("task.unavailable")} body={loadError.message} />
+      : <ErrorState title={t("task.loadFailed")} code={loadError.code} action={<Button variant="out" onClick={() => { setLoadError(null); load(); }}>{t("pages.error.retry")}</Button>} />;
   }
-  if (!attempt) return <LoadingBlock label="A carregar a tarefa…" />;
+  if (!attempt) return <LoadingBlock label={t("task.loading")} />;
 
   const type = attempt.type as TaskType;
   const presentation = attempt.presentation as Record<string, never>;
@@ -90,82 +90,81 @@ export function RoomWorkspace({ task, context, references }: { task: TaskView; c
 
   const onChange = (a: AnswerState) => { dirty.current = true; setFormatError(null); setAnswer(a); };
   const submit = () => {
-    const err = validateAnswer(type, presentation, answer);
+    const err = validateAnswer(type, presentation, answer, t);
     if (err) { setFormatError(err); return; }
     sub.submit(`/attempts/${attempt.attemptId}/submissions`, buildPayload(type, presentation, answer));
   };
   const saveDraft = async () => {
     localStorage.setItem(draftKey(attempt.attemptId), JSON.stringify(answer));
-    try { await put(`/attempts/${attempt.attemptId}/draft`, answer); setSavedAt(new Date().toISOString()); toast({ tone: "info", title: "Rascunho guardado" }); }
-    catch { toast({ tone: "info", title: "Rascunho guardado neste dispositivo", body: "Será enviado quando voltar a ligação." }); }
+    try { await put(`/attempts/${attempt.attemptId}/draft`, answer); setSavedAt(new Date().toISOString()); toast({ tone: "info", title: t("task.draftSaved") }); }
+    catch { toast({ tone: "info", title: t("task.draftSavedLocal"), body: t("task.draftSavedLocalBody") }); }
   };
 
   return (
     <div className="stack" style={{ gap: 20 }}>
       <Card className="stack">
-        <Tabs label="Informação da tarefa" active={tab} onChange={setTab} items={[
-          { key: "contexto", label: "Contexto" },
-          { key: "documento", label: "Documento" },
-          { key: "dicas", label: `Dicas (−5 pts)`, count: attempt.hintsAvailable ? attempt.hintsUsed : undefined },
+        <Tabs label={t("task.infoTabs")} active={tab} onChange={setTab} items={[
+          { key: "contexto", label: t("task.context") },
+          { key: "documento", label: t("task.document") },
+          { key: "dicas", label: t("task.hints"), count: attempt.hintsAvailable ? attempt.hintsUsed : undefined },
         ]} />
         {tab === "contexto" && (
           <div className="stack" role="tabpanel">
             <StatementText segments={attempt.statementSegments} fallback={attempt.statementRendered} />
-            <p className="small muted">Os valores destacados são únicos para esta tentativa.</p>
+            <p className="small muted">{t("task.uniqueValues")}</p>
           </div>
         )}
         {tab === "documento" && (
           <div className="stack" role="tabpanel">
-            {context ? <Markdown text={context} /> : <p className="small muted">Sem documento de apoio.</p>}
+            {context ? <Markdown text={context} /> : <p className="small muted">{t("task.noDocument")}</p>}
             {references.length > 0 && (
               <ul className="plain stack small">
-                {references.map((r) => <li key={r.title + r.identifier}><b>{r.title}</b> · {r.identifier}{!r.confirmed && <Tbc>versão a confirmar</Tbc>}</li>)}
+                {references.map((r) => <li key={r.title + r.identifier}><b>{r.title}</b> · {r.identifier}{!r.confirmed && <Tbc>{t("learn.rooms.versionTbc")}</Tbc>}</li>)}
               </ul>
             )}
           </div>
         )}
         {tab === "dicas" && (
           <div className="stack" role="tabpanel">
-            {attempt.revealedHints.length === 0 && <p className="small muted">Ainda não viste dicas nesta tarefa.</p>}
-            {attempt.revealedHints.map((h, i) => <div key={i} className="alert info"><b>Dica {i + 1}</b> {h}</div>)}
-            {open && attempt.hintsUsed < attempt.hintsAvailable && <Button variant="out" size="sm" onClick={() => setHintOpen(true)}>Ver dica · −5 pts</Button>}
-            {attempt.hintsAvailable === 0 && <p className="small muted">Esta tarefa não tem dicas.</p>}
+            {attempt.revealedHints.length === 0 && <p className="small muted">{t("task.noHintsYet")}</p>}
+            {attempt.revealedHints.map((h, i) => <div key={i} className="alert info"><b>{t("task.hintN", { n: i + 1 })}</b> {h}</div>)}
+            {open && attempt.hintsUsed < attempt.hintsAvailable && <Button variant="out" size="sm" onClick={() => setHintOpen(true)}>{t("task.seeHint")}</Button>}
+            {attempt.hintsAvailable === 0 && <p className="small muted">{t("task.noHints")}</p>}
           </div>
         )}
       </Card>
 
       <Card className="stack" style={{ gap: 18 }}>
         <div className="row">
-          <h2 className="h2">Tarefa {task.position} · {task.title}</h2>
+          <h2 className="h2">{t("task.heading", { n: task.position, title: task.title })}</h2>
           <div className="spacer" />
-          {open ? <Badge mono>Tentativa {attempt.attemptsUsed + 1} de {attempt.maxAttempts}</Badge>
-            : attempt.status === "PASSED" ? <Badge tone="pos">Concluída · {attempt.score} / {attempt.points} pts</Badge>
-            : <Badge tone="neg">Tentativas esgotadas</Badge>}
+          {open ? <Badge mono>{t("task.attemptOf", { n: attempt.attemptsUsed + 1, max: attempt.maxAttempts })}</Badge>
+            : attempt.status === "PASSED" ? <Badge tone="pos">{t("task.completed", { score: attempt.score ?? 0, points: attempt.points })}</Badge>
+            : <Badge tone="neg">{t("task.noAttemptsLeft")}</Badge>}
         </div>
         <AnswerEditor type={type} presentation={presentation} state={answer} onChange={onChange} result={lastResult}
           disabled={!open || pending} pgcVersion={attempt.pgcVersion} company={company} />
-        {formatError && <div className="alert neg" role="alert"><b>Revê a resposta</b> {formatError}</div>}
+        {formatError && <div className="alert neg" role="alert"><b>{t("task.reviewAnswer")}</b> {formatError}</div>}
         <SubmissionPanel s={sub.current} error={sub.error} attemptsLeft={attemptsLeft} />
         {open && (
           <div className="row">
-            <span className="small muted" aria-live="polite">{savedAt ? "Rascunho guardado" : ""}</span>
+            <span className="small muted" aria-live="polite">{savedAt ? t("task.draftSaved") : ""}</span>
             <div className="spacer" />
-            <Button variant="out" onClick={saveDraft} disabled={pending}>Guardar rascunho</Button>
-            <Button variant="pri" onClick={submit} loading={sub.sending || pending}>{SUBMIT_LABEL[type] ?? "Submeter"}</Button>
+            <Button variant="out" onClick={saveDraft} disabled={pending}>{t("task.saveDraft")}</Button>
+            <Button variant="pri" onClick={submit} loading={sub.sending || pending}>{type in { A: 1, B: 1, C: 1, D: 1, E: 1, F: 1 } ? t(`task.submit.${type as "A" | "B" | "C" | "D" | "E" | "F"}`) : t("task.submit.default")}</Button>
           </div>
         )}
         <p className="spec">
-          <b>Correcção no servidor.</b> Antes de submeter, a página só verifica o formato{type === "C" ? " e o equilíbrio (débito = crédito)" : ""}.
-          A correcção oficial e os pontos vêm do servidor; os parâmetros desta tentativa ficam guardados para auditoria.
+          <b>{t("task.serverGrading")}</b> {t("task.serverGradingBody", { balance: type === "C" ? t("task.balanceCheck") : "" })}
         </p>
       </Card>
 
-      <ConfirmDialog open={hintOpen} onCancel={() => setHintOpen(false)} title="Ver dica?" confirmLabel="Ver dica · −5 pts"
-        body="Cada dica usada retira 5 pts à pontuação desta tarefa."
+      <ConfirmDialog open={hintOpen} onCancel={() => setHintOpen(false)} title={t("task.hintConfirm")} confirmLabel={t("task.seeHint")}
+        body={t("task.hintConfirmBody")}
         onConfirm={async () => {
           setHintOpen(false);
           try { await post(`/attempts/${attempt.attemptId}/hints`); await load(); setTab("dicas"); }
-          catch (e) { toast({ tone: "neg", title: "Não foi possível mostrar a dica", body: (e as Error).message }); }
+          catch (e) { toast({ tone: "neg", title: t("task.hintFailed"), body: (e as Error).message }); }
         }} />
     </div>
   );

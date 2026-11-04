@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { get, post } from "@/lib/api-client";
 import { formatRelative } from "@/lib/format";
+import { useLocale, useT } from "@/lib/i18n/client";
 
 interface Notification { id: string; kind: string; title: string; body?: string; link?: string; read: boolean; at: string }
 
@@ -14,6 +15,8 @@ const KIND_ICON: Record<string, string> = {
 
 /** Sino da barra superior: contador de não lidas (actualizado a cada minuto) e painel com as mais recentes. */
 export function NotificationBell() {
+  const t = useT();
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [unread, setUnread] = useState(0);
   const [items, setItems] = useState<Notification[] | null>(null);
@@ -55,19 +58,19 @@ export function NotificationBell() {
   return (
     <div className="notif-wrap" ref={wrap}>
       <button type="button" className="btn ghost icon-btn notif-btn" aria-expanded={open} aria-haspopup="true"
-        aria-label={unread > 0 ? `Notificações: ${unread} por ler` : "Notificações"} onClick={() => setOpen((o) => !o)}>
+        aria-label={unread > 0 ? t("shell.notifications.unreadLabel", { n: unread }) : t("shell.notifications.title")} onClick={() => setOpen((o) => !o)}>
         <Icon name="bell" />
         {unread > 0 && <span className="notif-count mono" aria-hidden="true">{unread > 9 ? "9+" : unread}</span>}
       </button>
       {open && (
-        <div className="notif-panel card" role="region" aria-label="Notificações">
+        <div className="notif-panel card" role="region" aria-label={t("shell.notifications.title")}>
           <div className="row" style={{ justifyContent: "space-between", padding: "12px 14px", borderBottom: "1px solid var(--line)" }}>
-            <b>Notificações</b>
-            {unread > 0 && <button type="button" className="btn ghost sm" onClick={readAll}>Marcar todas como lidas</button>}
+            <b>{t("shell.notifications.title")}</b>
+            {unread > 0 && <button type="button" className="btn ghost sm" onClick={readAll}>{t("shell.notifications.markAll")}</button>}
           </div>
           <ul className="notif-list">
-            {items === null && <li className="muted small" style={{ padding: 14 }}>A carregar…</li>}
-            {items?.length === 0 && <li className="muted small" style={{ padding: 14 }}>Ainda não tens notificações. Avisamos-te aqui de conquistas, convites e resultados.</li>}
+            {items === null && <li className="muted small" style={{ padding: 14 }}>{t("common.loading")}</li>}
+            {items?.length === 0 && <li className="muted small" style={{ padding: 14 }}>{t("shell.notifications.empty")}</li>}
             {items?.map((n) => {
               const inner = (
                 <>
@@ -75,9 +78,9 @@ export function NotificationBell() {
                   <span className="stack" style={{ gap: 2, minWidth: 0 }}>
                     <b className="notif-title">{n.title}</b>
                     {n.body && <span className="small muted notif-body">{n.body}</span>}
-                    <span className="small muted mono">{formatRelative(n.at)}</span>
+                    <span className="small muted mono">{formatRelative(n.at, Date.now(), locale)}</span>
                   </span>
-                  {!n.read && <span className="notif-dot" aria-label="Por ler" />}
+                  {!n.read && <span className="notif-dot" aria-label={t("shell.notifications.unread")} />}
                 </>
               );
               return (
