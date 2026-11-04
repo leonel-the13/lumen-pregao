@@ -3,6 +3,9 @@ import { Archivo, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import type { ReactNode } from "react";
 import { ToastProvider } from "@/components/ui/Toast";
+import { HTML_LANG } from "@/lib/i18n/config";
+import { I18nProvider } from "@/lib/i18n/client";
+import { getI18n } from "@/lib/i18n/server";
 import { THEME_COOKIE, toAttr } from "@/lib/theme";
 import "@/styles/tokens.css";
 
@@ -36,11 +39,12 @@ export const viewport: Viewport = { themeColor: "#0A0A0A", width: "device-width"
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const theme = toAttr((await cookies()).get(THEME_COOKIE)?.value);
+  const { locale, t } = await getI18n();
   return (
-    <html lang="pt-PT" data-theme={theme} className={`${archivo.variable} ${instrument.variable} ${jetbrains.variable}`}>
+    <html lang={HTML_LANG[locale]} data-theme={theme} className={`${archivo.variable} ${instrument.variable} ${jetbrains.variable}`}>
       <body className="lp">
-        <a className="skip-link" href="#conteudo">Saltar para o conteúdo</a>
-        <ToastProvider>{children}</ToastProvider>
+        <a className="skip-link" href="#conteudo">{t("common.skipToContent")}</a>
+        <I18nProvider locale={locale}><ToastProvider>{children}</ToastProvider></I18nProvider>
       </body>
     </html>
   );

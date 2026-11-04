@@ -1,32 +1,34 @@
+import type { MessageKey } from "@/lib/i18n/translate";
 import type { Role } from "@/lib/types";
 
-export interface NavItem { href: string; label: string; icon: string; roles?: Role[]; live?: boolean }
-export interface NavGroup { label: string; items: NavItem[] }
+export interface NavItem { href: string; label: MessageKey; icon: string; roles?: Role[]; live?: boolean }
+export interface NavGroup { label: MessageKey; items: NavItem[] }
 
 /** 3 grupos fixos e «Gestão» só para perfis autorizados. A visibilidade nunca substitui a verificação no servidor. */
 export function navGroups(roles: Role[]): NavGroup[] {
   const groups: NavGroup[] = [
-    { label: "Aprender", items: [
-      { href: "/inicio", label: "Início", icon: "home" },
-      { href: "/trilhas", label: "Trilhas", icon: "route" },
-      { href: "/salas", label: "Salas", icon: "door" },
-      { href: "/simulacoes", label: "Simulações", icon: "building" },
-      { href: "/exames", label: "Exames", icon: "exam" },
+    { label: "shell.nav.groups.learn", items: [
+      { href: "/inicio", label: "shell.nav.home", icon: "home" },
+      { href: "/trilhas", label: "shell.nav.tracks", icon: "route" },
+      { href: "/salas", label: "shell.nav.rooms", icon: "door" },
+      { href: "/simulacoes", label: "shell.nav.simulations", icon: "building" },
+      { href: "/exames", label: "shell.nav.exams", icon: "exam" },
     ] },
-    { label: "Competir", items: [
-      { href: "/competicoes", label: "Competições", icon: "trophy", live: true },
-      { href: "/rankings", label: "Rankings", icon: "chart" },
+    { label: "shell.nav.groups.compete", items: [
+      { href: "/competicoes", label: "shell.nav.contests", icon: "trophy", live: true },
+      { href: "/rankings", label: "shell.nav.rankings", icon: "chart" },
     ] },
-    { label: "Eu", items: [
-      { href: "/portefolio", label: "Portefólio", icon: "briefcase" },
-      { href: "/definicoes", label: "Perfil e definições", icon: "user" },
+    { label: "shell.nav.groups.me", items: [
+      { href: "/portefolio", label: "shell.nav.portfolio", icon: "briefcase" },
+      { href: "/perfil", label: "shell.nav.profile", icon: "user" },
+      { href: "/definicoes", label: "shell.nav.settings", icon: "cog" },
     ] },
   ];
-  const gestao: NavItem[] = [
-    { href: "/autoria", label: "Autoria", icon: "pen", roles: ["AUTHOR", "REVIEWER", "ADMIN"] },
-    { href: "/juri", label: "Júri", icon: "scale", roles: ["JURY"] },
-    { href: "/admin", label: "Administração", icon: "sliders", roles: ["ADMIN", "CONTEST_ORGANIZER"] },
-  ].filter((i) => i.roles!.some((r) => roles.includes(r as Role))) as NavItem[];
-  if (gestao.length) groups.push({ label: "Gestão", items: gestao });
+  const gestao: NavItem[] = ([
+    { href: "/autoria", label: "shell.nav.authoring", icon: "pen", roles: ["AUTHOR", "REVIEWER", "ADMIN"] },
+    { href: "/juri", label: "shell.nav.jury", icon: "scale", roles: ["JURY"] },
+    { href: "/admin", label: "shell.nav.admin", icon: "sliders", roles: ["ADMIN", "CONTEST_ORGANIZER"] },
+  ] as NavItem[]).filter((i) => i.roles!.some((r) => roles.includes(r)));
+  if (gestao.length) groups.push({ label: "shell.nav.groups.manage", items: gestao });
   return groups;
 }

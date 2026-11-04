@@ -28,9 +28,11 @@ public class MeService {
     private final SessionRevocation revocation;
     private final List<PersonalDataContributor> contributors;
     private final Clock clock;
+    private final ao.lumen.pregao.identity.infra.CourseRepository courses;
 
     public MeService(UserRepository users, OffensiveFilter offensive, AuditService audit, SessionRevocation revocation,
-                     List<PersonalDataContributor> contributors, Clock clock) {
+                     List<PersonalDataContributor> contributors, Clock clock, ao.lumen.pregao.identity.infra.CourseRepository courses) {
+        this.courses = courses;
         this.users = users;
         this.offensive = offensive;
         this.audit = audit;
@@ -51,6 +53,12 @@ public class MeService {
     public MeResponse patch(UUID id, PatchMe p) {
         User u = load(id);
         Map<String, Object> before = snapshot(u);
+        if (p.name() != null) u.setName(p.name().strip());
+        if (p.courseId() != null) {
+            u.setCourse(courses.findById(p.courseId())
+                    .orElseThrow(() -> DomainException.badRequest("COURSE_NOT_FOUND", "O curso escolhido não existe.")));
+        }
+        if (p.year() != null) u.setYear(p.year());
         if (p.pseudonym() != null) {
             String ps = p.pseudonym().isEmpty() ? null : p.pseudonym();
             if (ps != null && !ps.equals(u.getPseudonym())) {
@@ -121,6 +129,9 @@ public class MeService {
 
     private static Map<String, Object> snapshot(User u) {
         Map<String, Object> m = new LinkedHashMap<>();
+        m.put("name", u.getName());
+        m.put("course", u.getCourse() == null ? null : u.getCourse().getCode());
+        m.put("year", u.getYear());
         m.put("pseudonym", u.getPseudonym());
         m.put("rankingVisibility", u.getRankingVisibility());
         m.put("theme", u.getTheme());

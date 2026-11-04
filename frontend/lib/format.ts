@@ -2,6 +2,8 @@
  * Formatação de valores (design A5 · Dados financeiros): Kz depois do valor, espaço fino nos milhares,
  * vírgula decimal, números tabulares (a classe .mono/.num aplica a fonte).
  */
+import { HTML_LANG, type Locale } from "./i18n/config";
+
 export const THIN = " ";
 const ZONE = "Africa/Luanda";
 
@@ -48,22 +50,22 @@ export function parseAmount(text: string): number | null {
   return Number(normalized);
 }
 
-export function formatDate(iso: string | Date, opts: Intl.DateTimeFormatOptions = { day: "2-digit", month: "2-digit" }) {
-  return new Intl.DateTimeFormat("pt-PT", { timeZone: ZONE, ...opts }).format(new Date(iso));
+export function formatDate(iso: string | Date, opts: Intl.DateTimeFormatOptions = { day: "2-digit", month: "2-digit" }, locale: Locale = "pt") {
+  return new Intl.DateTimeFormat(HTML_LANG[locale], { timeZone: ZONE, ...opts }).format(new Date(iso));
 }
 
-export function formatTime(iso: string | Date) {
-  return new Intl.DateTimeFormat("pt-PT", { timeZone: ZONE, hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(iso));
+export function formatTime(iso: string | Date, locale: Locale = "pt") {
+  return new Intl.DateTimeFormat(HTML_LANG[locale], { timeZone: ZONE, hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(iso));
 }
 
-export function formatDateTime(iso: string | Date) {
-  return new Intl.DateTimeFormat("pt-PT", {
+export function formatDateTime(iso: string | Date, locale: Locale = "pt") {
+  return new Intl.DateTimeFormat(HTML_LANG[locale], {
     timeZone: ZONE, day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit",
   }).format(new Date(iso));
 }
 
-export function formatLongDate(iso: string | Date) {
-  const s = new Intl.DateTimeFormat("pt-PT", { timeZone: ZONE, weekday: "long", day: "numeric", month: "long" }).format(new Date(iso));
+export function formatLongDate(iso: string | Date, locale: Locale = "pt") {
+  const s = new Intl.DateTimeFormat(HTML_LANG[locale], { timeZone: ZONE, weekday: "long", day: "numeric", month: "long" }).format(new Date(iso));
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
@@ -86,14 +88,15 @@ export function formatGrade(g: number | string | null | undefined) {
 
 export const DIFFICULTY_LABEL: Record<number, string> = { 1: "Iniciação", 2: "Intermédio", 3: "Avançado", 4: "Avançado" };
 
-/** «há 5 min», «há 3 h», «ontem», ou a data (Africa/Luanda). */
-export function formatRelative(iso: string | Date, now: number = Date.now()): string {
+/** «há 5 min», «há 3 h», «ontem», ou a data (Africa/Luanda), na língua da interface. */
+export function formatRelative(iso: string | Date, now: number = Date.now(), locale: Locale = "pt"): string {
   const t = typeof iso === "string" ? new Date(iso).getTime() : iso.getTime();
   const min = Math.round((now - t) / 60_000);
-  if (min < 1) return "agora";
-  if (min < 60) return `há ${min} min`;
+  const rtf = new Intl.RelativeTimeFormat(HTML_LANG[locale], { numeric: "auto", style: "short" });
+  if (min < 1) return rtf.format(0, "second");
+  if (min < 60) return rtf.format(-min, "minute");
   const h = Math.round(min / 60);
-  if (h < 24) return `há ${h} h`;
-  if (h < 48) return "ontem";
-  return formatDate(iso, { day: "2-digit", month: "short" });
+  if (h < 24) return rtf.format(-h, "hour");
+  if (h < 48) return rtf.format(-1, "day");
+  return formatDate(iso, { day: "2-digit", month: "short" }, locale);
 }

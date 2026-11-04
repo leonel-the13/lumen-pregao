@@ -18,6 +18,10 @@ public final class MeDtos {
 
     /** Campos nulos não mudam. Pseudónimo vazio remove-o. */
     public record PatchMe(
+            @jakarta.validation.constraints.Size(min = 2, max = 120, message = "O nome tem de ter entre 2 e 120 caracteres.")
+            @Pattern(regexp = "^(?!\\s*$).+", message = "Indica o nome.") String name,
+            UUID courseId,
+            @jakarta.validation.constraints.Min(value = 1, message = "Ano inválido.") @jakarta.validation.constraints.Max(value = 5, message = "Ano inválido.") Integer year,
             @Pattern(regexp = "^$|^[a-z0-9_]{3,24}$",
                     message = "O pseudónimo tem 3 a 24 caracteres: letras minúsculas, números e _.") String pseudonym,
             RankingVisibility rankingVisibility,
@@ -25,4 +29,8 @@ public final class MeDtos {
             Boolean portfolioPublic,
             /** Emails de notificações, lembretes e da administração (os de segurança chegam sempre). */
             Boolean emailOptIn) {}
+
+    public record ChangePassword(
+            @jakarta.validation.constraints.NotBlank(message = "Indica a palavra-passe actual.") String currentPassword,
+            @jakarta.validation.constraints.NotBlank(message = "Indica a nova palavra-passe.") @jakarta.validation.constraints.Size(max = 128, message = "A palavra-passe é demasiado longa.") String newPassword) {}
 }

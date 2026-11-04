@@ -131,6 +131,9 @@ public class User extends BaseEntity {
         this.lastVerifyReminderAt = at;
     }
     public void inactivityReminded(Instant at) { this.lastInactiveReminderAt = at; }
+    public void setName(String name) { this.name = name; }
+    public void setCourse(Course course) { this.course = course; }
+    public void setYear(Integer year) { this.year = year; }
     public void setPseudonym(String pseudonym) { this.pseudonym = pseudonym; }
     public void setRankingVisibility(RankingVisibility v) { this.rankingVisibility = v; }
     public void setTheme(Theme theme) { this.theme = theme; }

@@ -491,6 +491,21 @@
         },
         "type" : "object"
       },
+      "ChangePassword" : {
+        "properties" : {
+          "currentPassword" : {
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "newPassword" : {
+            "maxLength" : 128,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        },
+        "required" : [ "currentPassword", "newPassword" ],
+        "type" : "object"
+      },
       "Competency" : {
         "properties" : {
           "rooms" : {
@@ -1799,8 +1814,18 @@
       },
       "PatchMe" : {
         "properties" : {
+          "courseId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
           "emailOptIn" : {
             "type" : "boolean"
+          },
+          "name" : {
+            "maxLength" : 120,
+            "minLength" : 2,
+            "pattern" : "^(?!\\s*$).+",
+            "type" : "string"
           },
           "portfolioPublic" : {
             "type" : "boolean"
@@ -1816,6 +1841,12 @@
           "theme" : {
             "enum" : [ "DARK", "LIGHT" ],
             "type" : "string"
+          },
+          "year" : {
+            "format" : "int32",
+            "maximum" : 5,
+            "minimum" : 1,
+            "type" : "integer"
           }
         },
         "type" : "object"
@@ -6401,6 +6432,27 @@
           }
         },
         "tags" : [ "notification-controller" ]
+      }
+    },
+    "/api/v1/me/password" : {
+      "post" : {
+        "operationId" : "password",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ChangePassword"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          }
+        },
+        "tags" : [ "me-controller" ]
       }
     },
     "/api/v1/me/portfolio" : {

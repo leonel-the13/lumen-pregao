@@ -95,6 +95,27 @@ public class PasswordService {
         return u.getEmail();
     }
 
+    /** Mudar a palavra-passe com a sessão iniciada: exige a actual; termina todas as sessões (entra-se de novo). */
+    @Transactional
+    public void change(java.util.UUID userId, String current, String password) {
+        if (!limiter.tryAcquire("pwchange:" + userId, 5, Duration.ofMinutes(15))) {
+            throw DomainException.tooMany("Demasiadas tentativas. Espera 15 minutos.");
+        }
+        User u = users.findById(userId)
+                .orElseThrow(() -> DomainException.notFound("USER_NOT_FOUND", "A conta não existe."));
+        if (!encoder.matches(current, u.getPasswordHash())) {
+            throw DomainException.rule("WRONG_PASSWORD", "A palavra-passe actual não está correcta.");
+        }
+        PasswordPolicy.check(password, u.getEmail(), u.getName());
+        Instant now = clock.instant();
+        u.setPasswordHash(encoder.encode(password));
+        tokens.invalidateAll(u.getId(), now);
+        audit.record(u.getId(), "PASSWORD_CHANGED", "User", u.getId(), null, null);
+        notifications.notify(u.getId(), "SECURITY", "Palavra-passe alterada",
+                "Se não foste tu, contacta a administração de imediato.", "/definicoes");
+        revocation.revokeAll(u.getId(), now);
+    }
+
     /** Usado pela administração: cria o link do convite e envia o email. */
     @Transactional
     public void sendInvite(User u, String invitedBy) {

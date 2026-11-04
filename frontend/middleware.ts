@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { clientIp } from "@/lib/client-ip";
 
 const PROTECTED = ["/inicio", "/trilhas", "/salas", "/simulacoes", "/exames", "/competicoes", "/rankings", "/portefolio",
-  "/definicoes", "/autoria", "/juri", "/admin"];
+  "/perfil", "/definicoes", "/autoria", "/juri", "/admin"];
 
 /** Conveniência de navegação: sem cookie de sessão, vai para /entrar. A segurança real está no backend. */
 /** Endereço antigo (antes de o produto se chamar Lúmen Lab): redirecciona para o novo, mantendo o caminho. */

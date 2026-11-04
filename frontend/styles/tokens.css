@@ -385,3 +385,27 @@ dialog.modal-dialog::backdrop{animation:fade-in var(--dur-3) var(--ease-out) bot
 .password-toggle:hover{color:var(--text)}
 .password-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .tbl td.actions-cell{white-space:nowrap;text-align:right;width:1%}
+/* barra lateral aberta/fechada */
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.side-head .brand{padding-bottom:6px}
+.side-toggle{flex:none}
+.side-head{margin-bottom:12px}
+.app-side{transition:flex-basis var(--dur-2,200ms) var(--ease-out,ease-out)}
+.side-me:hover{background:var(--surface-2)}
+@media (min-width:1080px){
+  .shell.side-closed .app-side{flex:0 0 76px;padding-left:10px;padding-right:10px}
+  .shell.side-closed .side-head{flex-direction:column;gap:10px}
+  .shell.side-closed .side-head .brand{padding:6px 0 0}
+  .shell.side-closed .side-head .brand b,.shell.side-closed .side-head .brand span{display:none}
+  .shell.side-closed .nav-sec{padding:10px 0 4px;text-align:center;visibility:hidden;height:8px;overflow:hidden}
+  .shell.side-closed .nav{justify-content:center;padding:0;position:relative}
+  .shell.side-closed .nav-text,.shell.side-closed .side-me-text{display:none}
+  .shell.side-closed .nav-live{position:absolute;top:4px;right:4px;width:8px;height:8px!important;padding:0;font-size:0;border-radius:50%}
+  .shell.side-closed .side-me{justify-content:center;padding:8px!important}
+}
+@media (max-width:1079px){.side-toggle{display:none}}
+.lang-switch{display:inline-flex;align-items:center;gap:6px;color:inherit;font-size:inherit}
+.lang-switch .icon,.lang-switch svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7}
+.lang-switch select{background:transparent;border:0;color:inherit;font:inherit;cursor:pointer;padding:4px 2px}
+.lang-switch select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.lang-switch option{color:var(--text);background:var(--surface)}
