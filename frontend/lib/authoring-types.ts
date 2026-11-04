@@ -25,14 +25,10 @@ export interface ParamSpec {
 
 export interface LegalSourceDto { id: string; title: string; identifier: string; version: string; publishedAt?: string; effectiveFrom?: string; effectiveTo?: string; url?: string; confirmed: boolean; updatedAt: string }
 
-export const STATUS_LABEL: Record<EditorialStatus, string> = {
-  DRAFT: "Rascunho", IN_REVIEW: "Em revisão", APPROVED: "Aprovado", PUBLISHED: "Publicado", NEEDS_REVIEW: "Revisão necessária", ARCHIVED: "Arquivado",
-};
-
 export const STATUS_TONE: Record<EditorialStatus, "neutral" | "info" | "acc" | "pos" | "neg"> = {
   DRAFT: "neutral", IN_REVIEW: "info", APPROVED: "acc", PUBLISHED: "pos", NEEDS_REVIEW: "neg", ARCHIVED: "neutral",
 };
 
-export const TYPE_LABEL: Record<string, string> = {
-  A: "Escolha múltipla", B: "Resposta numérica", C: "Lançamentos", D: "Demonstrações", E: "Cálculo fiscal", F: "Análise de rácios", G: "Caso aberto",
-};
+export const EXERCISE_TYPES = ["A", "B", "C", "D", "E", "F", "G"] as const;
+export type ExerciseType = (typeof EXERCISE_TYPES)[number];
+export const isExerciseType = (t: string): t is ExerciseType => (EXERCISE_TYPES as readonly string[]).includes(t);

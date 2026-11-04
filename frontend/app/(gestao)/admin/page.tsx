@@ -14,62 +14,62 @@ import type { ExerciseSummary } from "@/lib/authoring-types";
 import { formatDateTime } from "@/lib/format";
 import { hasAny, requireMe } from "@/lib/session";
 import type { CursorPage } from "@/lib/types";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata = { title: "Administração" };
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("admin.page.title") };
+}
 
 interface AuditRow { id: string; at: string; actorName: string; action: string; entityType: string; entityId?: string; ip?: string }
 
-const MATRIX: [string, string[]][] = [
-  ["Salas · resolver", ["R", "R", "R", "—", "—", "R"]], ["Exercícios", ["—", "C E", "R A", "—", "—", "A"]], ["Publicar conteúdo", ["—", "—", "P", "—", "—", "P"]],
-  ["Contests", ["R", "—", "—", "R", "C E P", "C E P"]], ["Correcção de casos", ["—", "—", "—", "E", "R", "R"]],
-  ["Utilizadores e perfis", ["—", "—", "—", "—", "—", "C E"]], ["Auditoria", ["—", "—", "—", "—", "—", "R"]],
+const MATRIX: ["rooms" | "exercises" | "publish" | "contests" | "grading" | "users" | "audit", string[]][] = [
+  ["rooms", ["R", "R", "R", "—", "—", "R"]], ["exercises", ["—", "C E", "R A", "—", "—", "A"]], ["publish", ["—", "—", "P", "—", "—", "P"]],
+  ["contests", ["R", "—", "—", "R", "C E P", "C E P"]], ["grading", ["—", "—", "—", "E", "R", "R"]],
+  ["users", ["—", "—", "—", "—", "—", "C E"]], ["audit", ["—", "—", "—", "—", "—", "R"]],
 ];
+const COLS = ["student", "author", "reviewer", "jury", "organizer", "admin"] as const;
 
 export default async function Admin({ searchParams }: { searchParams: Promise<{ tab?: string; q?: string; cursor?: string; estado?: string; para?: string; nome?: string }> }) {
   const sp = await searchParams;
-  const me = await requireMe("/admin");
+  const [me, { t }] = await Promise.all([requireMe("/admin"), getI18n()]);
   const admin = hasAny(me, "ADMIN");
   const organizer = hasAny(me, "CONTEST_ORGANIZER", "ADMIN");
-  if (!organizer) return <AccessDenied area="A administração" />;
+  if (!organizer) return <AccessDenied area={t("admin.page.area")} />;
   const tab = sp.tab ?? (admin ? "utilizadores" : "contests");
-  const tabs = [
-    ...(admin ? [{ key: "utilizadores", label: "Utilizadores", href: "/admin?tab=utilizadores" }, { key: "perfis", label: "Perfis", href: "/admin?tab=perfis" }] : []),
-    { key: "contests", label: "Contests", href: "/admin?tab=contests" },
-    ...(admin ? [{ key: "auditoria", label: "Auditoria", href: "/admin?tab=auditoria" }, { key: "conteudos", label: "Conteúdos", href: "/admin?tab=conteudos" },
-      { key: "emails", label: "Emails", href: "/admin?tab=emails" },
-      { key: "feedback", label: "Feedback", href: "/admin?tab=feedback" },
-      { key: "configuracoes", label: "Configurações", href: "/admin?tab=configuracoes" }] : []),
-  ];
+  const keys = admin ? (["utilizadores", "perfis", "contests", "auditoria", "conteudos", "emails", "feedback", "configuracoes"] as const) : (["contests"] as const);
+  const tabs = keys.map((k) => ({ key: k, label: t(`admin.page.tabs.${k}`), href: `/admin?tab=${k}` }));
   return (
     <>
-      <SetCrumbs items={[{ label: "Gestão" }, { label: "Administração" }]} />
-      <div className="stack" style={{ gap: 6 }}><div className="label">Administração · Associação de Estudantes</div><h1 className="h1">Utilizadores e permissões</h1></div>
-      <Tabs label="Administração" active={tab} items={tabs} />
+      <SetCrumbs items={[{ label: t("admin.page.group") }, { label: t("admin.page.title") }]} />
+      <div className="stack" style={{ gap: 6 }}><div className="label">{t("admin.page.eyebrow")}</div><h1 className="h1">{t("admin.page.heading")}</h1></div>
+      <Tabs label={t("admin.page.title")} active={tab} items={tabs} />
       {tab === "utilizadores" && admin && <Users q={sp.q} cursor={sp.cursor} me={me.id} />}
       {tab === "perfis" && admin && (
         <Card className="stack">
-          <div className="row"><h2 className="h2">Matriz de permissões</h2><span className="small muted">verificada no servidor em cada endpoint</span></div>
+          <div className="row"><h2 className="h2">{t("admin.page.matrix")}</h2><span className="small muted">{t("admin.page.matrixNote")}</span></div>
           <div className="tbl-wrap"><table className="tbl">
-            <thead><tr><th>Recurso</th>{["Est.", "Autor", "Rev.", "Júri", "Org.", "Admin"].map((h) => <th key={h}>{h}</th>)}</tr></thead>
-            <tbody>{MATRIX.map(([r, cells]) => <tr key={r}><td>{r}</td>{cells.map((c, i) => <td key={i} className="mono small">{c}</td>)}</tr>)}</tbody>
+            <thead><tr><th>{t("admin.page.resource")}</th>{COLS.map((h) => <th key={h}>{t(`admin.page.cols.${h}`)}</th>)}</tr></thead>
+            <tbody>{MATRIX.map(([r, cells]) => <tr key={r}><td>{t(`admin.page.rows.${r}`)}</td>{cells.map((c, i) => <td key={i} className="mono small">{c}</td>)}</tr>)}</tbody>
           </table></div>
-          <p className="small muted">R ler · C criar · E editar · A aprovar · P publicar/administrar · propriedade dos recursos verificada à parte.</p>
+          <p className="small muted">{t("admin.page.legend")}</p>
         </Card>
       )}
       {tab === "contests" && <Contests />}
       {tab === "auditoria" && admin && <Audit cursor={sp.cursor} />}
       {tab === "conteudos" && admin && <Content />}
-      {tab === "emails" && admin && <Emails cursor={sp.cursor} para={sp.para} nome={sp.nome} />}
+      {tab === "emails" && admin && <Emails cursor={sp.cursor} para={sp.para} nome={sp.nome} chosen={t("admin.page.chosenPerson")} />}
       {tab === "feedback" && admin && <Feedback estado={sp.estado} cursor={sp.cursor} />}
-      {tab === "configuracoes" && admin && <LaterPhase title="Configurações gerais" body="Domínio institucional, limites de rate limiting e valores de pontuação estão em variáveis de ambiente e ficam a confirmar." />}
+      {tab === "configuracoes" && admin && <LaterPhase title={t("admin.page.settings")} body={t("admin.page.settingsBody")} />}
     </>
   );
 }
 
 async function Users({ q, cursor, me }: { q?: string; cursor?: string; me: string }) {
-  const [page, courses] = await Promise.all([
+  const [page, courses, { t }] = await Promise.all([
     serverFetch<CursorPage<AdminUserRow>>(`/admin/users?limit=25${q ? `&q=${encodeURIComponent(q)}` : ""}${cursor ? `&cursor=${cursor}` : ""}`),
     serverFetch<{ id: string; name: string }[]>("/courses"),
+    getI18n(),
   ]);
   return (
     <div className="stack">
@@ -77,15 +77,15 @@ async function Users({ q, cursor, me }: { q?: string; cursor?: string; me: strin
       <div className="row">
         <form className="row" role="search">
           <input type="hidden" name="tab" value="utilizadores" />
-          <label className="sr-only" htmlFor="uq">Pesquisar utilizadores</label>
-          <input id="uq" name="q" className="input" style={{ maxWidth: 360 }} placeholder="Nome ou email" defaultValue={q} />
-          <button className="btn out" type="submit">Pesquisar</button>
+          <label className="sr-only" htmlFor="uq">{t("admin.page.searchUsers")}</label>
+          <input id="uq" name="q" className="input" style={{ maxWidth: 360 }} placeholder={t("admin.page.searchPlaceholder")} defaultValue={q} />
+          <button className="btn out" type="submit">{t("common.search")}</button>
         </form>
         <div className="spacer" />
         <InviteUser courses={courses} />
       </div>
       <UsersTable rows={page.items} me={me} />
-      {page.nextCursor && <div className="row"><div className="spacer" /><Link className="btn sm out" href={`/admin?tab=utilizadores&cursor=${page.nextCursor}${q ? `&q=${q}` : ""}`}>Seguinte</Link></div>}
+      {page.nextCursor && <div className="row"><div className="spacer" /><Link className="btn sm out" href={`/admin?tab=utilizadores&cursor=${page.nextCursor}${q ? `&q=${q}` : ""}`}>{t("common.next")}</Link></div>}
     </div>
   );
 }
@@ -109,7 +109,7 @@ async function Content() {
     exercises={exercises.map((e) => ({ versionId: e.latestVersionId, label: `${e.code} · ${e.title}`, status: e.status }))} />;
 }
 
-async function Emails({ cursor, para, nome }: { cursor?: string; para?: string; nome?: string }) {
+async function Emails({ cursor, para, nome, chosen }: { cursor?: string; para?: string; nome?: string; chosen: string }) {
   const [templates, stats, campaigns, courses, variables] = await Promise.all([
     serverFetch<EmailTemplateView[]>("/admin/email-templates"),
     serverFetch<ReminderStats>("/admin/emails/reminders"),
@@ -117,7 +117,7 @@ async function Emails({ cursor, para, nome }: { cursor?: string; para?: string; 
     serverFetch<{ id: string; name: string }[]>("/courses"),
     serverFetch<EmailVariable[]>("/admin/emails/variables"),
   ]);
-  const preset = para && /^[0-9a-f-]{36}$/i.test(para) ? { id: para, name: nome || "Pessoa escolhida" } : undefined;
+  const preset = para && /^[0-9a-f-]{36}$/i.test(para) ? { id: para, name: nome || chosen } : undefined;
   return <EmailsAdmin templates={templates} stats={stats} campaigns={campaigns.items} nextCursor={campaigns.nextCursor ?? undefined}
     courses={courses} variables={variables} preset={preset} />;
 }
@@ -125,35 +125,35 @@ async function Emails({ cursor, para, nome }: { cursor?: string; para?: string; 
 async function Feedback({ estado, cursor }: { estado?: string; cursor?: string }) {
   const status = estado ?? "NEW";
   const qs = new URLSearchParams({ limit: "30", ...(status !== "ALL" ? { status } : {}), ...(cursor ? { cursor } : {}) });
-  const page = await serverFetch<CursorPage<FeedbackRow>>(`/admin/feedback?${qs}`);
-  const filters = [["NEW", "Novos"], ["READ", "Lidos"], ["RESOLVED", "Resolvidos"], ["ALL", "Todos"]];
+  const [page, { t }] = await Promise.all([serverFetch<CursorPage<FeedbackRow>>(`/admin/feedback?${qs}`), getI18n()]);
+  const filters = ["NEW", "READ", "RESOLVED", "ALL"] as const;
   return (
     <div className="stack">
-      <nav className="row" style={{ gap: 6 }} aria-label="Filtrar feedback">
-        {filters.map(([k, l]) => (
+      <nav className="row" style={{ gap: 6 }} aria-label={t("admin.page.feedbackFilter")}>
+        {filters.map((k) => (
           <Link key={k} className={`btn sm ${k === status ? "pri" : "ghost"}`} aria-current={k === status ? "page" : undefined}
-            href={`/admin?tab=feedback&estado=${k}`}>{l}</Link>
+            href={`/admin?tab=feedback&estado=${k}`}>{t(`admin.page.feedbackStates.${k}`)}</Link>
         ))}
       </nav>
       <FeedbackAdmin rows={page.items} />
-      {page.nextCursor && <Link className="btn out" href={`/admin?tab=feedback&estado=${status}&cursor=${page.nextCursor}`}>Mais antigos</Link>}
+      {page.nextCursor && <Link className="btn out" href={`/admin?tab=feedback&estado=${status}&cursor=${page.nextCursor}`}>{t("admin.page.older")}</Link>}
     </div>
   );
 }
 
 async function Audit({ cursor }: { cursor?: string }) {
-  const page = await serverFetch<CursorPage<AuditRow>>(`/admin/audit?limit=30${cursor ? `&cursor=${cursor}` : ""}`);
+  const [page, { t, locale }] = await Promise.all([serverFetch<CursorPage<AuditRow>>(`/admin/audit?limit=30${cursor ? `&cursor=${cursor}` : ""}`), getI18n()]);
   return (
     <div className="stack">
-      <div className="row"><h2 className="h2">Auditoria</h2><div className="spacer" /><a className="btn out" href="/api/v1/admin/audit/export" download>Exportar</a></div>
+      <div className="row"><h2 className="h2">{t("admin.page.audit")}</h2><div className="spacer" /><a className="btn out" href="/api/v1/admin/audit/export" download>{t("admin.page.export")}</a></div>
       <div className="tbl-wrap"><table className="tbl">
-        <thead><tr><th>Data/hora</th><th>Responsável</th><th>Operação</th><th>Entidade</th></tr></thead>
+        <thead><tr><th>{t("admin.page.when")}</th><th>{t("admin.page.actor")}</th><th>{t("admin.page.operation")}</th><th>{t("admin.page.entity")}</th></tr></thead>
         <tbody>{page.items.map((a) => (
-          <tr key={a.id}><td className="mono small">{formatDateTime(a.at)}</td><td>{a.actorName}</td><td className="mono small">{a.action}</td>
+          <tr key={a.id}><td className="mono small">{formatDateTime(a.at, locale)}</td><td>{a.actorName}</td><td className="mono small">{a.action}</td>
             <td className="small muted">{a.entityType}{a.entityId ? ` · ${a.entityId.slice(0, 8)}` : ""}</td></tr>
         ))}</tbody>
       </table></div>
-      {page.nextCursor && <div className="row"><div className="spacer" /><Link className="btn sm out" href={`/admin?tab=auditoria&cursor=${page.nextCursor}`}>Seguinte</Link></div>}
+      {page.nextCursor && <div className="row"><div className="spacer" /><Link className="btn sm out" href={`/admin?tab=auditoria&cursor=${page.nextCursor}`}>{t("common.next")}</Link></div>}
     </div>
   );
 }

@@ -2,9 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { get, newIdempotencyKey, post } from "./api-client";
 import { ApiError } from "./errors";
-import { cookieLocale } from "./i18n/config";
-import { MESSAGES } from "./i18n";
-import { translator } from "./i18n/translate";
+import { clientT } from "./i18n/client";
 import type { SubmissionAccepted, SubmissionView } from "./types";
 
 /**
@@ -49,7 +47,7 @@ export function useSubmission(onDone?: (s: SubmissionView) => void) {
     } catch (e) {
       // Erros de rede mantêm a chave: reenviar devolve a submissão original se já tiver chegado.
       if (!(e instanceof ApiError && e.status === 0)) keyRef.current = null;
-      setError(e instanceof ApiError ? e : new ApiError(0, { detail: translator(MESSAGES[cookieLocale()])("common.unexpected") }));
+      setError(e instanceof ApiError ? e : new ApiError(0, { detail: clientT()("common.unexpected") }));
     } finally {
       setSending(false);
     }

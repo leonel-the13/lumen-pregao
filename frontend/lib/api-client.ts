@@ -1,8 +1,6 @@
 "use client";
 import { ApiError } from "./errors";
-import { MESSAGES } from "./i18n";
-import { cookieLocale } from "./i18n/config";
-import { translator } from "./i18n/translate";
+import { clientT } from "./i18n/client";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
 
@@ -40,7 +38,7 @@ export async function api<T>(method: string, path: string, body?: unknown, opts:
       body: body === undefined ? undefined : JSON.stringify(body),
     });
   } catch {
-    const t = translator(MESSAGES[cookieLocale()]);
+    const t = clientT();
     throw new ApiError(0, { code: "NETWORK", title: t("auth.login.offline"), detail: t("common.network") });
   }
   if (res.status === 204) return undefined as T;

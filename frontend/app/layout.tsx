@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import type { ReactNode } from "react";
 import { ToastProvider } from "@/components/ui/Toast";
 import { HTML_LANG } from "@/lib/i18n/config";
+import { MESSAGES } from "@/lib/i18n";
 import { I18nProvider } from "@/lib/i18n/client";
 import { getI18n } from "@/lib/i18n/server";
 import { THEME_COOKIE, toAttr } from "@/lib/theme";
@@ -48,7 +49,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang={HTML_LANG[locale]} data-theme={theme} className={`${archivo.variable} ${instrument.variable} ${jetbrains.variable}`}>
       <body className="lp">
         <a className="skip-link" href="#conteudo">{t("common.skipToContent")}</a>
-        <I18nProvider locale={locale}><ToastProvider>{children}</ToastProvider></I18nProvider>
+        <I18nProvider locale={locale} messages={MESSAGES[locale]}><ToastProvider>{children}</ToastProvider></I18nProvider>
       </body>
     </html>
   );

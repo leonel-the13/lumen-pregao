@@ -9,18 +9,24 @@ import { ConfirmDialog, Modal } from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
 import { patch, post } from "@/lib/api-client";
 import { formatDateTime } from "@/lib/format";
+import { useLocale, useT } from "@/lib/i18n/client";
 
 export interface AdminUserRow { id: string; name: string; initials: string; email: string; course?: string; year?: number; roles: string[]; status: string; mfaEnabled: boolean; lastLoginAt?: string }
 
-export const ROLE_LABEL: Record<string, string> = { STUDENT: "Estudante", AUTHOR: "Autor", REVIEWER: "Revisor", JURY: "Júri", CONTEST_ORGANIZER: "Organizador", ADMIN: "Administrador", TEAM_CAPTAIN: "Capitão" };
-const STATUS_LABEL: Record<string, [string, "pos" | "neutral" | "neg" | "info"]> = {
-  ACTIVE: ["Activo", "pos"], INVITED: ["Convite pendente", "info"], PENDING_VERIFICATION: ["Por verificar", "info"], SUSPENDED: ["Suspenso", "neg"], DELETION_REQUESTED: ["Eliminação pedida", "neg"], DELETED: ["Eliminada", "neutral"],
+export const ROLES = ["STUDENT", "AUTHOR", "REVIEWER", "JURY", "CONTEST_ORGANIZER", "ADMIN", "TEAM_CAPTAIN"] as const;
+export type RoleCode = (typeof ROLES)[number];
+export const isRole = (r: string): r is RoleCode => (ROLES as readonly string[]).includes(r);
+const STATUS_TONE: Record<string, "pos" | "neutral" | "neg" | "info"> = {
+  ACTIVE: "pos", INVITED: "info", PENDING_VERIFICATION: "info", SUSPENDED: "neg", DELETION_REQUESTED: "neg", DELETED: "neutral",
 };
-const ASSIGNABLE = ["STUDENT", "AUTHOR", "REVIEWER", "JURY", "CONTEST_ORGANIZER", "ADMIN"];
+type UserStatus = "ACTIVE" | "INVITED" | "PENDING_VERIFICATION" | "SUSPENDED" | "DELETION_REQUESTED" | "DELETED";
+const ASSIGNABLE = ["STUDENT", "AUTHOR", "REVIEWER", "JURY", "CONTEST_ORGANIZER", "ADMIN"] as const;
 
 export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
   const router = useRouter();
   const toast = useToast();
+  const t = useT();
+  const locale = useLocale();
   const [edit, setEdit] = useState<AdminUserRow | null>(null);
   const [roles, setRoles] = useState<string[]>([]);
   const [status, setStatus] = useState("ACTIVE");
@@ -40,9 +46,9 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
       if (emailChanged) await patch(`/admin/users/${edit.id}/email`, { email: newEmail });
       await patch(`/admin/users/${edit.id}/roles`, { roles });
       if (status !== edit.status) await patch(`/admin/users/${edit.id}`, { status });
-      toast({ tone: "pos", title: `${edit.name} actualizado`, body: emailChanged
-        ? `Passa a entrar com ${newEmail}${edit.status === "INVITED" ? " · o convite foi reenviado para este email" : " · enviámos um aviso aos dois emails"}.`
-        : `${edit.email} · as sessões activas desta pessoa foram terminadas.` });
+      toast({ tone: "pos", title: t("admin.users.updated", { name: edit.name }), body: emailChanged
+        ? `${t("admin.users.movedTo", { email: newEmail })}${edit.status === "INVITED" ? t("admin.users.inviteResentTo") : t("admin.users.bothNotified")}.`
+        : t("admin.users.sessionsEnded", { email: edit.email }) });
       setEdit(null);
       router.refresh();
     } catch (e) { setErr((e as Error).message); }
@@ -51,32 +57,33 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
     <>
       <div className="tbl-wrap">
         <table className="tbl">
-          <thead><tr><th>Utilizador</th><th>Perfis</th><th>Estado</th><th>2.º factor</th><th>Último acesso</th><th><span className="sr-only">Acções</span></th></tr></thead>
+          <thead><tr><th>{t("admin.users.user")}</th><th>{t("admin.users.roles")}</th><th>{t("admin.users.state")}</th><th>{t("admin.users.mfa")}</th><th>{t("admin.users.lastAccess")}</th><th><span className="sr-only">{t("admin.users.actions")}</span></th></tr></thead>
           <tbody>
             {rows.map((u) => {
-              const [sl, st] = STATUS_LABEL[u.status] ?? [u.status, "neutral"];
+              const st = STATUS_TONE[u.status] ?? "neutral";
+              const sl = u.status in STATUS_TONE ? t(`admin.users.status.${u.status as UserStatus}`) : u.status;
               return (
                 <tr key={u.id}>
                   <td><span className="row" style={{ gap: 10 }}><Avatar initials={u.initials} /><span><b>{u.name}</b><div className="small muted">{u.email}</div></span></span></td>
-                  <td><span className="row" style={{ gap: 6 }}>{u.roles.map((r) => <Badge key={r}>{ROLE_LABEL[r] ?? r}</Badge>)}</span></td>
+                  <td><span className="row" style={{ gap: 6 }}>{u.roles.map((r) => <Badge key={r}>{isRole(r) ? t(`common.roles.${r}`) : r}</Badge>)}</span></td>
                   <td><Badge tone={st}>{sl}</Badge></td>
-                  <td>{u.mfaEnabled ? "Sim" : "—"}</td>
-                  <td className="small mono">{u.lastLoginAt ? formatDateTime(u.lastLoginAt) : "—"}</td>
+                  <td>{u.mfaEnabled ? t("common.yes") : "—"}</td>
+                  <td className="small mono">{u.lastLoginAt ? formatDateTime(u.lastLoginAt, locale) : "—"}</td>
                   <td className="actions-cell">
                     <div className="row" style={{ gap: 4, flexWrap: "nowrap", justifyContent: "flex-end" }}>
-                    {u.status !== "DELETED" && <Button size="sm" variant="ghost" icon="pen" aria-label={`Editar ${u.name}`} onClick={() => open(u)}>Editar</Button>}
-                    {u.status === "DELETION_REQUESTED" && <Button size="sm" variant="ghost" icon="trash" onClick={() => setDelTarget(u)}>Eliminar dados</Button>}
+                    {u.status !== "DELETED" && <Button size="sm" variant="ghost" icon="pen" aria-label={t("admin.users.editAria", { name: u.name })} onClick={() => open(u)}>{t("common.edit")}</Button>}
+                    {u.status === "DELETION_REQUESTED" && <Button size="sm" variant="ghost" icon="trash" onClick={() => setDelTarget(u)}>{t("admin.users.deleteData")}</Button>}
                     {u.status === "INVITED" && <Button size="sm" variant="ghost" icon="refresh" onClick={async () => {
-                      try { await post(`/admin/users/${u.id}/resend-invite`); toast({ tone: "pos", title: "Convite reenviado" }); }
-                      catch (e) { toast({ tone: "neg", title: "Não foi possível reenviar", body: (e as Error).message }); }
-                    }}>Reenviar convite</Button>}
+                      try { await post(`/admin/users/${u.id}/resend-invite`); toast({ tone: "pos", title: t("admin.users.inviteResent") }); }
+                      catch (e) { toast({ tone: "neg", title: t("admin.users.couldNotResend"), body: (e as Error).message }); }
+                    }}>{t("admin.users.resendInvite")}</Button>}
                     {u.status === "ACTIVE" && u.id !== me && <LinkButton size="sm" variant="ghost" icon="mail"
-                      href={`/admin?tab=emails&para=${u.id}&nome=${encodeURIComponent(u.name)}`} aria-label={`Enviar email a ${u.name}`}>Enviar email</LinkButton>}
+                      href={`/admin?tab=emails&para=${u.id}&nome=${encodeURIComponent(u.name)}`} aria-label={t("admin.users.sendEmailAria", { name: u.name })}>{t("admin.users.sendEmail")}</LinkButton>}
                     {u.status === "PENDING_VERIFICATION" && <Button size="sm" variant="ghost" icon="mail" onClick={async () => {
-                      try { await post(`/admin/users/${u.id}/remind-verification`); toast({ tone: "pos", title: "Lembrete enviado", body: `${u.email} recebe um link de confirmação novo.` }); }
-                      catch (e) { toast({ tone: "neg", title: "Não foi possível lembrar", body: (e as Error).message }); }
-                    }}>Lembrar confirmação</Button>}
-                    {u.mfaEnabled && u.id !== me && <Button size="sm" variant="ghost" icon="shield" onClick={() => setMfaTarget(u)}>Repor 2.º factor</Button>}
+                      try { await post(`/admin/users/${u.id}/remind-verification`); toast({ tone: "pos", title: t("admin.users.reminderSent"), body: t("admin.users.reminderSentBody", { email: u.email }) }); }
+                      catch (e) { toast({ tone: "neg", title: t("admin.users.couldNotRemind"), body: (e as Error).message }); }
+                    }}>{t("admin.users.remind")}</Button>}
+                    {u.mfaEnabled && u.id !== me && <Button size="sm" variant="ghost" icon="shield" onClick={() => setMfaTarget(u)}>{t("admin.users.resetMfa")}</Button>}
                     </div>
                   </td>
                 </tr>
@@ -85,47 +92,46 @@ export function UsersTable({ rows, me }: { rows: AdminUserRow[]; me: string }) {
           </tbody>
         </table>
       </div>
-      <ConfirmDialog open={!!delTarget} onCancel={() => setDelTarget(null)} confirmLabel="Eliminar definitivamente" destructive
-        typeToConfirm="ELIMINAR" busy={delBusy} title={`Eliminar os dados de ${delTarget?.name ?? ""}?`}
-        body="Executa o pedido de eliminação: nome, email, pseudónimo, perfis e 2.º factor são apagados e a conta sai dos rankings. Os pontos e a auditoria ficam ligados a uma conta anónima. Não é reversível."
+      <ConfirmDialog open={!!delTarget} onCancel={() => setDelTarget(null)} confirmLabel={t("admin.users.deleteConfirm")} destructive
+        typeToConfirm="ELIMINAR" busy={delBusy} title={t("admin.users.deleteTitle", { name: delTarget?.name ?? "" })}
+        body={t("admin.users.deleteBody")}
         onConfirm={async () => {
           const u = delTarget;
           if (!u) return;
           setDelBusy(true);
-          try { await post(`/admin/users/${u.id}/anonymize`); toast({ tone: "pos", title: "Conta eliminada", body: "Os dados pessoais foram apagados." }); setDelTarget(null); router.refresh(); }
-          catch (e) { toast({ tone: "neg", title: "Não foi possível eliminar", body: (e as Error).message }); }
+          try { await post(`/admin/users/${u.id}/anonymize`); toast({ tone: "pos", title: t("admin.users.deleted"), body: t("admin.users.deletedBody") }); setDelTarget(null); router.refresh(); }
+          catch (e) { toast({ tone: "neg", title: t("admin.users.couldNotDelete"), body: (e as Error).message }); }
           finally { setDelBusy(false); }
         }} />
-      <ConfirmDialog open={!!mfaTarget} onCancel={() => setMfaTarget(null)} confirmLabel="Repor 2.º factor"
-        title={`Repor o 2.º factor de ${mfaTarget?.name ?? ""}?`}
-        body="As sessões desta pessoa terminam e, no próximo login, terá de configurar de novo a aplicação de autenticação. Fica registado em auditoria."
+      <ConfirmDialog open={!!mfaTarget} onCancel={() => setMfaTarget(null)} confirmLabel={t("admin.users.resetMfa")}
+        title={t("admin.users.resetMfaTitle", { name: mfaTarget?.name ?? "" })}
+        body={t("admin.users.resetMfaBody")}
         onConfirm={async () => {
           const u = mfaTarget;
           setMfaTarget(null);
           if (!u) return;
-          try { await post(`/admin/users/${u.id}/reset-mfa`); toast({ tone: "pos", title: "2.º factor reposto" }); router.refresh(); }
-          catch (e) { toast({ tone: "neg", title: "Não foi possível repor", body: (e as Error).message }); }
+          try { await post(`/admin/users/${u.id}/reset-mfa`); toast({ tone: "pos", title: t("admin.users.mfaReset") }); router.refresh(); }
+          catch (e) { toast({ tone: "neg", title: t("admin.users.couldNotReset"), body: (e as Error).message }); }
         }} />
-      <Modal open={!!edit} onClose={() => setEdit(null)} title={`Editar ${edit?.name ?? ""}`}
-        actions={<><Button variant="out" onClick={() => setEdit(null)}>Cancelar</Button><Button variant="pri" onClick={save}>Guardar</Button></>}>
+      <Modal open={!!edit} onClose={() => setEdit(null)} title={t("admin.users.editTitle", { name: edit?.name ?? "" })}
+        actions={<><Button variant="out" onClick={() => setEdit(null)}>{t("common.cancel")}</Button><Button variant="pri" onClick={save}>{t("common.save")}</Button></>}>
         <div className="stack" style={{ color: "var(--text)" }}>
-          <Field label="Email" hint="Ex.: troca o Gmail provisório pelo email institucional. Palavra-passe e progresso mantêm-se.">{({ id }) => (
+          <Field label={t("admin.users.email")} hint={t("admin.users.emailHint")}>{({ id }) => (
             <Input id={id} type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="off" />)}</Field>
           <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0, gap: 4 }}>
-            <legend className="small" style={{ fontWeight: 600, marginBottom: 6 }}>Perfis</legend>
+            <legend className="small" style={{ fontWeight: 600, marginBottom: 6 }}>{t("admin.users.roles")}</legend>
             {ASSIGNABLE.map((r) => (
               <label key={r} className="check" style={{ paddingTop: 4, minHeight: 36 }}>
                 <input type="checkbox" checked={roles.includes(r)} disabled={edit?.id === me && r === "ADMIN"}
-                  onChange={(e) => setRoles(e.target.checked ? [...roles, r] : roles.filter((x) => x !== r))} />{ROLE_LABEL[r]}
+                  onChange={(e) => setRoles(e.target.checked ? [...roles, r] : roles.filter((x) => x !== r))} />{t(`common.roles.${r}`)}
               </label>
             ))}
-            <span className="small muted">Revisor, júri, organizador e administrador exigem 2.º factor. Capitão é atribuído dentro de cada equipa.</span>
+            <span className="small muted">{t("admin.users.privilegedNote")}</span>
           </fieldset>
           {edit?.id !== me && (
-            <Field label="Estado da conta">{({ id }) => (
+            <Field label={t("admin.users.accountState")}>{({ id }) => (
               <Select id={id} value={status} onChange={(e) => setStatus(e.target.value)}>
-                <option value="ACTIVE">Activo</option><option value="SUSPENDED">Suspenso</option><option value="INVITED">Convite pendente</option>
-                <option value="PENDING_VERIFICATION">Por verificar</option><option value="DELETION_REQUESTED">Eliminação pedida</option>
+                {(["ACTIVE", "SUSPENDED", "INVITED", "PENDING_VERIFICATION", "DELETION_REQUESTED"] as const).map((s) => <option key={s} value={s}>{t(`admin.users.status.${s}`)}</option>)}
               </Select>
             )}</Field>
           )}

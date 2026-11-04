@@ -1,18 +1,21 @@
 import { SetCrumbs } from "@/components/layout/CrumbsContext";
 import { AccessDenied, LaterPhase } from "@/components/ui/States";
 import { hasAny, requireMe } from "@/lib/session";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata = { title: "Júri" };
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("authoring.jury.title") };
+}
 
 export default async function Juri() {
-  const me = await requireMe("/juri");
+  const [me, { t }] = await Promise.all([requireMe("/juri"), getI18n()]);
   return (
     <>
-      <SetCrumbs items={[{ label: "Gestão" }, { label: "Júri" }]} />
+      <SetCrumbs items={[{ label: t("admin.page.group") }, { label: t("authoring.jury.title") }]} />
       {hasAny(me, "JURY") ? (
-        <LaterPhase title="Avaliação por júri"
-          body="A fila de casos atribuídos, a submissão anónima e a grelha pública (critérios, peso, nota 0–4) pertencem à fase posterior. A fase 1 do contest é corrigida automaticamente." />
-      ) : <AccessDenied area="Esta área" />}
+        <LaterPhase title={t("authoring.jury.heading")} body={t("authoring.jury.body")} />
+      ) : <AccessDenied />}
     </>
   );
 }

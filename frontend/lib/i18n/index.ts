@@ -10,9 +10,11 @@ import { task } from "./messages/task";
 import { compete } from "./messages/compete";
 import { exam } from "./messages/exam";
 import { portfolio } from "./messages/portfolio";
+import { admin } from "./messages/admin";
+import { authoring } from "./messages/authoring";
 
 function build(l: Locale) {
-  return { common: common[l], shell: shell[l], settings: settings[l], landing: landing[l], auth: auth[l], pages: pages[l], learn: learn[l], task: task[l], compete: compete[l], exam: exam[l], portfolio: portfolio[l] };
+  return { common: common[l], shell: shell[l], settings: settings[l], landing: landing[l], auth: auth[l], pages: pages[l], learn: learn[l], task: task[l], compete: compete[l], exam: exam[l], portfolio: portfolio[l], admin: admin[l], authoring: authoring[l] };
 }
 
 export type Messages = ReturnType<typeof build>;
